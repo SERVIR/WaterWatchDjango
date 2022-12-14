@@ -66,7 +66,16 @@ var LIBRARY_OBJECT = (function() {
             }
         }
 
-    }
+    };
+
+var btns = document.getElementsByClassName("tab-pane");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
 
     ajax_update_database("get-ponds-list", {}).done(function (data) {
         if ("success" in data) {
@@ -615,7 +624,7 @@ console.log(localStorage['ponds_url'])
                      console.log(data.name)
                     generate_chart(data.values, proj_coords[1], proj_coords[0], data.name);
 
-                  //  $loading.addClass('hidden');
+                    $loading.addClass('hidden');
                     $("#plotter").removeClass('hidden');
 
                 } else {

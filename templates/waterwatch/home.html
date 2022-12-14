@@ -186,12 +186,12 @@
                         <li role="presentation" ><a id="village" href="#village_tab" aria-controls="village_tab" role="tab" data-toggle="tab">Village</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active" id="historic_tab">
+                        <div role="tabpanel" class="tab-pane " id="historic_tab">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
-                                            <div align="center"><img id="view-file-loading" class="view-file hidden" src="{% static 'images/loader.gif' %}" /></div>
+{#                                            <div align="center"><img id="view-file-loading" class="hidden" src="{% static 'images/loader.gif' %}" /></div>#}
                                             <div id="plotter" name="plotter" style="height:50%;width:100%" >
                                             </div>
                                         </div>
@@ -205,7 +205,7 @@
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
-                                            <div align="center"><img id="f-view-file-loading" class="f-view-file hidden" src="/static/images/loader.gif" /></div>
+{#                                            <div align="center"><img id="f-view-file-loading" class="f-view-file hidden" src="/static/images/loader.gif" /></div>#}
                                             <div id="forecast-plotter" name="forecast-plotter" style="height:50%;width:100%" >
                                             </div>
                                         </div>
@@ -213,7 +213,7 @@
                                 </div>
                             </div>
                         </div> <!-- /.tab-pane -->
-                         <div role="tabpanel" class="tab-pane" id="details_tab">
+                         <div role="tabpanel" class="tab-pane active" id="details_tab">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
