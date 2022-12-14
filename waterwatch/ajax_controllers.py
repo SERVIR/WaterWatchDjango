@@ -43,6 +43,7 @@ def getPondsList(request):
             return_obj["error"] = "Error Processing Request. Error: "+ str(e)
     return JsonResponse(return_obj)
 
+@csrf_exempt
 def timeseries(request):
 
     return_obj = {}
@@ -65,6 +66,7 @@ def timeseries(request):
             return_obj["error"] = "Error Processing Request. Error: "+ str(e)
     return JsonResponse(return_obj)
 
+@csrf_exempt
 def forecast(request):
 
     return_obj = {}
@@ -85,6 +87,7 @@ def forecast(request):
         return_obj["error"] = "Error Processing Request. Error: "+ str(e)
     return JsonResponse((return_obj))
 
+@csrf_exempt
 def mndwi(request):
     return_obj = {}
 
@@ -110,7 +113,7 @@ def mndwi(request):
 
     return JsonResponse(return_obj)
 
-
+@csrf_exempt
 def details(request):
 
     return_obj = {}
@@ -149,6 +152,8 @@ def details(request):
 
     return JsonResponse(return_obj)
 
+
+@csrf_exempt
 def coucheVillages(request):
     return_obj = {}
     if request.method == 'POST':
