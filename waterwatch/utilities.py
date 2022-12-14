@@ -6,7 +6,6 @@ import math
 import random
 import datetime, time
 import numpy as np
-from . import config1
 from django.http import JsonResponse
 import json
 from pathlib import Path
