@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = data['ALLOWED_HOSTS']
 
+CSRF_TRUSTED_ORIGINS = data['CSRF_TRUSTED_ORIGINS']
 
 # Application definition
 
@@ -124,3 +125,4 @@ STATIC_ROOT = os.path.join(str(BASE_DIR), 'staticfiles')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
