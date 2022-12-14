@@ -358,8 +358,13 @@ class fClass(object):
             reducer=ee.Reducer.min(),
             scale=demScale, maxPixels=1e6
         ).get('elevation'))
-        SoInit = ee.Image(0).where(elv.gte(pondMin).And(elv.lte(pondMin.add(self.h0))), 1)
 
+        SoInit = ee.Image(0).where(elv.gte(pondMin).And(elv.lte(pondMin.add(ee.Number(1)))), 1)
+
+        try:
+            print(SoInit.getInfo())
+        except Exception as e:
+            print(str(e))
         self.So = ee.Image(ee.Number(SoInit.reduceRegion(
             geometry=self.pond.geometry(),
             reducer=ee.Reducer.sum(),
@@ -375,13 +380,18 @@ class fClass(object):
         self.Vo = (self.So.multiply(self.h0)).divide(self.alpha.add(1))
         vInit = ee.Image(self.Vo.multiply(hInit.divide(self.h0).pow(self.alpha.add(1))))
 
+
         precipData = gfs.filterDate(modelDate, modelDate.advance(1, 'hour')) \
             .filterMetadata('forecast_hours', 'greater_than', 0) \
             .select(['total_precipitation_surface'], ['precip']) \
             .map(prepGfs)
         dailyPrecip = accumGFS(precipData, modelDate, forecastDays)
+        print("dailyPrecip")
+        # print(dailyPrecip.getInfo())
 
         initIap = calcInitIap(cfs, modelDate, 7)
+
+        # print(initIap.getInfo())
 
         # set model start with t-1 forcing
         first = ee.Image(cfs.filterDate(modelDate.advance(-1, 'day'), modelDate).select(['precip']).sum()) \
@@ -599,14 +609,18 @@ def checkVillage():
 def forecastFeature(lon, lat):
     selPond = filterPond(lon, lat)
     coll = waterCollection.filterBounds(selPond).sort('system:time_start', False)
+    print(coll.size().getInfo())
     lastimg = ee.Image(coll.first())
     bnames = lastimg.bandNames()
+    print("with info")
+    print(bnames.getInfo())
     print("from fcast1")
 
     featureImg = ee.Image(coll.reduce(ee.Reducer.firstNonNull())).rename(bnames)
     lastTime = ee.Date(lastimg.get('system:time_start'))
 
     reductionScale = lastimg.projection().nominalScale()
+    print(reductionScale.getInfo())
     print("from fcast2")
 
 
@@ -617,15 +631,11 @@ def forecastFeature(lon, lat):
     fModel = fClass(selPond, pondFraction, lastTime)
 
     ts_values = fModel.forecast()
-    # print(ts_values)
     name = selPond.getInfo()['features'][0]['properties']['Nom']
     if len(name) < 2:
         name = ' Unnamed Pond'
 
     coordinates = selPond.getInfo()['features'][0]['geometry']['coordinates']
-    print(ts_values)
-    print(coordinates)
-    print(name)
     return ts_values, coordinates, name
 
 
