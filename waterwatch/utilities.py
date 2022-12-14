@@ -6,11 +6,16 @@ import math
 import random
 import datetime, time
 import numpy as np
-from . import config
+from . import config1
 from django.http import JsonResponse
+import json
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+f = open(str(BASE_DIR) + '/data.json', )
+data = json.load(f)
 try:
-    credentials = ee.ServiceAccountCredentials(config.EE_SERVICE_ACCOUNT,
-                                               config.EE_SECRET_KEY)
+    credentials = ee.ServiceAccountCredentials(data['EE_SERVICE_ACCOUNT'],
+                                               data['EE_SECRET_KEY'])
     ee.Initialize(credentials)
 except:
     ee.Initialize()

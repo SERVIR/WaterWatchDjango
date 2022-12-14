@@ -1,17 +1,20 @@
+import json
+from pathlib import Path
+
 from django.shortcuts import render
 from .utilities import initLayers, initMndwi
 import ee
-from . import config
 from ee.ee_exception import EEException
-
-
+BASE_DIR = Path(__file__).resolve().parent.parent
+f = open(str(BASE_DIR) + '/data.json', )
+data = json.load(f)
 def home(request):
     """
     Controller for the app home page.
     """
     try:
-        credentials = ee.ServiceAccountCredentials(config.EE_SERVICE_ACCOUNT,
-                                                   config.EE_SECRET_KEY)
+        credentials = ee.ServiceAccountCredentials(data['EE_SERVICE_ACCOUNT'],
+                                                   data['EE_SECRET_KEY'])
         ee.Initialize(credentials)
     except EEException:
         ee.Initialize()

@@ -134,7 +134,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h5 class="modal-title" id="help-modal-label">Help Modal</h5>
                 </div>
                 <div class="modal-body">
@@ -169,7 +169,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 <h5 class="modal-title" id="chart-modal-label">Chart</h5>
             </div>
             <div class="modal-body">
@@ -178,43 +179,49 @@
                     <input type="text" name="current-lon" id="current-lon" hidden>
 
                     <br>
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a id="historic" href="#historic_tab" aria-controls="historic_tab" role="tab" data-toggle="tab">Historic</a></li>
-                        <li role="presentation" ><a id="forecast" href="#forecast_tab" aria-controls="forecast_tab" role="tab" data-toggle="tab">Forecast</a></li>
-                           <li role="presentation" ><a id="details" href="#details_tab" aria-controls="details_tab" role="tab" data-toggle="tab">Details</a></li>
-                        <li role="presentation" ><a id="village" href="#village_tab" aria-controls="village_tab" role="tab" data-toggle="tab">Village</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane " id="historic_tab">
+             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#historic_tab"  type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Historic</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#forecast_tab"  type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Forecast</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#details_tab"  type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Details</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="village-tab" data-bs-toggle="tab" data-bs-target="#village_tab"  type="button" role="tab" aria-controls="village-tab-pane" aria-selected="false">Village</button>
+                  </li>
+            </ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="historic_tab" role="tabpanel" aria-labelledby="historic_tab" tabindex="0">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
-{#                                            <div align="center"><img id="view-file-loading" class="hidden" src="{% static 'images/loader.gif' %}" /></div>#}
+                                            <div align="center"><img id="view-file-loading" class="hidden" src="{% static 'images/loader.gif' %}" /></div>
                                             <div id="plotter" name="plotter" style="height:50%;width:100%" >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> <!-- /.tab-pane -->
-
-                        <div role="tabpanel" class="tab-pane" id="forecast_tab">
-                            <div class="panel panel-default">
+  </div>
+  <div class="tab-pane fade" id="forecast_tab" role="tabpanel" aria-labelledby="forecast-tab" tabindex="0">
+       <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
-{#                                            <div align="center"><img id="f-view-file-loading" class="f-view-file hidden" src="/static/images/loader.gif" /></div>#}
+                                            <div align="center"><img id="f-view-file-loading" class="f-view-file hidden" src="/static/images/loader.gif" /></div>
                                             <div id="forecast-plotter" name="forecast-plotter" style="height:50%;width:100%" >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> <!-- /.tab-pane -->
-                         <div role="tabpanel" class="tab-pane active" id="details_tab">
-                            <div class="panel panel-default">
+  </div>
+  <div class="tab-pane fade" id="details_tab" role="tabpanel" aria-labelledby="details_tab" tabindex="0">
+       <div class="panel panel-default">#}
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
@@ -225,9 +232,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="village_tab">
-                            <div class="panel panel-default">
+  </div>
+  <div class="tab-pane fade" id="village_tab" role="tabpanel" aria-labelledby="village_tab" tabindex="0">
+      <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="chart-wrapper">
                                         <div class="chart-inner" style="width:100%;height:75%;">
@@ -237,8 +244,70 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+  </div>
+
+</div>
+                    <!-- Nav tabs -->
+{#                    <ul class="nav nav-tabs" role="tablist">#}
+{#                        <li role="presentation" class="active"><a id="historic" href="#historic_tab" aria-controls="historic_tab" role="tab" data-toggle="tab">Historic</a></li>#}
+{#                        <li role="presentation" ><a id="forecast" href="#forecast_tab" aria-controls="forecast_tab" role="tab" data-toggle="tab">Forecast</a></li>#}
+{#                           <li role="presentation" ><a id="details" href="#details_tab" aria-controls="details_tab" role="tab" data-toggle="tab">Details</a></li>#}
+{#                        <li role="presentation" ><a id="village" href="#village_tab" aria-controls="village_tab" role="tab" data-toggle="tab">Village</a></li>#}
+{#                    </ul>#}
+{#                    <div class="tab-content">#}
+{#                        <div role="tabpanel" class="tab-pane" id="historic_tab">#}
+{#                            <div class="panel panel-default">#}
+{#                                <div class="panel-body">#}
+{#                                    <div class="chart-wrapper">#}
+{#                                        <div class="chart-inner" style="width:100%;height:75%;">#}
+{#                                            <div align="center"><img id="view-file-loading" class="hidden" src="{% static 'images/loader.gif' %}" /></div>#}
+{#                                            <div id="plotter" name="plotter" style="height:50%;width:100%" >#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div> <!-- /.tab-pane -->#}
+{##}
+{#                        <div role="tabpanel" class="tab-pane" id="forecast_tab">#}
+{#                            <div class="panel panel-default">#}
+{#                                <div class="panel-body">#}
+{#                                    <div class="chart-wrapper">#}
+{#                                        <div class="chart-inner" style="width:100%;height:75%;">#}
+{#                                            <div align="center"><img id="f-view-file-loading" class="f-view-file hidden" src="/static/images/loader.gif" /></div>#}
+{#                                            <div id="forecast-plotter" name="forecast-plotter" style="height:50%;width:100%" >#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div> <!-- /.tab-pane -->#}
+{#                         <div role="tabpanel" class="tab-pane active" id="details_tab">#}
+{#                            <div class="panel panel-default">#}
+{#                                <div class="panel-body">#}
+{#                                    <div class="chart-wrapper">#}
+{#                                        <div class="chart-inner" style="width:100%;height:75%;">#}
+{#                                            <div align="center"><h1>Détails sur la mare</h1></div>#}
+{#											<table id="meta-table-details" class="table table-responsive table-condensed table-hover">#}
+{#											</table>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div role="tabpanel" class="tab-pane" id="village_tab">#}
+{#                            <div class="panel panel-default">#}
+{#                                <div class="panel-body">#}
+{#                                    <div class="chart-wrapper">#}
+{#                                        <div class="chart-inner" style="width:100%;height:75%;">#}
+{#											<table id="meta-table-village" class="table table-responsive table-condensed table-hover">#}
+{#											</table>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
 
                     <br>
                     <table id="meta-table" class="table table-responsive table-condensed table-hover">

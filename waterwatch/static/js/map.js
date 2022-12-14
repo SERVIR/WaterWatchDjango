@@ -71,9 +71,10 @@ var LIBRARY_OBJECT = (function() {
 var btns = document.getElementsByClassName("tab-pane");
 for (var i = 0; i < btns.length; i++) {
   btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
+  // var current = document.getElementsByClassName("active");
+  // current[0].className = current[0].className.replace(" active", "");
+  // this.className += " active";
+      this.toggleClass("active");
   });
 }
 
@@ -624,13 +625,13 @@ console.log(localStorage['ponds_url'])
                      console.log(data.name)
                     generate_chart(data.values, proj_coords[1], proj_coords[0], data.name);
 
-                    $loading.addClass('hidden');
+                    $loading.hide();
                     $("#plotter").removeClass('hidden');
 
                 } else {
                     $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
                     $('#info').removeClass('hidden');
-                    $loading.addClass('hidden');
+                    $loading.show();
 
                 }
             });
@@ -650,7 +651,7 @@ console.log(localStorage['ponds_url'])
 
                     generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name);
 
-                    $loadingF.addClass('hidden');
+                    $loadingF.hide();
                     $("#forecast-plotter").removeClass('hidden');
 
                 } else {
@@ -673,7 +674,7 @@ console.log(localStorage['ponds_url'])
                     select_feature_source.addFeature(feature);
                     generate_details(proj_coords[1], proj_coords[0], data.namePond, data.sup_Pond, data.coordinates, data.nameRegion, data.nameCommune, data.nameArrondissement);
 
-                    $loadingF.addClass('hidden');
+                    $loadingF.hide();
                     //                  $("#details-plotter").removeClass('hidden');
 
                 } else {
