@@ -419,6 +419,18 @@ console.log(localStorage['ponds_url'])
                     }
                 });
             }
+        } else{
+            ajax_update_database("get-ponds-url", {}).done(function (data) {
+                    if ("success" in data) {
+                        localStorage.setItem('ponds_url', JSON.stringify({
+                            'url': data['url'],
+                            'time_created': new Date().toString()
+                        }));
+                        ponds_layer.setSource(new ol.source.XYZ({
+                            url: data['url']
+                        }));
+                    }
+                });
         }
 
         select_feature_source = new ol.source.Vector();
