@@ -4,8 +4,11 @@ This tool lets you select a water body and see the data processed by the Earth E
 
 
 # Required 
+
 Python 3.9
+
 Google Service Account and secret key JSON
+
 Access to the Earth Engine Asset projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds/
 
 # Installation
