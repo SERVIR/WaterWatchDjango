@@ -41,19 +41,19 @@ In the dropdown select "Web Application" and give a name.
 
 In the App Domain fields use the the dev domains for example:
 
-        `http://127.0.0.1:8000/
+        http://127.0.0.1:8000/
         http://127.0.0.1:8000/terms-privacy
-        http://127.0.0.1:8000/terms-privacy`
+        http://127.0.0.1:8000/terms-privacy
 
 Add Authorized JavaScript origins (you may enable multiple)
 
-        `http://localhost:8000
-        http://127.0.0.1:8000`
+        http://localhost:8000
+        http://127.0.0.1:8000
 
 Add Authorized redirect URIs (you may enable multiple)
 
-        `http://localhost:8000/accounts/google/login/callback/
-        http://127.0.0.1:8000/accounts/google/login/callback/`
+        http://localhost:8000/accounts/google/login/callback/
+        http://127.0.0.1:8000/accounts/google/login/callback/
 
 Copy and save the Client ID and Client secret to your local machine (you will need these later)
 
@@ -75,13 +75,13 @@ Register the service account https://signup.earthengine.google.com/#!/service\_a
 
 Before you can run the application you will need to create a data.json file in the root directory. In this file you will need the following:
 
-        `{
+        {
           "SECRET\_KEY": "your\_secret\_key",
           "ALLOWED\_HOSTS": \["localhost", "127.0.0.1"\],
           "CSRF\_TRUSTED\_ORIGINS": \["http://localhost:8000","http://127.0.0.1:8000"\],
           "EE_SECRET_KEY" : "your\_json\_key",
           "EE_SERVICE_ACCOUNT" : "your\_service\_acccount",
-        }`
+        }
 SECRET_KEY is any random string of characters
 
 ALLOWED_HOSTS is the domain you will be accessing the site from, in development it will be left as is, in production you will remove those and add your actual domain
