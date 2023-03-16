@@ -100,16 +100,16 @@ EE_SERVICE_ACCOUNT is the service account you created above
 Please feel free to contact us if you have any questions.
 
 # Authors
-Githika Tondapu (NASA/USRA)
-Francisco Delgado (NASA/USRA)
-Lance Gilliland (NASA/JACOBS)
-Billy Ashmall (NASA/USRA)
-Emil Cherrington (NASA/UAH)
-Sarva Pulla (former NASA/USRA)
-Rebekke Muench (former NASA/UAH)
-Kel Markert (former NASA/UAH)
-Belal Ba (CSE)
-Adama Mamadou (CSE)
+* Githika Tondapu (NASA/USRA)
+* Francisco Delgado (NASA/USRA)
+* Lance Gilliland (NASA/JACOBS)
+* Billy Ashmall (NASA/USRA)
+* Emil Cherrington (NASA/UAH)
+* Sarva Pulla (former NASA/USRA)
+* Rebekke Muench (former NASA/UAH)
+* Kel Markert (former NASA/UAH)
+* Belal Ba (CSE)
+* Adama Mamadou (CSE)
 
 # License and Distribution
 This application is built and maintained by SERVIR under the terms of the MIT License.
