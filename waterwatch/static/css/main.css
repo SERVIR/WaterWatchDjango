@@ -36,6 +36,7 @@ html{
 }
 
 .gee-attr {
+    font-size: 12px;
     top: 7px;
     right: 5px;
     width: 275px;
@@ -180,12 +181,12 @@ list-style-type:none;
 padding:0px;
 font-size:16px;
     color: black;
-    max-height: 40vh;
+    max-height: 20vh;
     text-indent: 10px;
     overflow: auto;
 }
 #map{
-height:94.5vh;
+height:calc(100vh - 70px);
 width:100%;
     /*position: relative;*/
 }
@@ -207,13 +208,35 @@ margin-right:20px;
 }
 
 #icon_img{
-    width:50px;
-    height: 50px;
+    width:40px;
 }
 #wrapper{
     height: 100%;
 }
 
-.active, .tab-pane:hover {
-  color: white;
+#map-view-legend{
+    width: 250px;
+}
+.ol-overviewmap {
+    display: contents;
+    z-index: 1000;
+    height: 300px;
+}
+#overview_map{
+      /*margin: auto;*/
+    /*width: 50%;*/
+    overflow-y: scroll;
+    height: 300px;
+    padding: 10px;
+}
+.ol-overviewmap .ol-overviewmap-map {
+    height: 300px;
+    width: 300px;
+}
+#help_modal_id{
+    max-width: 1000px;
+}
+.logo-image{
+    height: 60px;
+    padding: 10px;
 }

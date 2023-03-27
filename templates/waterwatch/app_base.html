@@ -17,10 +17,47 @@
     <!-- Custom styles-->
     <link href="{% static '/css/basic.css' %}" rel="stylesheet">
 
+        <link href="{% static '/css/main.css' %}" rel="stylesheet">
+
 </head>
 <body id="page-top">
     <div id="wrapper">
-    <div style="background-color: #abbfce">
+        <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
+        <div class="modal-dialog" role="document" id=help_modal_id">
+            <div class="modal-content">
+                <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                                                     <div id="gee-attr" class="gee-attr ol-unselectable ol-control">
+            <p> Powered by <img src="https://servir-rlcms.appspot.com/static/img/google.png" width="17%"> Earth Engine <img src="https://servir-rlcms.appspot.com/static/img/gee.png" width="7%"> </p>
+    </div>
+
+                    <p>Disclaimer:</p>
+                    <p>SERVIR Program, NASA, USAID and SERVIR partner organizations
+                            make no express or implied warranty of this application as to the
+                            merchantability or fitness for any particular purpose.
+                            Neither the US Government nor its contractors shall be liable for
+                            special, consequential or incidental damages attributed to this application.</p>
+
+                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of Use</a></p>
+                </div>
+
+                <div class="modal-footer">
+                    <div align="center" id="logos">
+                        <a href="http://www.usaid.gov/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a>
+                     <a href="http://appliedsciences.nasa.gov/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a>
+                        <a href="http://www.cilss.bf/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/cilss.png"></a>
+                        <a href="http://www.rcmrd.org/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/rcmrd.png"></a>
+                      <a href="http://www.icimod.org/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/icimod.png"></a>
+                        <a href="http://www.adpc.net/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/adpc.png"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
         {% block app_navigation_items %}
         {% endblock app_navigation_items %}
     </div>
@@ -28,10 +65,25 @@
 
             <div id="content" style="color: white">
   {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
-            <div style="display: flex;align-items: flex-end;background-color: #2c3e50;">
+            <div style="display: inline-flex;
+    width: 100%;
+    height: 70px;
+    padding: 15px;
+    background-color: #2c3e50;">
   <img id="icon_img" src="{% static "/images/logo_2.png" %}">
-<h3 >Ferlo Ephemeral Water Body Monitoring Dashboard</h3>
+<p class="h-100 m-auto h4" >Ferlo Ephemeral Water Body Monitoring Dashboard</p>
+<!--<div id="google_translate_element"></div><script type="text/javascript">-->
+<!--function googleTranslateElementInit() {-->
+<!--new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');-->
+<!--}-->
+<!--</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>&nbsp-->
+
+    <a type="button" class="pr-2 text-decoration-none text-white" data-bs-toggle="modal"
+                        data-bs-target="#help-modal">About</a>
+
             </div>
+
+
                 <!-- Begin Page Content -->
 {#                <div class="container-fluid">#}
                     <!-- Page Heading -->
@@ -39,8 +91,7 @@
                     </div>
                     <!-- Content Row -->
 {#                    <div class="row">#}
-                    {% block header_buttons %}
-            {% endblock %}
+
                          {% block app_content %}
         {% endblock  %}
 {#                    </div>#}

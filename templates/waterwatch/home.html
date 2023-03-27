@@ -39,8 +39,8 @@
 
 {% block app_content %}
 
-          <link href="{% static '/css/main.css' %}" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css" type="text/css">
+          <link href="{% static '/css/main.css' %}" rel="stylesheet"/>
 
 <!--<style>-->
 <!--    #map{-->
@@ -69,14 +69,14 @@
 <!--	list-style: none;-->
 <!--}-->
 <!--</style>-->
-
-<div class="alert alert-info alert-dismissible intro_message" id="mutationObj" role="alert">
-    <div align="center">
-        <button id="close_map_intro_message" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        Zoom into an area of interest and click on a pond. The zoom level has to be greater than 14. <br> The basemaps will switch at zoom level 14.
-    </div>
-</div>
+{##}
+{#<div class="alert alert-info alert-dismissible intro_message" id="mutationObj" role="alert">#}
+{#    <div align="center">#}
+{#        <button id="close_map_intro_message" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+{#        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>#}
+{#        Zoom into an area of interest and click on a pond. The zoom level has to be greater than 14. <br> The basemaps will switch at zoom level 14.#}
+{#    </div>#}
+{#</div>#}
 
 
 
@@ -109,6 +109,8 @@
 
     <!--<div id="zoomlevel"></div>-->
 </div>
+
+
     <script src="{% static '/js/main.js' %}" type="text/javascript"></script>
 
 
@@ -319,7 +321,7 @@
                         <label><input type="checkbox" id="ponds_toggle" name="ponds_toggle" checked>Ponds Layer</label>
                     </div>
                  
-                    <span>Note: The zoom level needs to be 13 or greater to retrieve data.</span>
+{#                    <span>Note: The zoom level needs to be 13 or greater to retrieve data.</span>#}
                     <br>
                     <button type="button" name="reset" id="reset" class="btn btn-primary hidden" onclick="window.location.reload();">Reset Map</button>
 

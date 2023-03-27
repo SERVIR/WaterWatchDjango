@@ -9,7 +9,6 @@
 /*****************************************************************************
  *                      LIBRARY WRAPPER
  *****************************************************************************/
-console.log("heee")
 var LIBRARY_OBJECT = (function() {
     // Wrap the library in a package function
     "use strict"; // And enable strict mode for this library
@@ -388,50 +387,50 @@ for (var i = 0; i < btns.length; i++) {
 
         var ponds_layer = new ol.layer.Tile({});
 
-console.log(localStorage['ponds_url'])
-        if (localStorage['ponds_url']) {
-            var ponds_url = JSON.parse(localStorage['ponds_url']);
+// console.log(localStorage['ponds_url'])
+//         if (localStorage['ponds_url']) {
+//             var ponds_url = JSON.parse(localStorage['ponds_url']);
 
-            if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
+            // if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
 
 
                 ajax_update_database("get-ponds-url", {}).done(function (data) {
                     if ("success" in data) {
-                        localStorage.setItem('ponds_url', JSON.stringify({
-                            'url': data['url'],
-                            'time_created': new Date().toString()
-                        }));
+                        // localStorage.setItem('ponds_url', JSON.stringify({
+                        //     'url': data['url'],
+                        //     'time_created': new Date().toString()
+                        // }));
                         ponds_layer.setSource(new ol.source.XYZ({
                             url: data['url']
                         }));
                     }
                 });
-            } else {
-                ajax_update_database("get-ponds-url", {}).done(function (data) {
-                    if ("success" in data) {
-                        localStorage.setItem('ponds_url', JSON.stringify({
-                            'url': data['url'],
-                            'time_created': new Date().toString()
-                        }));
-                        ponds_layer.setSource(new ol.source.XYZ({
-                            url: data['url']
-                        }));
-                    }
-                });
-            }
-        } else{
-            ajax_update_database("get-ponds-url", {}).done(function (data) {
-                    if ("success" in data) {
-                        localStorage.setItem('ponds_url', JSON.stringify({
-                            'url': data['url'],
-                            'time_created': new Date().toString()
-                        }));
-                        ponds_layer.setSource(new ol.source.XYZ({
-                            url: data['url']
-                        }));
-                    }
-                });
-        }
+            // } else {
+            //     ajax_update_database("get-ponds-url", {}).done(function (data) {
+            //         if ("success" in data) {
+            //             localStorage.setItem('ponds_url', JSON.stringify({
+            //                 'url': data['url'],
+            //                 'time_created': new Date().toString()
+            //             }));
+            //             ponds_layer.setSource(new ol.source.XYZ({
+            //                 url: data['url']
+            //             }));
+            //         }
+            //     });
+            // }
+        // } else{
+        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
+        //             if ("success" in data) {
+        //                 localStorage.setItem('ponds_url', JSON.stringify({
+        //                     'url': data['url'],
+        //                     'time_created': new Date().toString()
+        //                 }));
+        //                 ponds_layer.setSource(new ol.source.XYZ({
+        //                     url: data['url']
+        //                 }));
+        //             }
+        //         });
+        // }
 
         select_feature_source = new ol.source.Vector();
         select_feature_layer = new ol.layer.Vector({
@@ -464,9 +463,15 @@ console.log(localStorage['ponds_url'])
             name:'mndwi_layer'
         });
 
+
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
         layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel,mndwi_layer];
         map = new ol.Map({
+             controls: ol.control.defaults().extend([
+                new ol.control.OverviewMap({
+                    collapsible: false,
+                    showToggle: false,
+                })]),
             target: 'map',
             layers: layers,
             view: new ol.View({
@@ -474,6 +479,11 @@ console.log(localStorage['ponds_url'])
                 zoom: 10
             })
         });
+
+        var cc = document.getElementsByClassName('ol-overviewmap ol-unselectable ol-control ol-uncollapsible');
+        document.getElementById('overview_map').appendChild(cc[0]);
+
+
         var params1 = layers[13].getSource().getParams();
         params1.cql_filter = "Projet = 'PRAPS'";
         layers[13].getSource().updateParams(params1);
@@ -518,24 +528,24 @@ console.log(localStorage['ponds_url'])
         map.getLayers().item(1).setVisible(false);
 
         init_events = function () {
-            (function () {
-                var target, observer, config;
-                // select the target node
-                target = $('#mutationObj')[0];
-
-                observer = new MutationObserver(function () {
-                    window.setTimeout(function () {
-                        map.updateSize();
-                    }, 350);
-                });
-                $(window).on('resize', function () {
-                    map.updateSize();
-                });
-
-                config = {attributes: true};
-
-                observer.observe(target, config);
-            }());
+            // (function () {
+            //     var target, observer, config;
+            //     // select the target node
+            //     target = $('#mutationObj')[0];
+            //
+            //     observer = new MutationObserver(function () {
+            //         window.setTimeout(function () {
+            //             map.updateSize();
+            //         }, 350);
+            //     });
+            //     $(window).on('resize', function () {
+            //         map.updateSize();
+            //     });
+            //
+            //     config = {attributes: true};
+            //
+            //     observer.observe(target, config);
+            // }());
         }
 
         //Map on zoom function. To keep track of the zoom level. Data can only be viewed can only be added at a certain zoom level.
@@ -558,15 +568,7 @@ console.log(localStorage['ponds_url'])
 
             var zoom = map.getView().getZoom();
             $chartModal.modal('show');
-            if (zoom < 14) {
 
-                $('.info').html('<b>The zoom level has to be 14 or greater. Please check and try again.</b>');
-                $('#info').removeClass('hidden');
-                return false;
-            } else {
-                $('.info').html('');
-                $('#info').addClass('hidden');
-            }
 
             var clickCoord = evt.coordinate;
             var proj_coords = ol.proj.transform(clickCoord, 'EPSG:3857', 'EPSG:4326');
