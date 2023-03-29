@@ -9,7 +9,7 @@
 /*****************************************************************************
  *                      LIBRARY WRAPPER
  *****************************************************************************/
-var LIBRARY_OBJECT = (function() {
+var LIBRARY_OBJECT = (function () {
     // Wrap the library in a package function
     "use strict"; // And enable strict mode for this library
 
@@ -30,7 +30,7 @@ var LIBRARY_OBJECT = (function() {
         water_source,
         water_layer,
         true_source,
-        true_layer,    mndwi_mapid,
+        true_layer, mndwi_mapid,
         mndwi_token;
 
 
@@ -67,15 +67,15 @@ var LIBRARY_OBJECT = (function() {
 
     };
 
-var btns = document.getElementsByClassName("tab-pane");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  // var current = document.getElementsByClassName("active");
-  // current[0].className = current[0].className.replace(" active", "");
-  // this.className += " active";
-      this.toggleClass("active");
-  });
-}
+    var btns = document.getElementsByClassName("tab-pane");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            // var current = document.getElementsByClassName("active");
+            // current[0].className = current[0].className.replace(" active", "");
+            // this.className += " active";
+            this.toggleClass("active");
+        });
+    }
 
     ajax_update_database("get-ponds-list", {}).done(function (data) {
         if ("success" in data) {
@@ -169,7 +169,7 @@ for (var i = 0; i < btns.length; i++) {
         //ponds_mapid = $layers_element.attr('data-ponds-mapid');
         //ponds_token = $layers_element.attr('data-ponds-token');
         $chartModal = $("#chart-modal");
-            mndwi_mapid = $layers_element.attr('data-mndwi-mapid');
+        mndwi_mapid = $layers_element.attr('data-mndwi-mapid');
         mndwi_token = $layers_element.attr('data-mndwi-token');
     };
 
@@ -391,33 +391,33 @@ for (var i = 0; i < btns.length; i++) {
 //         if (localStorage['ponds_url']) {
 //             var ponds_url = JSON.parse(localStorage['ponds_url']);
 
-            // if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
+        // if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
 
 
-                ajax_update_database("get-ponds-url", {}).done(function (data) {
-                    if ("success" in data) {
-                        // localStorage.setItem('ponds_url', JSON.stringify({
-                        //     'url': data['url'],
-                        //     'time_created': new Date().toString()
-                        // }));
-                        ponds_layer.setSource(new ol.source.XYZ({
-                            url: data['url']
-                        }));
-                    }
-                });
-            // } else {
-            //     ajax_update_database("get-ponds-url", {}).done(function (data) {
-            //         if ("success" in data) {
-            //             localStorage.setItem('ponds_url', JSON.stringify({
-            //                 'url': data['url'],
-            //                 'time_created': new Date().toString()
-            //             }));
-            //             ponds_layer.setSource(new ol.source.XYZ({
-            //                 url: data['url']
-            //             }));
-            //         }
-            //     });
-            // }
+        ajax_update_database("get-ponds-url", {}).done(function (data) {
+            if ("success" in data) {
+                // localStorage.setItem('ponds_url', JSON.stringify({
+                //     'url': data['url'],
+                //     'time_created': new Date().toString()
+                // }));
+                ponds_layer.setSource(new ol.source.XYZ({
+                    url: data['url']
+                }));
+            }
+        });
+        // } else {
+        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
+        //         if ("success" in data) {
+        //             localStorage.setItem('ponds_url', JSON.stringify({
+        //                 'url': data['url'],
+        //                 'time_created': new Date().toString()
+        //             }));
+        //             ponds_layer.setSource(new ol.source.XYZ({
+        //                 url: data['url']
+        //             }));
+        //         }
+        //     });
+        // }
         // } else{
         //     ajax_update_database("get-ponds-url", {}).done(function (data) {
         //             if ("success" in data) {
@@ -454,20 +454,20 @@ for (var i = 0; i < btns.length; i++) {
             source: true_source
             // url:""
         });
- var mndwi_layer = new ol.layer.Tile({
+        var mndwi_layer = new ol.layer.Tile({
             source: new ol.source.XYZ({
                 url: mndwi_mapid
-                    // "https://earthengine.googleapis.com/map/"+mndwi_mapid+"/{z}/{x}/{y}?token="+mndwi_token
+                // "https://earthengine.googleapis.com/map/"+mndwi_mapid+"/{z}/{x}/{y}?token="+mndwi_token
             }),
             visible: false,
-            name:'mndwi_layer'
+            name: 'mndwi_layer'
         });
 
 
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
-        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel,mndwi_layer];
+        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer];
         map = new ol.Map({
-             controls: ol.control.defaults().extend([
+            controls: ol.control.defaults().extend([
                 new ol.control.OverviewMap({
                     collapsible: false,
                     showToggle: false,
@@ -569,7 +569,6 @@ for (var i = 0; i < btns.length; i++) {
             var zoom = map.getView().getZoom();
             $chartModal.modal('show');
 
-
             var clickCoord = evt.coordinate;
             var proj_coords = ol.proj.transform(clickCoord, 'EPSG:3857', 'EPSG:4326');
             $("#current-lat").val(proj_coords[1]);
@@ -586,6 +585,10 @@ for (var i = 0; i < btns.length; i++) {
             var myGeoJSON2 = [];
             var mareSelect, buffered;
             var $elements;
+            $("#plotter").empty();
+            $loading.show();
+            $("#forecast-plotter").empty();
+            $loadingF.show();
             var xhr = ajax_update_database('timeseries', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
             xhr.done(function (data) {
                 if ("success" in data) {
@@ -636,12 +639,10 @@ for (var i = 0; i < btns.length; i++) {
                     map.getLayers().item(5).getSource().clear();
                     select_feature_source.addFeature(feature);
                     console.log(data.values)
-                     console.log(data.name)
+                    console.log(data.name)
                     generate_chart(data.values, proj_coords[1], proj_coords[0], data.name);
 
                     $loading.hide();
-                    $("#plotter").removeClass('hidden');
-
                 } else {
                     $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
                     $('#info').removeClass('hidden');
@@ -713,6 +714,7 @@ for (var i = 0; i < btns.length; i++) {
     };
 
     generate_chart = function (data, lat, lon, name) {
+        $("#plotter").empty();
         var timeArr = []
         var waterArr = []
         var errArr = []
@@ -828,6 +830,9 @@ for (var i = 0; i < btns.length; i++) {
                 shared: true,
             }
         });
+
+
+        $("#plotter").removeClass('hidden');
     };
     generate_forecast = function (data, lat, lon, name) {
 
@@ -974,22 +979,49 @@ for (var i = 0; i < btns.length; i++) {
                 map.getLayers().item(3).setVisible(false);
             }
         });
-             document.getElementById("search_ponds_list").style.maxHeight = document.getElementById("search_ponds_list").scrollHeight + "px";
+        document.getElementById("search_ponds_list").style.maxHeight = (window.innerHeight - 200) + "px";
 
         var coll = document.getElementsByClassName("collapsible");
         var i;
 
         for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("display_list");
-            var content = this.nextElementSibling;
+            coll[i].addEventListener("click", function () {
+                // this.classList.toggle("display_list");
 
-            if (content.style.maxHeight){
-              content.style.maxHeight = null;
-            } else {
-              content.style.maxHeight = content.scrollHeight + "px";
-            }
-          });
+                if (this.id === "first_list") {
+                    var content =document.getElementById("second_list").nextElementSibling;
+                    var content1 = document.getElementById("first_list").nextElementSibling;
+
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+                        if (content1.style.maxHeight) {
+                        content1.style.maxHeight = null;
+                    } else {
+                        content1.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+
+                } else {
+                    var content2 =document.getElementById("second_list").nextElementSibling;
+                    var content3 = document.getElementById("first_list").nextElementSibling;
+
+                    if (content2.style.maxHeight) {
+                        content2.style.maxHeight = null;
+                    } else {
+                        content2.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+                       if (content3.style.maxHeight) {
+                        content3.style.maxHeight = null;
+                    } else {
+                        content3.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+
+                }
+
+
+            });
         }
         $('#select_mndwi_layer').change(function () {
             // this will contain a reference to the checkbox

@@ -16,9 +16,10 @@
 /*#inner-app-content .intro_message {*/
 /*    margin-bottom: 0;*/
 /*}*/
-html{
+html {
     height: 100%;
 }
+
 .map-view-legend {
     bottom: 5px;
     /*right: 20px;*/
@@ -26,13 +27,14 @@ html{
     max-height: 90%;
     overflow-y: auto;
     margin: 5px;
-    color:white;
-    background: rgba(0,60,136,.8);
+    color: white;
+    background: rgba(0, 60, 136, .8);
     border: 1px #ddd solid;
     z-index: 999;
 }
+
 .map-view-legend:hover {
-  background: rgba(0,60,136,.5)
+    background: rgba(0, 60, 136, .5)
 }
 
 .gee-attr {
@@ -40,32 +42,35 @@ html{
     top: 7px;
     right: 5px;
     width: 275px;
-    height:26px;
+    height: 26px;
     margin: 3px;
-    color:white;
-    background: rgba(0,60,136,.8);
+    color: white;
+    background: rgba(0, 60, 136, .8);
     border: 1px #ddd solid;
     z-index: 999;
 }
+
 .gee-attr:hover {
-  background: rgba(0,60,136,.5)
+    background: rgba(0, 60, 136, .5)
 }
 
 .zoom-attr {
     /*top:20px;*/
     /*right: 40%;*/
     width: 275px;
-    height:35px;
+    height: 35px;
     margin: 3px;
-    color:black;
+    color: black;
     border: 1px #ddd solid;
     z-index: 999;
-        position: absolute;
-bottom:   150px;
+    position: absolute;
+    bottom: 150px;
 }
+
 .zoom-attr:hover {
-  background: rgba(0,60,136,.5)
+    background: rgba(0, 60, 136, .5)
 }
+
 /*.flex-container-row {*/
 /*    display: flex;*/
 /*    flex-flow: row wrap;*/
@@ -111,239 +116,263 @@ bottom:   150px;
 /*    z-index: 1;*/
 /*}*/
 
-#inner-app-content{
+#inner-app-content {
     margin-left: 300px;
     padding: 0px;
 }
 
 #app-content-wrapper #app-content #app-navigation {
-    left:0px;
+    left: 0px;
     background-color: #abbfce;
 }
 
-    #alert-box {
-        width:70%;
-        margin-left:15%;
-        margin-top:1%;
-        position:absolute;
-    }
-
-    .alert-info{
-        margin: 0 15px 0 0;
-    }
-
-    #app-content-wrapper #app-content.show-app-content {
-        height: 100%;
-    }
-
-#myInput{
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 7px;
-  border: 1px solid #ddd;
-
-/*margin-top:20px;*/
+#alert-box {
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 1%;
+    position: absolute;
 }
+
+.alert-info {
+    margin: 0 15px 0 0;
+}
+
+#app-content-wrapper #app-content.show-app-content {
+    height: 100%;
+}
+
+#myInput {
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 7px;
+    border: 1px solid #ddd;
+
+    /*margin-top:20px;*/
+}
+
 #myUL {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-height:200px;
-overflow:scroll;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    height: 100%;
+    /*height: 60%;*/
 }
 
 #myUL li a {
-  border: 1px solid #ddd;
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6;
-  padding: 10px;
-  text-decoration: none;
-  font-size: 16px;
-  color: black;
-  display: block
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    display: block
 }
 
 #myUL li a:hover:not(.header) {
-  background-color: #eee;
+    background-color: #eee;
 }
-#app-content-wrapper #app-content #app-navigation .nav li a{
- font-size: 16px;
-  color: black;
+
+#app-content-wrapper #app-content #app-navigation .nav li a {
+    font-size: 16px;
+    color: black;
 }
-#menulayers{
-position: relative;
+
+#menulayers {
+    position: relative;
     width: inherit;
+    height: calc(100% - 350px);
+
     /*padding-top: 30px;*/
 }
+
 #menulayers > ul {
-list-style-type: none;
+    list-style-type: none;
     padding: 0px;
     font-size: 16px;
     color: black;
     width: 350px;
-    max-height: 20vh;
+    max-height: 100%;
     text-indent: 5px;
     overflow-x: hidden;
     overflow-y: scroll;
     margin: 0;
 }
+
 #menulayers > ul > li {
-display: -webkit-inline-flex;
-    ;
+    display: -webkit-inline-flex;;
     margin-left: 5px;
 }
+
 #menulayers > ul > li > div {
-width: 260px;
+    width: 260px;
 }
-#map{
-height:calc(100vh - 70px);
-width:100%;
+
+#map {
+    height: calc(100vh - 70px);
+    width: 100%;
     /*position: relative;*/
 }
-.alert-info
-{
+
+.alert-info {
     position: absolute;
     z-index: 2;
     width: calc(100% - 350px);
 }
+
 #app-content-wrapper #app-content {
-padding-bottom:0px;
+    padding-bottom: 0px;
 }
+
 .ol-attribution {
-margin-right:20px;
+    margin-right: 20px;
 }
 
 
-#icon_img{
-    width:40px;
+#icon_img {
+    width: 40px;
 }
-#wrapper{
+
+#wrapper {
     /*height: 100%;*/
 }
 
-#map-view-legend{
+#map-view-legend {
     width: 250px;
 }
+
 .ol-overviewmap {
     display: contents;
     z-index: 1000;
     height: 300px;
 }
-#overview_map{
-      /*margin: auto;*/
+
+#overview_map {
+    /*margin: auto;*/
     /*width: 50%;*/
     /*overflow-y: scroll;*/
-        height: 250px;
+    height: 200px;
     position: fixed;
     bottom: 20px;
 }
+
 .ol-overviewmap .ol-overviewmap-map {
-height: 250px;
+    height: 200px;
     width: 330px;
     margin: 10px;
 }
-#help_modal_id{
+
+#help_modal_id {
     max-width: 1000px;
 }
-.logo-image{
+
+.logo-image {
     height: 60px;
     padding: 10px;
 }
+
 .collapsible {
-  background-color:#2c3e50;
-  color: white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-        border-top: white 1px solid;
+    background-color: #2c3e50;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    border-top: white 1px solid;
 
 }
 
 .display_list, .collapsible:hover {
-  background-color: #2c3e50;
+    background-color: #2c3e50;
 }
 
 .collapsible:after {
-  content: '\002B';
-  color: white;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
 }
+
 .display_list:after {
-  content: "\2212";
+    content: "\2212";
 }
-.collapsible_content
-{
-  /*padding: 0 18px;*/
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
+
+.collapsible_content {
+    /*padding: 0 18px;*/
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
 }
 
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 input:checked + .slider {
-  background-color:#2c3e50;
+    background-color: #2c3e50;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196F3;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+    border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
+
+}
+
+#wrapper{
+    height: calc(100% - 70px);
 }

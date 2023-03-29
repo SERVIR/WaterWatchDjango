@@ -21,20 +21,18 @@ from WaterWatchDjango import settings
 from waterwatch import ajax_controllers, api, controllers
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-path('get-ponds-list/', ajax_controllers.getPondsList,name="get-ponds-list"),
-path('timeseries/', ajax_controllers.timeseries,name="timeseries"),
-path('forecast/', ajax_controllers.forecast,name="forecast"),
-path('mndwi/', ajax_controllers.mndwi,name="mndwi"),
-path('api/getPonds/', api.api_get_ponds,name="getPonds"),
-path('api/getTimeseries/',api.api_get_timeseries,name="getTimeseries"),
+                  path('admin/', admin.site.urls),
+                  path('get-ponds-list/', ajax_controllers.getPondsList, name="get-ponds-list"),
+                  path('timeseries/', ajax_controllers.timeseries, name="timeseries"),
+                  path('forecast/', ajax_controllers.forecast, name="forecast"),
+                  path('mndwi/', ajax_controllers.mndwi, name="mndwi"),
+                  path('api/getPonds/', api.api_get_ponds, name="getPonds"),
+                  path('api/getTimeseries/', api.api_get_timeseries, name="getTimeseries"),
 
-path('details/',ajax_controllers.details,name="details"),
-path('coucheVillages/',ajax_controllers.coucheVillages,name="coucheVillages"),
+                  path('details/', ajax_controllers.details, name="details"),
+                  path('coucheVillages/', ajax_controllers.coucheVillages, name="coucheVillages"),
 
+                  path('get-ponds-url/', ajax_controllers.getPondsUrl, name="get-ponds-url"),
 
-path('get-ponds-url/', ajax_controllers.getPondsUrl,name="get-ponds-url"),
-
-path('', controllers.home,name="home"),
-]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+                  path('', controllers.home, name="home"),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,53 +1,51 @@
-import ee
+import datetime
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .utilities import *
-import json
-from django.http import JsonResponse
-import datetime
-from django.views.decorators.csrf import csrf_exempt
+
+
 @csrf_exempt
 def getPondsUrl(request):
     print("from ponds url")
     return_obj = {}
 
-
     if request.method == 'POST':
 
         try:
-            return_obj["url"]= initLayers()
+            return_obj["url"] = initLayers()
             print(return_obj)
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Error Processing Request. Error: " + str(e)
     return JsonResponse(return_obj)
+
 
 @csrf_exempt
 def getPondsList(request):
-
     return_obj = {}
-    centers=[]
-    names=[]
-
+    centers = []
+    names = []
 
     if request.method == 'POST':
 
         try:
-            names,centers= pondsList()
-            return_obj["centers"]=centers
-            return_obj["names"]=names
+            names, centers = pondsList()
+            return_obj["centers"] = centers
+            return_obj["names"] = names
 
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Error Processing Request. Error: " + str(e)
     return JsonResponse(return_obj)
+
 
 @csrf_exempt
 def timeseries(request):
-
     return_obj = {}
-
 
     if request.method == 'POST':
 
@@ -56,19 +54,19 @@ def timeseries(request):
         lon = info.get('lon')
 
         try:
-            ts_vals,coordinates,name = checkFeature(lon,lat)
+            ts_vals, coordinates, name = checkFeature(lon, lat)
             return_obj["values"] = ts_vals
             return_obj["coordinates"] = coordinates
             return_obj["name"] = name
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Error Processing Request. Error: " + str(e)
     return JsonResponse(return_obj)
+
 
 @csrf_exempt
 def forecast(request):
-
     return_obj = {}
     if request.method == 'POST':
         info = request.POST
@@ -76,16 +74,17 @@ def forecast(request):
         lon = info.get('lon')
     try:
 
-        ts_vals,coordinates,name = forecastFeature(lon,lat)
+        ts_vals, coordinates, name = forecastFeature(lon, lat)
         return_obj["values"] = ts_vals
         print(return_obj["values"])
-        return_obj["coordinates"] =coordinates
-        print( return_obj["coordinates"] )
+        return_obj["coordinates"] = coordinates
+        print(return_obj["coordinates"])
         return_obj["name"] = name
         return_obj["success"] = "success"
     except Exception as e:
-        return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+        return_obj["error"] = "Error Processing Request. Error: " + str(e)
     return JsonResponse((return_obj))
+
 
 @csrf_exempt
 def mndwi(request):
@@ -101,7 +100,7 @@ def mndwi(request):
         lon = info.get('lon')
 
         try:
-            true_img,mndwi_img,properties = getMNDWI(lon,lat,x_val,y_val)
+            true_img, mndwi_img, properties = getMNDWI(lon, lat, x_val, y_val)
             return_obj['water_mapurl'] = mndwi_img['tile_fetcher'].url_format
             return_obj['true_mapurl'] = true_img['tile_fetcher'].url_format
             return_obj["date"] = clicked_date
@@ -109,13 +108,13 @@ def mndwi(request):
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Error Processing Request. Error: " + str(e)
 
     return JsonResponse(return_obj)
 
+
 @csrf_exempt
 def details(request):
-
     return_obj = {}
 
     if request.method == 'POST':
@@ -124,10 +123,10 @@ def details(request):
         lon = info.get('lon')
 
         try:
-            ponds = filterPond(lon,lat)
-            region = filterRegion(lon,lat)
-            commune = filterCommune(lon,lat)
-            arrondissement = filterArrondissement(lon,lat)
+            ponds = filterPond(lon, lat)
+            region = filterRegion(lon, lat)
+            commune = filterCommune(lon, lat)
+            arrondissement = filterArrondissement(lon, lat)
             namePond = ponds.getInfo()['features'][0]['properties']['Nom']
             if len(namePond) < 2:
                 namePond = 'Unnamed Pond'
@@ -147,7 +146,7 @@ def details(request):
             return_obj["nameArrondissement"] = nameArrondissement
             return_obj["success"] = "success"
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Error Processing Request. Error: " + str(e)
         print("processing complete...")
 
     return JsonResponse(return_obj)
@@ -162,5 +161,5 @@ def coucheVillages(request):
             return_obj["village"] = village
             return_obj["success"] = "success"
         except Exception as e:
-            return_obj["error"] = _("Error Processing Request. Error: ")+ str(e)
+            return_obj["error"] = _("Error Processing Request. Error: ") + str(e)
     return JsonResponse(return_obj)

@@ -1,4 +1,4 @@
-$(function(){
+$(function () {
     $('#app-content-wrapper').removeClass('show-nav');
     $(".toggle-nav").removeClass('toggle-nav');
     $("#inner-app-content").addClass("row");
@@ -28,9 +28,9 @@ function csrfSafeMethod(method) {
 }
 
 //add csrf token to appropriate ajax requests
-$(function() {
+$(function () {
     $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
             }
@@ -41,72 +41,74 @@ $(function() {
 function addErrorMessage(error, div_id) {
     var div_id_string = '#message';
     if (typeof div_id != 'undefined') {
-        div_id_string = '#'+div_id;
+        div_id_string = '#' + div_id;
     }
     $(div_id_string).html(
-      '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-      '<span class="sr-only">Error:</span> ' + error
+        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+        '<span class="sr-only">Error:</span> ' + error
     )
-    .removeClass('hidden')
-    .removeClass('alert-success')
-    .removeClass('alert-info')
-    .removeClass('alert-warning')
-    .addClass('alert')
-    .addClass('alert-danger');
+        .removeClass('hidden')
+        .removeClass('alert-success')
+        .removeClass('alert-info')
+        .removeClass('alert-warning')
+        .addClass('alert')
+        .addClass('alert-danger');
 
 }
+
 //Add success message when stuff gets done successfully
 function addSuccessMessage(message, div_id) {
     var div_id_string = '#message';
     if (typeof div_id != 'undefined') {
-        div_id_string = '#'+div_id;
+        div_id_string = '#' + div_id;
     }
     $(div_id_string).html(
-      '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>' +
-      '<span class="sr-only">Sucess:</span> ' + message
+        '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>' +
+        '<span class="sr-only">Sucess:</span> ' + message
     ).removeClass('hidden')
-    .removeClass('alert-danger')
-    .removeClass('alert-info')
-    .removeClass('alert-warning')
-    .addClass('alert')
-    .addClass('alert-success');
+        .removeClass('alert-danger')
+        .removeClass('alert-info')
+        .removeClass('alert-warning')
+        .addClass('alert')
+        .addClass('alert-success');
 }
 
 //Show the error message if they messed up
 function appendErrorMessage(message, div_id, message_div_id) {
     var div_id_string = '';
     if (typeof div_id != 'undefined') {
-        div_id_string = 'id = "'+div_id+'"';
+        div_id_string = 'id = "' + div_id + '"';
     }
     var message_div_id_string = '#message';
     if (typeof message_div_id != 'undefined') {
-        message_div_id_string = '#'+message_div_id;
+        message_div_id_string = '#' + message_div_id;
     }
-    $('#'+div_id).remove();
+    $('#' + div_id).remove();
     $(message_div_id_string).append(
-      '<div '+ div_id_string +' class="alert alert-danger alert-dissmissible" role="alert">' +
-      '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-      '<span aria-hidden="true">&times;</span></button>' +
-      '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>' +
-      '<span class="sr-only">Error:</span> ' + message + '</div>'
+        '<div ' + div_id_string + ' class="alert alert-danger alert-dissmissible" role="alert">' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span></button>' +
+        '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>' +
+        '<span class="sr-only">Error:</span> ' + message + '</div>'
     )
-    .removeClass('hidden');
+        .removeClass('hidden');
 }
+
 function addWarningMessage(error, div_id) {
     var div_id_string = '#message';
     if (typeof div_id != 'undefined') {
-        div_id_string = '#'+div_id;
+        div_id_string = '#' + div_id;
     }
     $(div_id_string).html(
-      '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-      '<span class="sr-only">Warning:</span> ' + error
+        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+        '<span class="sr-only">Warning:</span> ' + error
     )
-    .removeClass('hidden')
-    .removeClass('alert-success')
-    .removeClass('alert-info')
-    .removeClass('alert-danger')
-    .addClass('alert')
-    .addClass('alert-warning');
+        .removeClass('hidden')
+        .removeClass('alert-success')
+        .removeClass('alert-info')
+        .removeClass('alert-danger')
+        .addClass('alert')
+        .addClass('alert-warning');
 
 }
 
@@ -114,14 +116,14 @@ function addWarningMessage(error, div_id) {
 function appendSuccessMessage(message, div_id) {
     var div_id_string = '';
     if (typeof div_id != 'undefined') {
-        div_id_string = 'id = "'+div_id+'"';
+        div_id_string = 'id = "' + div_id + '"';
     }
     $('#message').append(
-      '<div '+ div_id_string +' class="alert alert-success" role="alert">' +
-      '<br><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>' +
-      '<span class="sr-only">Sucess:</span> ' + message + '</div>'
+        '<div ' + div_id_string + ' class="alert alert-success" role="alert">' +
+        '<br><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>' +
+        '<span class="sr-only">Sucess:</span> ' + message + '</div>'
     )
-    .removeClass('hidden');
+        .removeClass('hidden');
 }
 
 //send data to database with error messages
@@ -137,22 +139,23 @@ function ajax_update_database(ajax_url, ajax_data) {
         dataType: "json",
         data: ajax_data
     });
-    xhr.done(function(data) {
-        if("success" in data) {
+    xhr.done(function (data) {
+        if ("success" in data) {
             // console.log("success");
         } else {
             console.log(ajax_url);
             console.log(xhr.responseText);
         }
     })
-    .fail(function(xhr, status, error) {
-        console.log(xhr.responseText);
-    });
+        .fail(function (xhr, status, error) {
+            console.log(xhr.responseText);
+        });
 
     return xhr;
 }
+
 //send data to database but follow this if you have files assosciated with it.
-function ajax_update_database_with_file(ajax_url, ajax_data,div_id) {
+function ajax_update_database_with_file(ajax_url, ajax_data, div_id) {
     //backslash at end of url is required
     if (ajax_url.substr(-1) !== "/") {
         ajax_url = ajax_url.concat("/");
@@ -167,30 +170,30 @@ function ajax_update_database_with_file(ajax_url, ajax_data,div_id) {
         processData: false, // Don't process the files
         contentType: false // Set content type to false as jQuery will tell the server its a query string request
     });
-    xhr.done(function(data) {
-        if("success" in data){
-            addSuccessMessage(data['success'],div_id);
-        }else{
-            appendErrorMessage(data['error'],div_id);
+    xhr.done(function (data) {
+        if ("success" in data) {
+            addSuccessMessage(data['success'], div_id);
+        } else {
+            appendErrorMessage(data['error'], div_id);
         }
     })
-    .fail(function(xhr, status, error) {
+        .fail(function (xhr, status, error) {
 
-        console.log(xhr.responseText);
+            console.log(xhr.responseText);
 
-    });
+        });
     return xhr;
 }
 
 //form submission check function
 function checkTableCellInputWithError(input, safe_to_submit, error_msg) {
     var data_value = input.text();
-    if(data_value == "") {
+    if (data_value == "") {
         data_value = input.val();
     }
     var parent = input.parent();
 
-    if(data_value) {
+    if (data_value) {
         if (safe_to_submit.val) {
             parent.removeClass('danger');
         }
@@ -218,19 +221,19 @@ function deleteRowData(submit_button, data, div_id) {
         var submit_button_html = submit_button.html();
         submit_button.text('Deleting ...');
 
-        var xhr = ajax_update_database("delete",data);
-        xhr.done(function(data) {
+        var xhr = ajax_update_database("delete", data);
+        xhr.done(function (data) {
             if ('success' in data) {
                 parent_row.remove();
                 addSuccessMessage(data['success'], div_id);
             }
         })
-        .fail(function(xhr, status, error) {
-            addErrorMessage(error, div_id);
-        })
-        .always(function(){
-            submit_button.html(submit_button_html);
-        });
+            .fail(function (xhr, status, error) {
+                addErrorMessage(error, div_id);
+            })
+            .always(function () {
+                submit_button.html(submit_button_html);
+            });
         return xhr;
     }
     return null;
@@ -238,13 +241,13 @@ function deleteRowData(submit_button, data, div_id) {
 
 //submit row data
 function submitRowData(submit_button, data, safe_to_submit) {
-    if(safe_to_submit.val) {
+    if (safe_to_submit.val) {
         //give user information
         addInfoMessage("Submitting Data. Please Wait.");
         var submit_button_html = submit_button.html();
         submit_button.text('Submitting ...');
-        var xhr = ajax_update_database("submit",data);
-        xhr.always(function(){
+        var xhr = ajax_update_database("submit", data);
+        xhr.always(function () {
             submit_button.html(submit_button_html);
         });
         return xhr;
@@ -254,20 +257,21 @@ function submitRowData(submit_button, data, safe_to_submit) {
         return null;
     }
 }
+
 function addInfoMessage(message, div_id) {
     var div_id_string = '#message';
     if (typeof div_id != 'undefined') {
-        div_id_string = '#'+div_id;
+        div_id_string = '#' + div_id;
     }
     $(div_id_string).html(
-      '<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>' +
-      '<span class="sr-only">Info:</span> ' + message
+        '<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>' +
+        '<span class="sr-only">Info:</span> ' + message
     )
-    .removeClass('hidden')
-    .removeClass('alert-success')
-    .removeClass('alert-danger')
-    .removeClass('alert-warning')
-    .addClass('alert')
-    .addClass('alert-info');
+        .removeClass('hidden')
+        .removeClass('alert-success')
+        .removeClass('alert-danger')
+        .removeClass('alert-warning')
+        .addClass('alert')
+        .addClass('alert-info');
 
 }

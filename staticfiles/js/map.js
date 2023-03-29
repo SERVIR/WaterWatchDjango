@@ -10,7 +10,7 @@
  *                      LIBRARY WRAPPER
  *****************************************************************************/
 console.log("heee")
-var LIBRARY_OBJECT = (function() {
+var LIBRARY_OBJECT = (function () {
     // Wrap the library in a package function
     "use strict"; // And enable strict mode for this library
 
@@ -31,7 +31,7 @@ var LIBRARY_OBJECT = (function() {
         water_source,
         water_layer,
         true_source,
-        true_layer,    mndwi_mapid,
+        true_layer, mndwi_mapid,
         mndwi_token;
 
 
@@ -160,7 +160,7 @@ var LIBRARY_OBJECT = (function() {
         //ponds_mapid = $layers_element.attr('data-ponds-mapid');
         //ponds_token = $layers_element.attr('data-ponds-token');
         $chartModal = $("#chart-modal");
-            mndwi_mapid = $layers_element.attr('data-mndwi-mapid');
+        mndwi_mapid = $layers_element.attr('data-mndwi-mapid');
         mndwi_token = $layers_element.attr('data-mndwi-token');
     };
 
@@ -378,7 +378,7 @@ var LIBRARY_OBJECT = (function() {
 
         var ponds_layer = new ol.layer.Tile({});
 
-console.log(localStorage['ponds_url'])
+        console.log(localStorage['ponds_url'])
         if (localStorage['ponds_url']) {
             var ponds_url = JSON.parse(localStorage['ponds_url']);
 
@@ -433,17 +433,17 @@ console.log(localStorage['ponds_url'])
             source: true_source
             // url:""
         });
- var mndwi_layer = new ol.layer.Tile({
+        var mndwi_layer = new ol.layer.Tile({
             source: new ol.source.XYZ({
                 url: mndwi_mapid
-                    // "https://earthengine.googleapis.com/map/"+mndwi_mapid+"/{z}/{x}/{y}?token="+mndwi_token
+                // "https://earthengine.googleapis.com/map/"+mndwi_mapid+"/{z}/{x}/{y}?token="+mndwi_token
             }),
             visible: false,
-            name:'mndwi_layer'
+            name: 'mndwi_layer'
         });
 
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
-        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel,mndwi_layer];
+        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer];
         map = new ol.Map({
             target: 'map',
             layers: layers,

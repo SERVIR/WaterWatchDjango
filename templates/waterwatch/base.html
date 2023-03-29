@@ -5,104 +5,136 @@
 
 
 {% block app_navigation_items %}
-    <button class="collapsible display_list">Search for ponds</button>
+    <button id="first_list" class="collapsible display_list">Search for ponds</button>
 
-<div id="search_ponds_list" class="collapsible_content" style="width: inherit">
+    <div id="search_ponds_list" class="collapsible_content" style="width: inherit;height: 60%;">
 
-  <input id="myInput" type="text" name="myCountry" placeholder="Search for ponds">
+        <input id="myInput" type="text" name="myCountry" placeholder="Search for ponds">
 
-<ul id="myUL">
-	</ul>
-</div>
-
-
+        <ul id="myUL">
+        </ul>
+    </div>
 
 
-    <button class="collapsible">Display layers</button>
 
-<div id="menulayers" class="collapsible_content checkbox">
-	<h5 class="text-dark pl-1" style="
+
+    <button id="second_list" class="collapsible">Display layers</button>
+
+    <div id="menulayers" class="collapsible_content checkbox">
+        <h5 class="text-dark pl-1" style="
     border-bottom: gray 1px dotted;
     width: 350px;padding-top: 5px;padding-bottom: 5px">{% trans "Couches" %}</h5>
-	<ul>
-       <li class="ml-0"> <label class="switch">
-  <input type="checkbox"  id="ponds_layer" name="ponds_layer" checked>
-  <span class="slider round"></span>
-       </label><div class="pl-2">Mares</div></li>
-         <li> <label class="switch">
-  <input type="checkbox" id="select_mndwi_layer" name="mndwi_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">MNDWI</div></li>
-          <li> <label class="switch">
-  <input type="checkbox" id="select_region_layer" name="region_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">Region</div></li>
-           <li> <label class="switch">
-  <input type="checkbox" id="select_departement_layer" name="departement_layer" >
-  <span class="slider round"></span>
-         </label><div class="pl-2">Depart.</div></li>
-          <li> <label class="switch">
-  <input type="checkbox" id="select_commune_layer" name="commune_layer" >
-  <span class="slider round"></span>
-         </label><div class="pl-2">Commune</div></li>
-           <li> <label class="switch">
-  <input type="checkbox" id="select_village_layer" name="village_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">Village</div></li>
-                   <li> <label class="switch">
-  <input type="checkbox" id="select_couloir_de_transhumance_layer" name="couloir_de_transhumance">
-  <span class="slider round"></span>
-         </label><div class="pl-2">Couloir de Transhumance</div></li>
-         <li> <label class="switch">
-  <input type="checkbox" id="select_Axe_de_transhumance_layer" name="Axe_de_transhumance">
-  <span class="slider round"></span>
-         </label><div class="pl-2">Axe de Transhumance</div></li>
-                <li><h6 class="text-dark pl-2" style="border-top: gray 1px dotted;
+        <ul>
+            <li class="ml-0"><label class="switch">
+                <input type="checkbox" id="ponds_layer" name="ponds_layer" checked>
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Mares</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_mndwi_layer" name="mndwi_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">MNDWI</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_region_layer" name="region_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Region</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_departement_layer" name="departement_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Depart.</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_commune_layer" name="commune_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Commune</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_village_layer" name="village_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Village</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_couloir_de_transhumance_layer" name="couloir_de_transhumance">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Couloir de Transhumance</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="select_Axe_de_transhumance_layer" name="Axe_de_transhumance">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">Axe de Transhumance</div>
+            </li>
+            <li><h6 class="text-dark pl-2" style="border-top: gray 1px dotted;
     border-bottom: gray 1px dotted;
     width: 350px;
     padding-top: 10px;
     padding-bottom: 10px;">Unites Pastorales</h6></li>
 
-              <li> <label class="switch">
-  <input type="checkbox" id="praps_layer" name="praps_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PRAPS (2015-En cours)</div></li>
-         <li> <label class="switch">
-  <input type="checkbox" id="pafae_layer" name="pafae_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PAFA-E (2014-En cours)</div></li>
-                 <li> <label class="switch">
-  <input type="checkbox" id="prodam_layer" name="prodam_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PRODAM (1998-2004/2004-2011/2011-En cours)</div></li>
-           <li> <label class="switch">
-  <input type="checkbox" id="padaer_layer" name="padaer_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PADAER (2014-2018)</div></li>
-        <li> <label class="switch">
-  <input type="checkbox" id="pasa_layer" name="pasa_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PASA (2014-2018)</div></li>
-           <li> <label class="switch">
-  <input type="checkbox" id="pdesoc_layer" name="pdesoc_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PDESOC (2011-2015)</div></li>
-           <li> <label class="switch">
-  <input type="checkbox" id="avsf_layer" name="avsf_layerl">
-  <span class="slider round"></span>
-         </label><div class="pl-2">AVSF (Depuis 2007)</div></li>
+            <li><label class="switch">
+                <input type="checkbox" id="praps_layer" name="praps_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PRAPS (2015-En cours)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="pafae_layer" name="pafae_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PAFA-E (2014-En cours)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="prodam_layer" name="prodam_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PRODAM (1998-2004/2004-2011/2011-En cours)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="padaer_layer" name="padaer_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PADAER (2014-2018)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="pasa_layer" name="pasa_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PASA (2014-2018)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="pdesoc_layer" name="pdesoc_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PDESOC (2011-2015)</div>
+            </li>
+            <li><label class="switch">
+                <input type="checkbox" id="avsf_layer" name="avsf_layerl">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">AVSF (Depuis 2007)</div>
+            </li>
 
-           <li> <label class="switch">
-  <input type="checkbox" id="papel_layer" name="papel_layer">
-  <span class="slider round"></span>
-         </label><div class="pl-2">PAPEL (1993-2002/2003-2007)</div></li>
+            <li><label class="switch">
+                <input type="checkbox" id="papel_layer" name="papel_layer">
+                <span class="slider round"></span>
+            </label>
+                <div class="pl-2">PAPEL (1993-2002/2003-2007)</div>
+            </li>
 
-	</ul>
+        </ul>
 
 
-</div>
+    </div>
 
-  <div id="overview_map" style="width: inherit">
+    <div id="overview_map" style="width: inherit">
 
     </div>
 
@@ -117,5 +149,5 @@
 
 
 {% block scripts %}
-  <script src="{% static 'waterwatch/js/main.js' %}" type="text/javascript"></script>
+    <script src="{% static 'waterwatch/js/main.js' %}" type="text/javascript"></script>
 {% endblock %}

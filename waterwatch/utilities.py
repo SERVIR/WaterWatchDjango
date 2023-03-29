@@ -1,14 +1,10 @@
-import ee
-from ee.ee_exception import EEException
-import requests
 import json
 import math
-import random
-import datetime, time
-import numpy as np
-from django.http import JsonResponse
-import json
+import time
 from pathlib import Path
+
+import ee
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 f = open(str(BASE_DIR) + '/data.json', )
 data = json.load(f)
@@ -18,6 +14,7 @@ try:
     ee.Initialize(credentials)
 except:
     ee.Initialize()
+
 
 def addArea(feature):
     return feature.set('area', feature.area());
@@ -384,7 +381,6 @@ class fClass(object):
         self.Vo = (self.So.multiply(self.h0)).divide(self.alpha.add(1))
         vInit = ee.Image(self.Vo.multiply(hInit.divide(self.h0).pow(self.alpha.add(1))))
 
-
         precipData = gfs.filterDate(modelDate, modelDate.advance(1, 'hour')) \
             .filterMetadata('forecast_hours', 'greater_than', 0) \
             .select(['total_precipitation_surface'], ['precip']) \
@@ -418,24 +414,24 @@ class fClass(object):
         pastAr = past.select('area')
         pastHt = past.select('height')
         pastVl = past.select('vol')
-        nowPr = img.select('precip') #.clip(studyArea)
+        nowPr = img.select('precip')  # .clip(studyArea)
         date = ee.Date(img.get('system:time_start'))
 
         # change in volume model
-        deltaIt = pastIt.add(pastPr).multiply(self.k) #Eq 5 Soti et al
-        Gt = self.Gmax.subtract(deltaIt) #Eq 4
-        Gt = Gt.where(Gt.lt(0), 0) 
-        Pe = nowPr.subtract(Gt) #eq 3
+        deltaIt = pastIt.add(pastPr).multiply(self.k)  # Eq 5 Soti et al
+        Gt = self.Gmax.subtract(deltaIt)  # Eq 4
+        Gt = Gt.where(Gt.lt(0), 0)
+        Pe = nowPr.subtract(Gt)  # eq 3
         Pe = Pe.where(Pe.lt(0), 0)
-        Qin = self.Kr.multiply(Pe).multiply(self.Ac) #Eq 2
-        dV = nowPr.multiply(self.pArea).add(Qin).subtract(self.L.multiply(pastAr)) #Eq 1
+        Qin = self.Kr.multiply(Pe).multiply(self.Ac)  # Eq 2
+        dV = nowPr.multiply(self.pArea).add(Qin).subtract(self.L.multiply(pastAr))  # Eq 1
         # convert dV to actual volume
         volume = pastVl.add(dV).rename(['vol'])
         volume = volume.where(volume.lt(0), 0)
 
         # empirical model for volume to area/height relationship
         ht = self.h0.multiply(volume.divide(self.Vo).pow(ee.Image(1).divide(self.alpha.add(1)))) \
-             .rename(['height'])
+            .rename(['height'])
         ht = ht.where(ht.lt(0), 0)
         area = self.So.multiply(ht.divide(self.h0).pow(self.alpha)).rename(['area'])
         area = area.where(area.lt(0), 0)  # contrain area to real values
@@ -482,12 +478,11 @@ st2 = ee.ImageCollection('COPERNICUS/S2')
 ponds = ee.FeatureCollection('projects/servir-wa/services/ephemeral_water_ferlo/ferlo_ponds') \
     .map(addArea).filter(ee.Filter.gt("area", 10000))
 
-
 region = ee.FeatureCollection('users/satigebelal/region').map(addArea)
 commune = ee.FeatureCollection('users/satigebelal/commune').map(addArea)
 arrondissement = ee.FeatureCollection('users/satigebelal/arrondissement')
 countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
-area_senegal = ee.FeatureCollection(countries).filter(ee.Filter.eq('country_na','Senegal'));
+area_senegal = ee.FeatureCollection(countries).filter(ee.Filter.eq('country_na', 'Senegal'));
 village = ee.FeatureCollection('users/satigebelal/Village');
 today = time.strftime("%Y-%m-%d")
 precipScale = ee.Image(1).divide(ee.Image(1e3))
@@ -501,13 +496,15 @@ zScoreThresh = -0.8;
 shadowSumThresh = 0.35;
 cloudThresh = 10
 mergedCollection = ee.ImageCollection("projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds")
-#mndwiCollection = mergedCollection.map(calcWaterIndex)
+# mndwiCollection = mergedCollection.map(calcWaterIndex)
 palette = {'palette': 'yellow,green,gray'}
 
 
 def cliip(image):
     # Crop by table extension
     return image.clip(studyArea)
+
+
 def cliip1(image):
     # Crop by table extension
     return image.clip(area_senegal)
@@ -515,7 +512,7 @@ def cliip1(image):
 
 img = mergedCollection.map(cliip)
 # img = mergedCollection.median().clip(studyArea)
-#mndwiImg = mndwiCollection.map(cliip)
+# mndwiImg = mndwiCollection.map(cliip)
 waterCollection = ee.ImageCollection("projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds")
 # ee.Image(waterCollection.select('water').mosaic())
 palette = {'palette': 'yellow,green,gray'}
@@ -539,15 +536,18 @@ regionImgID = region.getMapId()
 arrondissementImgID = arrondissement.getMapId()
 communeImgID = commune.getMapId()
 villageImgID = village.getMapId()
-test=mergedCollection.select('mndwi_water').median().clip(area_senegal)
-params={'min':0.05,'max':-0.2,'palette':'#d3d3d3,#84adff,#9698d1,#0000cc'}
+test = mergedCollection.select('mndwi_water').median().clip(area_senegal)
+params = {'min': 0.05, 'max': -0.2, 'palette': '#d3d3d3,#84adff,#9698d1,#0000cc'}
 mndwiImg = test.getMapId(params)
 gfs = ee.ImageCollection('NOAA/GFS0P25')
 cfs = ee.ImageCollection('NOAA/CFSV2/FOR6H').select(['Precipitation_rate_surface_6_Hour_Average'], ['precip'])
 elv = ee.Image('USGS/SRTMGL1_003')
 demScale = elv.projection().nominalScale()
+
+
 def initMndwi():
     return mndwiImg['tile_fetcher'].url_format
+
 
 def initLayers():
     pondsImgID = Pimage.getMapId(visParams)
@@ -556,15 +556,15 @@ def initLayers():
 
 def pondsList():
     xx = ponds.getInfo()
-    names=[]
-    centers=[]
+    names = []
+    centers = []
     return_obj = {}
     for feature in xx['features']:
         if feature['properties']['Nom']:
-            name=feature['properties']['Nom']
-            if len(feature['geometry']['coordinates'][0][0])>2:
+            name = feature['properties']['Nom']
+            if len(feature['geometry']['coordinates'][0][0]) > 2:
                 # print(len(feature['geometry']['coordinates'][0][0]))
-                points= feature['geometry']['coordinates'][0][0]
+                points = feature['geometry']['coordinates'][0][0]
             else:
                 # print(len(feature['geometry']['coordinates'][0][0]))
                 points = feature['geometry']['coordinates'][0]
@@ -574,19 +574,28 @@ def pondsList():
             if name not in names:
                 names.append(str(name))
                 centers.append(centroid)
-    names, centers = (list(t) for t in zip(*sorted(zip( names,centers), reverse=False)))
+    names, centers = (list(t) for t in zip(*sorted(zip(names, centers), reverse=False)))
 
-    return names,centers
-    #return xx['features'] #np.unique([i['properties']['Nom'] for i in xx['features'] if i['properties']['Nom']]).tolist()
+    return names, centers
+    # return xx['features'] #np.unique([i['properties']['Nom'] for i in xx['features'] if i['properties']['Nom']]).tolist()
+
 
 def regionLayers():
     return region
+
+
 def communeLayers():
     return commune
+
+
 def arrondissementLayers():
     return arrondissement
+
+
 def villageLayers():
     return village
+
+
 def filterPond(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
     sampledPoint = ee.Feature(ponds.filterBounds(point).first())
@@ -604,6 +613,7 @@ def checkFeature(lon, lat):
         name = ' Unnamed Pond'
     coordinates = selPond.getInfo()['features'][0]['geometry']['coordinates']
     return ts_values, coordinates, name
+
 
 def checkVillage():
     coordinates = village.getInfo()['features']
@@ -627,7 +637,6 @@ def forecastFeature(lon, lat):
     print(reductionScale.getInfo())
     print("from fcast2")
 
-
     pondFraction = ee.Number(
         featureImg.reduceRegion(ee.Reducer.mean(), selPond.geometry(), reductionScale).get("mndwi_water"))
     print("from fcast3")
@@ -650,7 +659,8 @@ def getMNDWI(lon, lat, xValue, yValue):
 
     return mndwi_img
 
-def detailsFeature(lon,lat):
+
+def detailsFeature(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
 
     sampledPoint = ee.Feature(ponds.filterBounds(point).first())
@@ -670,6 +680,7 @@ def detailsFeature(lon,lat):
 
     return selPond, selRegion, selCommune, selArrondissement
 
+
 def filterRegion(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
     sampledPoint = ee.Feature(region.filterBounds(point).first())
@@ -679,6 +690,7 @@ def filterRegion(lon, lat):
     selRegion = region.filter(ee.Filter.eq('id_reg', computedValue))
 
     return selRegion
+
 
 def filterCommune(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
@@ -690,6 +702,7 @@ def filterCommune(lon, lat):
 
     return selCommune
 
+
 def filterArrondissement(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
     sampledPoint = ee.Feature(arrondissement.filterBounds(point).first())
@@ -700,8 +713,8 @@ def filterArrondissement(lon, lat):
 
     return selArrondissement
 
-def filterVillage(lon, lat):
 
+def filterVillage(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
     sampledPoint = ee.Feature(village.filterBounds(point).first())
 

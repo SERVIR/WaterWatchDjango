@@ -17,97 +17,103 @@
     <!-- Custom styles-->
     <link href="{% static '/css/basic.css' %}" rel="stylesheet">
 
-        <link href="{% static '/css/main.css' %}" rel="stylesheet">
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
 
 </head>
 <body id="page-top">
-          <div style="display: inline-flex;
+<div style="display: inline-flex;
     width: 100%;
     height: 70px;
     padding: 15px;
     background-color: #2c3e50;color: white">
-  <img id="icon_img" src="{% static "/images/logo_2.png" %}">
-<p class="h-100 m-auto h4" >Ferlo Ephemeral Water Body Monitoring Dashboard</p>
-<!--<div id="google_translate_element"></div><script type="text/javascript">-->
-<!--function googleTranslateElementInit() {-->
-<!--new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');-->
-<!--}-->
-<!--</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>&nbsp-->
+    <img id="icon_img" src="{% static "/images/logo_2.png" %}">
+    <p class="h-100 m-auto h4">Ferlo Ephemeral Water Body Monitoring Dashboard</p>
+    <!--<div id="google_translate_element"></div><script type="text/javascript">-->
+    <!--function googleTranslateElementInit() {-->
+    <!--new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');-->
+    <!--}-->
+    <!--</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>&nbsp-->
 
     <a type="button" class="pr-2 pt-1 text-decoration-none text-white" data-bs-toggle="modal"
-                        data-bs-target="#help-modal">About</a>
+       data-bs-target="#help-modal">About</a>
 
-            </div>
-    <div id="wrapper">
-        <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
+</div>
+<div id="wrapper">
+    <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
         <div class="modal-dialog" role="document" id=help_modal_id">
             <div class="modal-content">
                 <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
 
                     <p>Disclaimer:</p>
                     <p class="text-justify">SERVIR Program, NASA, USAID and SERVIR partner organizations
-                            make no express or implied warranty of this application as to the
-                            merchantability or fitness for any particular purpose.
-                            Neither the US Government nor its contractors shall be liable for
-                            special, consequential or incidental damages attributed to this application.</p>
+                        make no express or implied warranty of this application as to the
+                        merchantability or fitness for any particular purpose.
+                        Neither the US Government nor its contractors shall be liable for
+                        special, consequential or incidental damages attributed to this application.</p>
 
-                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of Use</a></p>
+                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of
+                        Use</a></p>
                 </div>
 
                 <div class="modal-footer justify-content-center">
                     <div align="center" id="logos">
-                        <a href="http://www.usaid.gov/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a>
-                     <a href="http://appliedsciences.nasa.gov/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a>
-                    <br>    <a href="http://www.cilss.bf/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/cilss.png"></a>
-                        <a href="http://www.rcmrd.org/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/rcmrd.png"></a>
-                      <a href="http://www.icimod.org/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/icimod.png"></a>
-                        <a href="http://www.adpc.net/" target="_blank"><img class="logo-image" src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/adpc.png"></a>
+                        <a href="http://www.usaid.gov/" target="_blank"><img class="logo-image"
+                                                                             src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a>
+                        <a href="http://appliedsciences.nasa.gov/" target="_blank"><img class="logo-image"
+                                                                                        src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a>
+                        <br> <a href="http://www.cilss.bf/" target="_blank"><img class="logo-image"
+                                                                                 src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/cilss.png"></a>
+                        <a href="http://www.rcmrd.org/" target="_blank"><img class="logo-image"
+                                                                             src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/rcmrd.png"></a>
+                        <a href="http://www.icimod.org/" target="_blank"><img class="logo-image"
+                                                                              src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/icimod.png"></a>
+                        <a href="http://www.adpc.net/" target="_blank"><img class="logo-image"
+                                                                            src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/adpc.png"></a>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
-    <div style="width: 350px">
+    <div style="width: 350px;">
         {% block app_navigation_items %}
         {% endblock app_navigation_items %}
     </div>
-        <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex flex-column">
 
-            <div id="content" style="color: white">
-  {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
+        <div id="content" style="color: white">
+            {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
 
 
-
-                <!-- Begin Page Content -->
-{#                <div class="container-fluid">#}
-                    <!-- Page Heading -->
-                    <div class="align-items-center justify-content-between">
-                    </div>
-                    <!-- Content Row -->
-{#                    <div class="row">#}
-
-                         {% block app_content %}
-        {% endblock  %}
-{#                    </div>#}
-
-                </div>
+            <!-- Begin Page Content -->
+            {#                <div class="container-fluid">#}
+            <!-- Page Heading -->
+            <div class="align-items-center justify-content-between">
             </div>
-            <!-- End of Main Content -->
-            <!-- Footer -->
+            <!-- Content Row -->
+            {#                    <div class="row">#}
 
-{#        </div>#}
-        <!-- End of Content Wrapper -->
+            {% block app_content %}
+            {% endblock %}
+            {#                    </div>#}
+
+        </div>
     </div>
-    <!-- End of Page Wrapper -->
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+    <!-- End of Main Content -->
+    <!-- Footer -->
+
+    {#        </div>#}
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 
 </body>
 </html>

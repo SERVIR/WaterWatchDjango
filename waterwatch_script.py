@@ -5,10 +5,11 @@
 # Outputs: New images added to the Earth Engine collection
 # Debugging: Please find the logs on the server for any errors encountered while running the script
 
-import ee
-import urllib.request
 import time
+import urllib.request
 from datetime import datetime, timedelta
+
+import ee
 
 # Initialize the Earth Engine module
 try:
