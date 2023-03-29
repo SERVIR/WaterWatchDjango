@@ -13,10 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-
+from WaterWatchDjango import settings
 from waterwatch import ajax_controllers, api, controllers
 
 urlpatterns = [
@@ -35,5 +36,5 @@ path('coucheVillages/',ajax_controllers.coucheVillages,name="coucheVillages"),
 path('get-ponds-url/', ajax_controllers.getPondsUrl,name="get-ponds-url"),
 
 path('', controllers.home,name="home"),
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-]
