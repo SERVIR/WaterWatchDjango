@@ -52,16 +52,16 @@ html{
 }
 
 .zoom-attr {
-    top:20px;
-    right: 5px;
+    /*top:20px;*/
+    /*right: 40%;*/
     width: 275px;
-    height:26px;
+    height:35px;
     margin: 3px;
     color:black;
-    background: rgba(0,60,136,.8);
     border: 1px #ddd solid;
     z-index: 999;
-    position:relative;
+        position: absolute;
+bottom:   150px;
 }
 .zoom-attr:hover {
   background: rgba(0,60,136,.5)
@@ -144,13 +144,13 @@ html{
   padding: 7px;
   border: 1px solid #ddd;
 
-margin-top:20px;
+/*margin-top:20px;*/
 }
 #myUL {
   list-style-type: none;
   padding: 0;
   margin: 0;
-height:300px;
+height:200px;
 overflow:scroll;
 }
 
@@ -174,16 +174,28 @@ overflow:scroll;
 }
 #menulayers{
 position: relative;
-    padding-top: 30px;
+    width: inherit;
+    /*padding-top: 30px;*/
 }
 #menulayers > ul {
-list-style-type:none;
-padding:0px;
-font-size:16px;
+list-style-type: none;
+    padding: 0px;
+    font-size: 16px;
     color: black;
+    width: 350px;
     max-height: 20vh;
-    text-indent: 10px;
-    overflow: auto;
+    text-indent: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0;
+}
+#menulayers > ul > li {
+display: -webkit-inline-flex;
+    ;
+    margin-left: 5px;
+}
+#menulayers > ul > li > div {
+width: 260px;
 }
 #map{
 height:calc(100vh - 70px);
@@ -202,16 +214,13 @@ padding-bottom:0px;
 .ol-attribution {
 margin-right:20px;
 }
-#zoom-attr{
-    position: relative;
 
-}
 
 #icon_img{
     width:40px;
 }
 #wrapper{
-    height: 100%;
+    /*height: 100%;*/
 }
 
 #map-view-legend{
@@ -225,13 +234,15 @@ margin-right:20px;
 #overview_map{
       /*margin: auto;*/
     /*width: 50%;*/
-    overflow-y: scroll;
-    height: 300px;
-    padding: 10px;
+    /*overflow-y: scroll;*/
+        height: 250px;
+    position: fixed;
+    bottom: 20px;
 }
 .ol-overviewmap .ol-overviewmap-map {
-    height: 300px;
-    width: 300px;
+height: 250px;
+    width: 330px;
+    margin: 10px;
 }
 #help_modal_id{
     max-width: 1000px;
@@ -239,4 +250,100 @@ margin-right:20px;
 .logo-image{
     height: 60px;
     padding: 10px;
+}
+.collapsible {
+  background-color:#2c3e50;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+        border-top: white 1px solid;
+
+}
+
+.display_list, .collapsible:hover {
+  background-color: #2c3e50;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+.display_list:after {
+  content: "\2212";
+}
+.collapsible_content
+{
+  /*padding: 0 18px;*/
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color:#2c3e50;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

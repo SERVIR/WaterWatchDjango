@@ -974,7 +974,23 @@ for (var i = 0; i < btns.length; i++) {
                 map.getLayers().item(3).setVisible(false);
             }
         });
+             document.getElementById("search_ponds_list").style.maxHeight = document.getElementById("search_ponds_list").scrollHeight + "px";
 
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("display_list");
+            var content = this.nextElementSibling;
+
+            if (content.style.maxHeight){
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            }
+          });
+        }
         $('#select_mndwi_layer').change(function () {
             // this will contain a reference to the checkbox
             if (this.checked) {
