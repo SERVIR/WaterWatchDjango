@@ -1023,8 +1023,8 @@ var LIBRARY_OBJECT = (function () {
             coll[i].addEventListener("click", function () {
 
                 if (this.id === "first_list") {
-                                      document.getElementById("first_list").classList.toggle("display_list");
-                                                          document.getElementById("second_list").classList.remove("display_list");
+                  document.getElementById("first_list").classList.toggle("display_list");
+                  document.getElementById("second_list").classList.toggle("display_list");
 
                     var content =document.getElementById("second_list").nextElementSibling;
                     var content1 = document.getElementById("first_list").nextElementSibling;
@@ -1041,7 +1041,7 @@ var LIBRARY_OBJECT = (function () {
                     }
 
                 } else {
-                                                          document.getElementById("first_list").classList.remove("display_list");
+                                                          document.getElementById("first_list").classList.toggle("display_list");
 
                                                           document.getElementById("second_list").classList.toggle("display_list");
 
