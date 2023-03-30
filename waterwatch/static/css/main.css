@@ -200,6 +200,7 @@ html {
     overflow-x: hidden;
     overflow-y: scroll;
     margin: 0;
+    padding-bottom: 10px;
 }
 
 #menulayers > ul > li {

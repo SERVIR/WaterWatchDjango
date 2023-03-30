@@ -119,6 +119,23 @@ var LIBRARY_OBJECT = (function () {
                 var a = document.createElement('a');
                 a.id = centers[i];
                 a.innerHTML = names[i];
+                // var markers = new ol.layer.Vector({
+                //   source: new ol.source.Vector(),
+                //   style: new ol.style.Style({
+                //     image: new ol.style.Icon({
+                //       anchor: [0.5, 1],
+                //       src: 'static/js/logo-70x70.png'
+                //     })
+                //   })
+                // });
+                // map.addLayer(markers);
+                // // console.log(centers[i]);
+                //
+                // var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([parseFloat(centers[i][0]), parseFloat(centers[i][1])])));
+                // marker.id=names[i];
+                //
+                // markers.getSource().addFeature(marker);
+
 
                 a.onclick = function () {
 
@@ -131,7 +148,7 @@ var LIBRARY_OBJECT = (function () {
                         center: ol.proj.transform([parseFloat(this.id.split(',')[0]), parseFloat(this.id.split(',')[1])], 'EPSG:4326', 'EPSG:3857'),
                         zoom: 16
                     });
-                }
+                };
                 li.appendChild(a);
 
                 document.getElementById("myUL").appendChild(li);
@@ -446,7 +463,6 @@ var LIBRARY_OBJECT = (function () {
         water_source = new ol.source.XYZ();
         water_layer = new ol.layer.Tile({
             source: water_source
-            // url:""
         });
 
         true_source = new ol.source.XYZ();
@@ -466,12 +482,22 @@ var LIBRARY_OBJECT = (function () {
 
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
         layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer];
+        var overviewMapControl = new ol.control.OverviewMap({
+            // see in overviewmap-custom.html to see the custom CSS used
+            className: 'ol-overviewmap ol-custom-overviewmap',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                }),ponds_layer
+            ],
+            collapseLabel: '\u00BB',
+            label: '\u00AB',
+            collapsed: false,
+            collapsible: false,
+            showToggle: false,
+        });
         map = new ol.Map({
-            controls: ol.control.defaults().extend([
-                new ol.control.OverviewMap({
-                    collapsible: false,
-                    showToggle: false,
-                })]),
+            controls: ol.control.defaults().extend([overviewMapControl]),
             target: 'map',
             layers: layers,
             view: new ol.View({
@@ -565,6 +591,13 @@ var LIBRARY_OBJECT = (function () {
 
 
         map.on("singleclick", function (evt) {
+               var feature = map.forEachFeatureAtPixel(evt.pixel,
+      function(feature) {
+        return feature;
+      });
+    if (feature === marker) {
+        alert('Marker clicked');
+    };
 
             var zoom = map.getView().getZoom();
             $chartModal.modal('show');
@@ -589,6 +622,7 @@ var LIBRARY_OBJECT = (function () {
             $loading.show();
             $("#forecast-plotter").empty();
             $loadingF.show();
+            console.log(proj_coords)
             var xhr = ajax_update_database('timeseries', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
             xhr.done(function (data) {
                 if ("success" in data) {
@@ -776,6 +810,7 @@ var LIBRARY_OBJECT = (function () {
                                         $('#info').removeClass('hidden');
                                         $("#layers_checkbox").addClass('hidden');
                                     }
+
                                 });
 
                             }
