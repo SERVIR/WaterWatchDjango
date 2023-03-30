@@ -591,13 +591,7 @@ var LIBRARY_OBJECT = (function () {
 
 
         map.on("singleclick", function (evt) {
-               var feature = map.forEachFeatureAtPixel(evt.pixel,
-      function(feature) {
-        return feature;
-      });
-    if (feature === marker) {
-        alert('Marker clicked');
-    };
+
 
             var zoom = map.getView().getZoom();
             $chartModal.modal('show');
