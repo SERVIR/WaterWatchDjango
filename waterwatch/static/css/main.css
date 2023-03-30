@@ -377,3 +377,6 @@ input:checked + .slider:before {
 #wrapper{
     height: calc(100% - 70px);
 }
+#info{
+    color: black;
+}

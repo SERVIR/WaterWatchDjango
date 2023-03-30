@@ -613,6 +613,7 @@ var LIBRARY_OBJECT = (function () {
             var mareSelect, buffered;
             var $elements;
             $("#plotter").empty();
+            $('.info').html('');
             $loading.show();
             $("#forecast-plotter").empty();
             $loadingF.show();
@@ -674,7 +675,7 @@ var LIBRARY_OBJECT = (function () {
                 } else {
                     $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
                     $('#info').removeClass('hidden');
-                    $loading.show();
+                     $loading.hide();
 
                 }
             });
@@ -700,7 +701,7 @@ var LIBRARY_OBJECT = (function () {
                 } else {
                     $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
                     $('#info').removeClass('hidden');
-                    $loadingF.addClass('hidden');
+                    $loadingF.hide();
 
                 }
             });
