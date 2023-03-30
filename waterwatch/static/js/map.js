@@ -119,22 +119,8 @@ var LIBRARY_OBJECT = (function () {
                 var a = document.createElement('a');
                 a.id = centers[i];
                 a.innerHTML = names[i];
-                // var markers = new ol.layer.Vector({
-                //   source: new ol.source.Vector(),
-                //   style: new ol.style.Style({
-                //     image: new ol.style.Icon({
-                //       anchor: [0.5, 1],
-                //       src: 'static/js/logo-70x70.png'
-                //     })
-                //   })
-                // });
-                // map.addLayer(markers);
-                // // console.log(centers[i]);
-                //
-                // var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([parseFloat(centers[i][0]), parseFloat(centers[i][1])])));
-                // marker.id=names[i];
-                //
-                // markers.getSource().addFeature(marker);
+
+
 
 
                 a.onclick = function () {
@@ -479,9 +465,15 @@ var LIBRARY_OBJECT = (function () {
             name: 'mndwi_layer'
         });
 
+  var sourceFeatures = new ol.source.Vector();
+var  layerFeatures = new ol.layer.Vector({source: sourceFeatures});
+
+
+
+
 
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
-        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer];
+        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer,layerFeatures];
         var overviewMapControl = new ol.control.OverviewMap({
             // see in overviewmap-custom.html to see the custom CSS used
             className: 'ol-overviewmap ol-custom-overviewmap',
@@ -505,7 +497,49 @@ var LIBRARY_OBJECT = (function () {
                 zoom: 10
             })
         });
-
+        map.getLayers().item(22).setVisible(true);
+                var style1 = [
+    new ol.style.Style({
+        image: new ol.style.Icon(({
+            scale: 0.7,
+            rotateWithView: false,
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            opacity: 1,
+            src: '//raw.githubusercontent.com/jonataswalker/map-utils/master/images/marker.png'
+        })),
+        zIndex: 5
+    }),
+    new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 5,
+            fill: new ol.style.Fill({
+                color: 'rgba(255,255,255,1)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0,0,0,1)'
+            })
+        })
+    })
+];
+                   ajax_update_database("get-ponds-list", {}).done(function (data) {
+        if ("success" in data) {
+            var j;
+            var obj = [];
+            var centers = data['centers'];
+            for (i = 0; i < centers.length; i++) {
+                var feature = new ol.Feature({
+                    type: 'click',
+                    desc: "ff",
+                    geometry: new ol.geom.Point(ol.proj.transform([parseFloat(centers[i][0]), parseFloat(centers[i][1])], 'EPSG:4326', 'EPSG:3857'))
+                });
+                feature.setStyle(style1);
+                sourceFeatures.addFeature(feature);
+            }
+        }
+    });
+                   console.log(sourceFeatures);
         var cc = document.getElementsByClassName('ol-overviewmap ol-unselectable ol-control ol-uncollapsible');
         document.getElementById('overview_map').appendChild(cc[0]);
 
@@ -584,20 +618,36 @@ var LIBRARY_OBJECT = (function () {
             } else {
                 base_map2.setVisible(false);
             }
-            // Object.keys(layersDict).forEach(function(key){
-            //     var source =  layersDict[key].getSource();
-            // });
+
         });
 
 
         map.on("singleclick", function (evt) {
 
+            var f = map.forEachFeatureAtPixel(
+                evt.pixel,
+                function (ft, layer) {
+                    return ft;
+                }
+            );
 
             var zoom = map.getView().getZoom();
             $chartModal.modal('show');
 
             var clickCoord = evt.coordinate;
-            var proj_coords = ol.proj.transform(clickCoord, 'EPSG:3857', 'EPSG:4326');
+            var proj_coords =[];
+            if (f && f.get('type') === 'click') {
+                var geometry = f.getGeometry();
+                var coord = geometry.getCoordinates();
+
+                proj_coords=ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+                console.log(proj_coords);
+
+            } else {
+
+                proj_coords = ol.proj.transform(clickCoord, 'EPSG:3857', 'EPSG:4326');
+                console.log(proj_coords);
+            }
             $("#current-lat").val(proj_coords[1]);
             $("#current-lon").val(proj_coords[0]);
             var $loading = $('#view-file-loading');
@@ -617,7 +667,6 @@ var LIBRARY_OBJECT = (function () {
             $loading.show();
             $("#forecast-plotter").empty();
             $loadingF.show();
-            console.log(proj_coords)
             var xhr = ajax_update_database('timeseries', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
             xhr.done(function (data) {
                 if ("success" in data) {

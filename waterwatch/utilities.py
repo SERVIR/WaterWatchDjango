@@ -600,15 +600,20 @@ def filterPond(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
     sampledPoint = ee.Feature(ponds.filterBounds(point).first())
     computedValue = sampledPoint.getInfo()['properties']['uniqID']
+    print('after computedValue')
     selPond = ponds.filter(ee.Filter.eq('uniqID', computedValue))
     return selPond
 
 
 def checkFeature(lon, lat):
+    print('check feature')
     selPond = filterPond(lon, lat)
+
+    print('after sle pond')
 
     ts_values = makeTimeSeries(waterCollection, selPond, key='water', hasMask=True)
     name = selPond.getInfo()['features'][0]['properties']['Nom']
+    print('after ts')
     if len(name) < 2:
         name = ' Unnamed Pond'
     coordinates = selPond.getInfo()['features'][0]['geometry']['coordinates']
