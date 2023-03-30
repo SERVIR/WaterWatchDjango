@@ -83,34 +83,6 @@ var LIBRARY_OBJECT = (function () {
             var obj = [];
             var centers = data['centers'];
             var names = data['names'];
-            // var pondsList = data['ponds'];
-            // for (j = 0; j < pondsList.length; j++) {
-            //     if (pondsList[j]['geometry']['coordinates']) {
-            //         var nn = pondsList[j]['geometry']['coordinates'][0];
-            //      //   console.log(nn)
-            //
-            //         var name = pondsList[j]['properties']['Nom'];
-            //
-            //         if (name.length < 2) name = 'Unnamed pond';
-            //         var k;
-            //         var xx = 0, yy = 0;
-            //         for (k = 0; k < nn.length; k++) {
-            //
-            //             xx = xx + nn[k][0];
-            //             yy = yy + nn[k][1];
-            //
-            //         }
-            //         var center = [ xx / nn.length,yy / nn.length];
-            //
-            //
-            //
-            //         if (center[0] && center[1] && !names.includes(name)) {
-            //
-            //             centers.push(center);
-            //             names.push(name);
-            //         }
-            //     }
-            // }
             var i;
             var myNodelist = document.getElementsByTagName("LI");
             var i;
@@ -140,28 +112,6 @@ var LIBRARY_OBJECT = (function () {
                 document.getElementById("myUL").appendChild(li);
 
             }
-
-
-            /*for(i=0;i<names.length;i++) {
-                var newbox = document.createElement('input');
-                newbox.type = "radio";
-                newbox.name = "radiogroup";
-                newbox.value = centers[i];
-                newbox.onclick = function () {
-                    if (this.checked) {
-                        console.log([parseFloat(this.value.split(',')[0]), parseFloat(this.value.split(',')[1])]);
-
-                        map.getView().setCenter(ol.proj.transform([parseFloat(this.value.split(',')[0]), parseFloat(this.value.split(',')[1])], 'EPSG:4326', 'EPSG:3857'));
-                        map.getView().setZoom(16);
-                    }
-                }
-                var lbl = document.createElement('label');
-                lbl.innerHTML = names[i];
-                document.getElementById('cboxes').appendChild(newbox);
-                document.getElementById('cboxes').appendChild(lbl);
-                document.getElementById('cboxes').appendChild(document.createElement('br'));
-            }*/
-            // autocomplete(document.getElementById("myInput"), names);
         }
     });
 
@@ -181,14 +131,14 @@ var LIBRARY_OBJECT = (function () {
             html: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/">ArcGIS</a>'
         });
 
-        var base_map = new ol.layer.Tile({
-            crossOrigin: 'anonymous',
-            source: new ol.source.XYZ({
-                attributions: [attribution],
-                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/' +
-                    'World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-            })
-        });
+        // var base_map = new ol.layer.Tile({
+        //     crossOrigin: 'anonymous',
+        //     source: new ol.source.XYZ({
+        //         attributions: [attribution],
+        //         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/' +
+        //             'World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+        //     })
+        // });
 
         base_map2 = new ol.layer.Tile({
             source: new ol.source.BingMaps({
@@ -196,6 +146,9 @@ var LIBRARY_OBJECT = (function () {
                 imagerySet: 'AerialWithLabels' // Options 'Aerial', 'AerialWithLabels', 'Road'
             })
         });
+       var  base_map= new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                });
 
         var region_layer = new ol.layer.Tile({
             title: 'Region Senegal',
@@ -501,39 +454,42 @@ var  layerFeatures = new ol.layer.Vector({source: sourceFeatures});
                 var style1 = [
     new ol.style.Style({
         image: new ol.style.Icon(({
-            scale: 0.7,
+            scale: 0.2,
             rotateWithView: false,
             anchor: [0.5, 1],
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',
             opacity: 1,
-            src: '//raw.githubusercontent.com/jonataswalker/map-utils/master/images/marker.png'
+            src: 'static/js/Oasis3.png'
         })),
         zIndex: 5
     }),
-    new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 5,
-            fill: new ol.style.Fill({
-                color: 'rgba(255,255,255,1)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(0,0,0,1)'
-            })
-        })
-    })
+    // new ol.style.Style({
+    //     image: new ol.style.Circle({
+    //         radius: 5,
+    //         fill: new ol.style.Fill({
+    //             color: 'rgba(255,255,255,1)'
+    //         }),
+    //         stroke: new ol.style.Stroke({
+    //             color: 'rgba(0,0,0,1)'
+    //         })
+    //     })
+    // })
 ];
                    ajax_update_database("get-ponds-list", {}).done(function (data) {
         if ("success" in data) {
             var j;
             var obj = [];
             var centers = data['centers'];
+            var names = data['names'];
             for (i = 0; i < centers.length; i++) {
                 var feature = new ol.Feature({
+                    name:names[i],
                     type: 'click',
                     desc: "ff",
                     geometry: new ol.geom.Point(ol.proj.transform([parseFloat(centers[i][0]), parseFloat(centers[i][1])], 'EPSG:4326', 'EPSG:3857'))
                 });
+
                 feature.setStyle(style1);
                 sourceFeatures.addFeature(feature);
             }
@@ -620,7 +576,39 @@ var  layerFeatures = new ol.layer.Vector({source: sourceFeatures});
             }
 
         });
+        var hasFeature=false;
+        var names=[],centers=[];
+         ajax_update_database("get-ponds-list", {}).done(function (data) {
+             if ("success" in data) {
+                 var j;
+                 var obj = [];
+                  centers = data['centers'];
+                  names = data['names'];
+             }
+         }
+            );
+map.on('pointermove', function (e) {
+     map.forEachFeatureAtPixel(e.pixel, function (f) {
+    var selected = f;
+    if(selected.get('name')!==undefined) {
 
+        const container = document.getElementById('popup');
+        container.innerHTML = selected.get('name');
+
+        const popupOverlay = new ol.Overlay({
+            element: container,
+            positioning: 'bottom-center',
+            autoPan: {
+                animation: {
+                    duration: 250,
+                },
+            },
+        });
+        popupOverlay.setPosition(e.coordinate);
+        map.addOverlay(popupOverlay);
+    }
+  });
+});
 
         map.on("singleclick", function (evt) {
 
