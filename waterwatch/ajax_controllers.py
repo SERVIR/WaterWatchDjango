@@ -14,8 +14,8 @@ def getPondsUrl(request):
     if request.method == 'POST':
 
         try:
-            return_obj["url"] = initLayers()
-            print(return_obj)
+            return_obj["url"]= initLayers()
+            # print(return_obj)
             return_obj["success"] = "success"
 
         except Exception as e:
@@ -32,9 +32,10 @@ def getPondsList(request):
     if request.method == 'POST':
 
         try:
-            names, centers = pondsList()
+            names, centers,classes = pondsList()
             return_obj["centers"] = centers
             return_obj["names"] = names
+            return_obj["classes"] = classes
 
             return_obj["success"] = "success"
 
@@ -54,6 +55,7 @@ def timeseries(request):
         lon = info.get('lon')
 
         try:
+
             ts_vals, coordinates, name = checkFeature(lon, lat)
             return_obj["values"] = ts_vals
             return_obj["coordinates"] = coordinates
@@ -76,9 +78,7 @@ def forecast(request):
 
         ts_vals, coordinates, name = forecastFeature(lon, lat)
         return_obj["values"] = ts_vals
-        print(return_obj["values"])
         return_obj["coordinates"] = coordinates
-        print(return_obj["coordinates"])
         return_obj["name"] = name
         return_obj["success"] = "success"
     except Exception as e:

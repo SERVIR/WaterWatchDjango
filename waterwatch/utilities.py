@@ -232,23 +232,20 @@ def test(x):
 
 def makeTimeSeries(collection, feature, key=None, hasMask=False):
     estreducer = ee.Reducer.mean().combine(ee.Reducer.stdDev(), None, True)
+    print('making time series')
 
     def reducerMapping(img):
         # if hasMask:
         #     img = img.updateMask(img.select('cloudShadowMask'))
-
         reducerScale = img.projection().nominalScale()
-
         reduction = img.reduceRegion(ee.Reducer.mean(), feature.geometry(), reducerScale)
-
         vals = ee.Dictionary(reduction.values().reduce(estreducer))
+
         avg = vals.get("mean")
         stddev = vals.get("stdDev")
-
         date = img.get('system:time_start')
         indexImage = ee.Image().set('indexValue', [ee.Number(date), ee.Dictionary({"water": avg, "stddev": stddev})])
         return indexImage
-
     filteredCollection = collection.filterBounds(feature.geometry()).sort("system:time_start")
     indexCollection = filteredCollection.map(reducerMapping)
     indexCollection2 = indexCollection.aggregate_array('indexValue')
@@ -499,7 +496,6 @@ mergedCollection = ee.ImageCollection("projects/servir-wa/services/ephemeral_wat
 # mndwiCollection = mergedCollection.map(calcWaterIndex)
 palette = {'palette': 'yellow,green,gray'}
 
-
 def cliip(image):
     # Crop by table extension
     return image.clip(studyArea)
@@ -529,7 +525,17 @@ Pimage = ponds_cls.reduceToImage(
     reducer=ee.Reducer.first()
 )
 
-visParams = {'min': 0, 'max': 3, 'palette': 'red,yellow,green,gray'}
+fc = ee.FeatureCollection(ponds.map(pondClassifier))
+# print(json.dumps(fc.getInfo()))
+# sample_arr=[]
+# for feature in fc.getInfo()['features']:
+#     if feature['properties']:
+#         if feature['properties']['Nom']:
+#             sample_arr.append({'class':feature['properties']['pondCls'],'name':feature['properties']['Nom']})
+#         else:
+#             sample_arr.append({'class':feature['properties']['pondCls'],'name':'Unnamed Pond'})
+
+visParams = {'min': 0, 'max': 3, 'palette': 'red,#FF9300,green,gray'}
 
 # pondsImgID = Pimage.getMapId(visParams)
 regionImgID = region.getMapId()
@@ -554,14 +560,18 @@ def initLayers():
     return pondsImgID['tile_fetcher'].url_format
 
 
+
 def pondsList():
-    xx = ponds.getInfo()
+
+    xx =  ee.FeatureCollection(ponds.map(pondClassifier)).getInfo()
     names = []
     centers = []
+    classes=[]
     return_obj = {}
     for feature in xx['features']:
         if feature['properties']['Nom']:
             name = feature['properties']['Nom']
+            pclass= feature['properties']['pondCls']
             if len(feature['geometry']['coordinates'][0][0]) > 2:
                 # print(len(feature['geometry']['coordinates'][0][0]))
                 points = feature['geometry']['coordinates'][0][0]
@@ -574,9 +584,10 @@ def pondsList():
             if name not in names:
                 names.append(str(name))
                 centers.append(centroid)
-    names, centers = (list(t) for t in zip(*sorted(zip(names, centers), reverse=False)))
+                classes.append(pclass)
+    names, centers, classes = (list(t) for t in zip(*sorted(zip(names, centers, classes), reverse=False)))
 
-    return names, centers
+    return names, centers, classes
     # return xx['features'] #np.unique([i['properties']['Nom'] for i in xx['features'] if i['properties']['Nom']]).tolist()
 
 
@@ -598,20 +609,23 @@ def villageLayers():
 
 def filterPond(lon, lat):
     point = ee.Geometry.Point(float(lon), float(lat))
+    print('after point')
     sampledPoint = ee.Feature(ponds.filterBounds(point).first())
+    print('after sampledPoint')
+    print(sampledPoint.getInfo())
     computedValue = sampledPoint.getInfo()['properties']['uniqID']
     print('after computedValue')
     selPond = ponds.filter(ee.Filter.eq('uniqID', computedValue))
+    print('after selPond')
     return selPond
 
 
 def checkFeature(lon, lat):
-    print('check feature')
+    print('chck feature')
     selPond = filterPond(lon, lat)
-
-    print('after sle pond')
-
+    print('selPond')
     ts_values = makeTimeSeries(waterCollection, selPond, key='water', hasMask=True)
+    print('ts_values')
     name = selPond.getInfo()['features'][0]['properties']['Nom']
     print('after ts')
     if len(name) < 2:
@@ -628,18 +642,13 @@ def checkVillage():
 def forecastFeature(lon, lat):
     selPond = filterPond(lon, lat)
     coll = waterCollection.filterBounds(selPond).sort('system:time_start', False)
-    print(coll.size().getInfo())
     lastimg = ee.Image(coll.first())
     bnames = lastimg.bandNames()
-    print("with info")
-    print(bnames.getInfo())
-    print("from fcast1")
-
     featureImg = ee.Image(coll.reduce(ee.Reducer.firstNonNull())).rename(bnames)
     lastTime = ee.Date(lastimg.get('system:time_start'))
 
     reductionScale = lastimg.projection().nominalScale()
-    print(reductionScale.getInfo())
+    # print(reductionScale.getInfo())
     print("from fcast2")
 
     pondFraction = ee.Number(
