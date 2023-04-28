@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang={{lang}}>
 {% load static %}
 <head>
     <meta charset="utf-8">
@@ -26,69 +26,28 @@
     height: 70px;
     padding: 15px;
     background-color: #2c3e50;color: white">
+    <div class="float-left position-relative d-flex">
     <img id="icon_img" src="{% static "/images/logo_2.png" %}">
-    <p class="h-100 m-auto h4">WENDOU (Water ENvironment Dashboard for Observation in support of Users in Ferlo, Senegal)</p>
-    <!--<div id="google_translate_element"></div><script type="text/javascript">-->
-    <!--function googleTranslateElementInit() {-->
-    <!--new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');-->
-    <!--}-->
-    <!--</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>&nbsp-->
-
-    <a type="button" class="pr-2 text-decoration-none text-white mr-2 h3" data-bs-toggle="modal"
+    <p class="h-100 pt-1">WENDOU (Water ENvironment Dashboard for Observation in support of Users in Ferlo, Senegal)</p>
+        </div>
+<div class="float-right pt-1 mt-2" style="z-index: 10;
+position: absolute;
+right: 5px;
+top: 0;">
+    <a type="button" class="text-decoration-none text-white" data-bs-toggle="modal" style="font-size: x-large;
+    position: absolute;
+    right: 350px;"
        data-bs-target="#help-modal"> &#9432;</a>
     <a type="button" class="pr-2 pt-1 text-decoration-none" target="_blank" href="https://servirglobal.net/">
         <img src="/static/images/SERVIR_flat_white.png" height="30" width="150">
     </a>
+    {{languageMenu|safe}}
+</div>
 
 </div>
 <div id="wrapper">
-    <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
-        <div class="modal-dialog" role="document" id=help_modal_id"  style="width: 100%;">
-            <div class="modal-content"  style="width: 70vh;">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body small">
-
-                    <p>Clause de non-responsabilité:</p>
-<p>Le programme SERVIR, la NASA, l'USAID et les organisations partenaires de SERVIR ne donnent aucune garantie expresse ou implicite de cette application quant à la qualité marchande ou à l'adéquation à un usage particulier. Ni le gouvernement des États-Unis ni ses sous-traitants ne seront responsables des dommages spéciaux, consécutifs ou accessoires attribués à cette application.</p>
-                    <p>Disclaimer:</p>
-                    <p class="text-justify">The SERVIR Program, NASA, USAID and SERVIR partner organizations
-                        make no express or implied warranty of this application as to the
-                        merchantability or fitness for any particular purpose.
-                        Neither the US Government nor its contractors shall be liable for
-                        special, consequential or incidental damages attributed to this application.</p>
-
-                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of
-                        Use</a></p>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <div align="center" id="logos">
-                      <div>  <a href="http://www.usaid.gov/" target="_blank"><img class="logo-image"
-                                                                             src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a>
-                        <a href="http://appliedsciences.nasa.gov/" target="_blank"><img class="logo-image"
-                                                                                        src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a>
-                        </div>
-
-                        <div> <a href="https://ciat.cgiar.org/" target="_blank"><img class="logo-image"
-                                                                                 src="/static/images/logos/Picture1.png"></a>
-                        <a href="https://www.icrisat.org/" target="_blank"><img class="logo-image"
-                                                                             src="/static/images/logos/Picture2.png"></a>
-                        <a href="https://rcmrd.org/" target="_blank"><img class="logo-image"
-                                                                              src="/static/images/logos/Picture3.png"></a>
-                        <a href="https://www.icimod.org/" target="_blank"><img class="logo-image"
-                                                                            src="/static/images/logos/Picture4.png"></a>
-                               <a href="https://www.adpc.net/" target="_blank"><img class="logo-image"
-                                                                            src="/static/images/logos/Picture5.png"></a>
-                   </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
+   {% block help_modal %}
+        {% endblock help_modal %}
     <div style="width: 350px;">
         {% block app_navigation_items %}
         {% endblock app_navigation_items %}

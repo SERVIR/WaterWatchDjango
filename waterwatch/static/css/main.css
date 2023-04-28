@@ -382,6 +382,7 @@ input:checked + .slider:before {
 }
 
 #popup{
+    display: none;
     width: 160px;
     background-color: white;
     /* color: white; */

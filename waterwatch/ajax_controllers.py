@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .utilities import *
-
+from . import candy
 
 @csrf_exempt
 def getPondsUrl(request):
@@ -19,7 +19,7 @@ def getPondsUrl(request):
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: " + str(e)
+            return_obj["error"] = candy.translated(request, "all_Error")
     return JsonResponse(return_obj)
 
 
@@ -40,35 +40,34 @@ def getPondsList(request):
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: " + str(e)
+            return_obj["error"] = candy.translated(request, "all_Error")
     return JsonResponse(return_obj)
 
 
 @csrf_exempt
-def timeseries(request):
+def timeseries(request,lang):
     return_obj = {}
 
     if request.method == 'POST':
-
         info = request.POST
         lat = info.get('lat')
         lon = info.get('lon')
 
         try:
-
             ts_vals, coordinates, name = checkFeature(lon, lat)
             return_obj["values"] = ts_vals
+            return_obj["msg"] = candy.translated(lang, "all_percent")
             return_obj["coordinates"] = coordinates
             return_obj["name"] = name
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: " + str(e)
+            return_obj["error"] = candy.translated(lang, "all_Error")
     return JsonResponse(return_obj)
 
 
 @csrf_exempt
-def forecast(request):
+def forecast(request, lang):
     return_obj = {}
     if request.method == 'POST':
         info = request.POST
@@ -78,12 +77,15 @@ def forecast(request):
 
         ts_vals, coordinates, name = forecastFeature(lon, lat)
         return_obj["values"] = ts_vals
+        return_obj["msg"] = candy.translated(lang, "all_percent")
+        return_obj["fcast"] = candy.translated(lang, "all_forecast")
+
         return_obj["coordinates"] = coordinates
         return_obj["name"] = name
         return_obj["success"] = "success"
     except Exception as e:
-        return_obj["error"] = "Error Processing Request. Error: " + str(e)
-    return JsonResponse((return_obj))
+        return_obj["error"] = candy.translated(lang, "all_Error")
+    return JsonResponse(return_obj)
 
 
 @csrf_exempt
@@ -108,13 +110,13 @@ def mndwi(request):
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: " + str(e)
+            return_obj["error"] = candy.translated(request, "all_Error")
 
     return JsonResponse(return_obj)
 
 
 @csrf_exempt
-def details(request):
+def details(request,lang):
     return_obj = {}
 
     if request.method == 'POST':
@@ -144,22 +146,30 @@ def details(request):
             return_obj["nameRegion"] = nameRegion
             return_obj["nameCommune"] = nameCommune
             return_obj["nameArrondissement"] = nameArrondissement
+            return_obj["namePond_label"] = candy.translated(lang, "all_pname")
+            return_obj["sup_Pond_label"] = candy.translated(lang, "all_area")
+            return_obj["nameRegion_label"] = candy.translated(lang, "all_Rname")
+            return_obj["nameCommune_label"] = candy.translated(lang, "all_cname")
+            return_obj["nameArrondissement_label"] = candy.translated(lang, "all_Bname")
             return_obj["success"] = "success"
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: " + str(e)
+            return_obj["error"] = candy.translated(lang, "all_Error")
         print("processing complete...")
 
     return JsonResponse(return_obj)
 
 
 @csrf_exempt
-def coucheVillages(request):
+def coucheVillages(request,lang):
     return_obj = {}
     if request.method == 'POST':
         try:
             village = checkVillage()
             return_obj["village"] = village
+            return_obj['msg']= candy.translated(lang, "all_Villages")
+            return_obj['with'] = candy.translated(lang, "all_with")
+            return_obj['inhabitants'] = candy.translated(lang, "all_inhabitants")
             return_obj["success"] = "success"
         except Exception as e:
-            return_obj["error"] = _("Error Processing Request. Error: ") + str(e)
+            return_obj["error"] = candy.translated(lang, "all_Error")
     return JsonResponse(return_obj)

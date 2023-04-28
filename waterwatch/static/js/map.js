@@ -625,8 +625,8 @@ var LIBRARY_OBJECT = (function () {
         //Map on zoom function. To keep track of the zoom level. Data can only be viewed can only be added at a certain zoom level.
         map.on("moveend", function () {
             var zoom = map.getView().getZoom();
-            var zoomInfo = '<p style="color:black;">Current Zoom level = ' + zoom.toFixed(3) + '.</p>';
-            document.getElementById('zoomlevel').innerHTML = zoomInfo;
+            var zoomInfo = '<span style="color:black;">(zoom.toFixed(3))</span>';
+            document.getElementById('zoomlevel').innerHTML = zoom.toFixed(3);
             if (zoom > 14) {
                 base_map2.setVisible(true);
                 ponds_layer.setVisible(true);
@@ -766,7 +766,7 @@ var LIBRARY_OBJECT = (function () {
                 $loading.show();
                 $("#forecast-plotter").empty();
                 $loadingF.show();
-                var xhr = ajax_update_database('timeseries', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                var xhr = ajax_update_database($("#Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
                 xhr.done(function (data) {
                     if ("success" in data) {
                         $('.info').html('');
@@ -779,7 +779,7 @@ var LIBRARY_OBJECT = (function () {
                         mareSelect = turf.polygon(data.coordinates);
 
                         buffered = turf.buffer(mareSelect, 10, {units: 'kilometers'});
-                        var villagehr = ajax_update_database('coucheVillages');
+                        var villagehr = ajax_update_database($("#couches_Url").attr("data-url"));
                         villagehr.done(function (data2) {
                             for (var iter = 0; iter < data2.village.length; iter++) {
                                 var buff1 = turf.feature(data2.village[iter].geometry, data2.village[iter].properties);
@@ -790,11 +790,11 @@ var LIBRARY_OBJECT = (function () {
                                     var x = document.createElement("p");
                                     var x1 = document.createElement("b");
                                     var t = document.createTextNode(data2.village[iter].properties['Toponymie']);
-                                    var t1 = document.createTextNode(" avec  " + data2.village[iter].properties['EffectifPo'] + " habitants");
+                                    var t1 = document.createTextNode(' '+data2.with+' ' + data2.village[iter].properties['EffectifPo'] + ' '+data2.inhabitants);
                                     x1.appendChild(t);
                                     x.appendChild(x1);
                                     x.appendChild(t1);
-                                    var newElement = $('<div>', {text: data2.village[iter].properties['Toponymie'] + '  avec  ' + data2.village[iter].properties['EffectifPo'] + ' habitants'});
+                                    var newElement = $('<div>', {text: data2.village[iter].properties['Toponymie'] + ' '+data2.with+' '  + data2.village[iter].properties['EffectifPo'] + ' '+data2.inhabitants});
                                     if ($elements) {
                                         $elements = $($elements).add(x);
                                     } else {
@@ -803,11 +803,14 @@ var LIBRARY_OBJECT = (function () {
                                 }
                             }
                             $("#meta-table-village").html('');
-                            var h = document.createElement("h2");
-                            var titre = document.createTextNode("Villages à 10 km de la mare de " + data.name);
+                            var h = document.createElement("h5");
+                            var b = document.createElement("br");
+                            var titre = document.createTextNode(data2.msg + data.name);
                             h.appendChild(titre);
+                            $("#meta-table-village").append(b);
                             $("#meta-table-village").append(h);
                             $("#meta-table-village").append($elements);
+                            $("#reset").removeClass('hidden');
                             $("#reset").removeClass('hidden');
 
                         });
@@ -817,11 +820,11 @@ var LIBRARY_OBJECT = (function () {
                         select_feature_source.addFeature(feature);
                         // console.log(data.values);
                         // console.log(data.name);
-                        generate_chart(data.values, proj_coords[1], proj_coords[0], data.name);
+                        generate_chart(data.values, proj_coords[1], proj_coords[0], data.name,data.msg);
 
                         $loading.hide();
                     } else {
-                        $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
+                        $('.info').html(data.error + '</b>');
                         $('#info').removeClass('hidden');
                         $loading.hide();
 
@@ -830,7 +833,7 @@ var LIBRARY_OBJECT = (function () {
                 });
 
 
-                var yhr = ajax_update_database('forecast', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                var yhr = ajax_update_database($("#forecast_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
                 yhr.done(function (data) {
                     if ("success" in data) {
                         $('.info').html('');
@@ -842,19 +845,19 @@ var LIBRARY_OBJECT = (function () {
                         map.getLayers().item(5).getSource().clear();
                         select_feature_source.addFeature(feature);
 
-                        generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name);
+                        generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data.msg);
 
                         $loadingF.hide();
                         $("#forecast-plotter").removeClass('hidden');
 
                     } else {
-                        $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
+                        $('.info').html(data.error + '</b>');
                         $('#info').removeClass('hidden');
                         $loadingF.hide();
 
                     }
                 });
-                var zhr = ajax_update_database('details', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                var zhr = ajax_update_database($("#details_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
                 zhr.done(function (data) {
                     if ("success" in data) {
                         $('.info').html('');
@@ -865,13 +868,13 @@ var LIBRARY_OBJECT = (function () {
 
                         map.getLayers().item(5).getSource().clear();
                         select_feature_source.addFeature(feature);
-                        generate_details(proj_coords[1], proj_coords[0], data.namePond, data.sup_Pond, data.coordinates, data.nameRegion, data.nameCommune, data.nameArrondissement);
+                        generate_details(proj_coords[1], proj_coords[0], data);
 
                         $loadingF.hide();
                         //                  $("#details-plotter").removeClass('hidden');
 
                     } else {
-                        $('.info').html('<b>Erreur lors du traitement de la demande. Assurez-vous de cliquer sur une fonctionnalité.' + data.error + '</b>');
+                        $('.info').html( data.error + '</b>');
                         $('#info').removeClass('hidden');
                         $loadingF.addClass('hidden');
                     }
@@ -880,11 +883,11 @@ var LIBRARY_OBJECT = (function () {
         });
     };
 
-    generate_chart = function (data, lat, lon, name) {
+    generate_chart = function (data, lat, lon, name,msg) {
         $("#plotter").empty();
-        var timeArr = []
-        var waterArr = []
-        var errArr = []
+        var timeArr = [];
+        var waterArr = [];
+        var errArr = [];
         var timestamp, water, stddev, minerr, maxerr;
         for (var i = 0; i < data.length; i++) {
             if (data[i][1].water != null) {
@@ -939,7 +942,7 @@ var LIBRARY_OBJECT = (function () {
                                         $("#reset").removeClass('hidden');
                                         $("#layers_checkbox").removeClass('hidden');
                                     } else {
-                                        $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
+                                        $('.info').html( data.error + '</b>');
                                         $('#info').removeClass('hidden');
                                         $("#layers_checkbox").addClass('hidden');
                                     }
@@ -952,7 +955,7 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: 'Percent coverage of water at ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
+                text: msg+' ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
                 // style: {
                 //     fontSize: '13px',
                 //     fontWeight: 'bold'
@@ -1004,7 +1007,7 @@ var LIBRARY_OBJECT = (function () {
 
         $("#plotter").removeClass('hidden');
     };
-    generate_forecast = function (data, lat, lon, name) {
+    generate_forecast = function (data, lat, lon, name,msg) {
 
         var data1 = []
         for (var i = 0; i < data.length; i++) {
@@ -1061,7 +1064,7 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: 'Percent coverage of water at ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
+                text: msg +' '+ (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
                 // style: {
                 //     fontSize: '13px',
                 //     fontWeight: 'bold'
@@ -1091,7 +1094,7 @@ var LIBRARY_OBJECT = (function () {
             series: [{
 
                 data: data1,
-                name: 'Forecast percent coverage of water',
+                name: data.fcast+' '+data.msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
@@ -1100,9 +1103,16 @@ var LIBRARY_OBJECT = (function () {
         });
     };
 
-    generate_details = function (lat, lon, namePond, sup_Pond, coordinates, nameRegion, nameCommune, nameArrondissement) {
+      generate_details = function (lat, lon, data) {
         $("#meta-table-details").html('');
-        $("#meta-table-details").append('<tbody><tr><th>Latitude</th><td>' + (lat.toFixed(6)) + '</td></tr><tr><th>Longitude</th><td>' + (lon.toFixed(6)) + '</td></tr><tr><th>Nom Mare</th><td>' + namePond + '</td></tr><tr><th>Superficie</th><td>' + sup_Pond + '</td></tr><tr><th>Nom région</th><td>' + nameRegion + '</td></tr><tr><th>Nom arrondissement</th><td>' + nameArrondissement + '</td></tr><tr><th>Nom commune</th><td>' + nameCommune + '</td></tr></tbody>');
+        $("#meta-table-details").append('<tbody>' +
+            '<tr><th>Latitude</th><td>' + (lat.toFixed(6)) + '</td></tr>' +
+            '<tr><th>Longitude</th><td>' + (lon.toFixed(6)) + '</td></tr>' +
+            '<tr><th>'+data.namePond_label+'</th><td>' + data.namePond + '</td></tr>' +
+            '<tr><th>'+data.sup_Pond_label+'</th><td>' + data.sup_Pond + '</td></tr>' +
+            '<tr><th>'+data.nameRegion_label+'</th><td>' + data.nameRegion + '</td></tr>' +
+            '<tr><th>'+data.nameArrondissement_label+'</th><td>' +  data.nameArrondissement + '</td></tr>' +
+            '<tr><th>'+data.nameCommune_label+'</th><td>' + data.nameCommune + '</td></tr></tbody>');
         $("#reset").removeClass('hidden');
 
     };
@@ -1340,6 +1350,7 @@ var LIBRARY_OBJECT = (function () {
                 map.getLayers().item(20).setVisible(false);
             }
         });
+
     });
 
     return public_interface;

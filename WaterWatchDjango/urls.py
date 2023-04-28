@@ -13,26 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.template.defaulttags import url
+from django.urls import path, include
+from waterwatch import candy
 
 from WaterWatchDjango import settings
-from waterwatch import ajax_controllers, api, controllers
-
+from waterwatch import ajax_controllers, api, controllers, views
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('get-ponds-list/', ajax_controllers.getPondsList, name="get-ponds-list"),
-                  path('timeseries/', ajax_controllers.timeseries, name="timeseries"),
-                  path('forecast/', ajax_controllers.forecast, name="forecast"),
+                  path('timeseries/<lang>/', ajax_controllers.timeseries, name="timeseries"),
+                  path('forecast/<lang>/', ajax_controllers.forecast, name="forecast"),
                   path('mndwi/', ajax_controllers.mndwi, name="mndwi"),
                   path('api/getPonds/', api.api_get_ponds, name="getPonds"),
                   path('api/getTimeseries/', api.api_get_timeseries, name="getTimeseries"),
-
-                  path('details/', ajax_controllers.details, name="details"),
-                  path('coucheVillages/', ajax_controllers.coucheVillages, name="coucheVillages"),
-
+                  path('details/<lang>/', ajax_controllers.details, name="details"),
+                  path('coucheVillages/<lang>/', ajax_controllers.coucheVillages, name="coucheVillages"),
                   path('get-ponds-url/', ajax_controllers.getPondsUrl, name="get-ponds-url"),
-
-                  path('', controllers.home, name="home"),
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+                  *candy.path('', controllers.home, name="home"),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
