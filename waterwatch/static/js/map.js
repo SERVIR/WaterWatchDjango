@@ -907,7 +907,6 @@ var LIBRARY_OBJECT = (function () {
                 errArr.push([timestamp, minerr, maxerr])
             }
         }
-        console.log(messages);
         Highcharts.stockChart('plotter', {
             chart: {
                 type: 'line',
