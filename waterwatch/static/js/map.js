@@ -820,7 +820,7 @@ var LIBRARY_OBJECT = (function () {
                         select_feature_source.addFeature(feature);
                         // console.log(data.values);
                         // console.log(data.name);
-                        generate_chart(data.values, proj_coords[1], proj_coords[0], data.name,data.msg);
+                        generate_chart(data.values, proj_coords[1], proj_coords[0], data.name,data);
 
                         $loading.hide();
                     } else {
@@ -845,7 +845,7 @@ var LIBRARY_OBJECT = (function () {
                         map.getLayers().item(5).getSource().clear();
                         select_feature_source.addFeature(feature);
 
-                        generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data.msg);
+                        generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data);
 
                         $loadingF.hide();
                         $("#forecast-plotter").removeClass('hidden');
@@ -883,7 +883,7 @@ var LIBRARY_OBJECT = (function () {
         });
     };
 
-    generate_chart = function (data, lat, lon, name,msg) {
+    generate_chart = function (data, lat, lon, name,messages) {
         $("#plotter").empty();
         var timeArr = [];
         var waterArr = [];
@@ -907,11 +907,57 @@ var LIBRARY_OBJECT = (function () {
                 errArr.push([timestamp, minerr, maxerr])
             }
         }
+        console.log(messages);
         Highcharts.stockChart('plotter', {
             chart: {
                 type: 'line',
                 zoomType: 'x'
             },
+                rangeSelector: {
+                    enabled: true,
+                    allButtonsEnabled: true,
+                    selected: 1,
+                    buttons: [{
+                        type: 'month',
+                        count: 1,
+                        text: '1m',
+                        title: messages.chart_1month
+                    }, {
+                        type: 'month',
+                        count: 3,
+                        text: '3m',
+                        title: messages.chart_3month
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m',
+                        title:messages.chart_6month
+                    }, {
+                        type: 'ytd',
+                        text: 'YTD',
+                        title: messages.chart_ytd
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1y',
+                        title: messages.chart_1year
+                    }, {
+                        type: 'all',
+                        text: messages.chart_all,
+                        title: messages.chart_all
+                    }]
+                },
+            lang: {
+                viewFullscreen: messages.chart_viewFullscreen,
+                printChart: messages.chart_printChart,
+                downloadPNG: messages.chart_downloadPNG,
+                downloadJPEG: messages.chart_downloadJPEG,
+                downloadPDF: messages.chart_downloadPDF,
+                downloadSVG: messages.chart_downloadSVG,
+                downloadCSV: messages.chart_downloadCSV,
+                downloadXLS: messages.chart_downloadXLS,
+                viewData: messages.chart_viewData,
+        },
             plotOptions: {
                 series: {
                     marker: {
@@ -955,7 +1001,7 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: msg+' ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
+                text: messages.msg +' ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
                 // style: {
                 //     fontSize: '13px',
                 //     fontWeight: 'bold'
@@ -984,7 +1030,7 @@ var LIBRARY_OBJECT = (function () {
             },
             series: [{
                 data: waterArr,
-                name: 'Water coverage',
+                name: messages.chart_msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
@@ -1007,7 +1053,7 @@ var LIBRARY_OBJECT = (function () {
 
         $("#plotter").removeClass('hidden');
     };
-    generate_forecast = function (data, lat, lon, name,msg) {
+    generate_forecast = function (data, lat, lon, name,messages) {
 
         var data1 = []
         for (var i = 0; i < data.length; i++) {
@@ -1021,6 +1067,51 @@ var LIBRARY_OBJECT = (function () {
                 type: 'line',
                 zoomType: 'x'
             },
+              rangeSelector: {
+                    enabled: true,
+                    allButtonsEnabled: true,
+                    selected: 1,
+                    buttons: [{
+                        type: 'month',
+                        count: 1,
+                        text: '1m',
+                        title: messages.chart_1month
+                    }, {
+                        type: 'month',
+                        count: 3,
+                        text: '3m',
+                        title: messages.chart_3month
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m',
+                        title:messages.chart_6month
+                    }, {
+                        type: 'ytd',
+                        text: 'YTD',
+                        title: messages.chart_ytd
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1y',
+                        title: messages.chart_1year
+                    }, {
+                        type: 'all',
+                        text: messages.chart_all,
+                        title: messages.chart_all
+                    }]
+                },
+            lang: {
+                viewFullscreen: messages.chart_viewFullscreen,
+                printChart: messages.chart_printChart,
+                downloadPNG: messages.chart_downloadPNG,
+                downloadJPEG: messages.chart_downloadJPEG,
+                downloadPDF: messages.chart_downloadPDF,
+                downloadSVG: messages.chart_downloadSVG,
+                downloadCSV: messages.chart_downloadCSV,
+                downloadXLS: messages.chart_downloadXLS,
+                viewData: messages.chart_viewData,
+        },
             plotOptions: {
                 series: {
                     marker: {
@@ -1064,7 +1155,7 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: msg +' '+ (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
+                text: messages.msg +' '+ (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
                 // style: {
                 //     fontSize: '13px',
                 //     fontWeight: 'bold'
@@ -1094,7 +1185,7 @@ var LIBRARY_OBJECT = (function () {
             series: [{
 
                 data: data1,
-                name: data.fcast+' '+data.msg,
+                name: messages.chart_msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
