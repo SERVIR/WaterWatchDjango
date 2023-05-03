@@ -907,6 +907,12 @@ var LIBRARY_OBJECT = (function () {
                 errArr.push([timestamp, minerr, maxerr])
             }
         }
+    Highcharts.setOptions({
+    lang: {
+        weekdays:messages.chart_weekdays,
+        months:messages.chart_months,
+        shortMonths:messages.chart_shortMonths,
+    } });
         Highcharts.stockChart('plotter', {
             chart: {
                 type: 'line',
@@ -1061,12 +1067,18 @@ var LIBRARY_OBJECT = (function () {
                 data1.push([data[i][0], data[i][1].water]);
             }
         }
+           Highcharts.setOptions({
+    lang: {
+        weekdays:messages.chart_weekdays,
+        months:messages.chart_months,
+        shortMonths:messages.chart_shortMonths,
+    } });
         Highcharts.stockChart('forecast-plotter', {
             chart: {
                 type: 'line',
                 zoomType: 'x'
             },
-              rangeSelector: {
+            rangeSelector: {
                     enabled: true,
                     allButtonsEnabled: true,
                     selected: 1,
@@ -1155,17 +1167,11 @@ var LIBRARY_OBJECT = (function () {
             },
             title: {
                 text: messages.msg +' '+ (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
-                // style: {
-                //     fontSize: '13px',
-                //     fontWeight: 'bold'
-                // }
             },
             xAxis: {
                 type: 'datetime',
                 labels: {
                     format: '{value:%d %b %Y}'
-                    // rotation: 90,
-                    // align: 'left'
                 },
                 title: {
                     text: 'Date'
@@ -1182,14 +1188,16 @@ var LIBRARY_OBJECT = (function () {
                 enabled: true
             },
             series: [{
-
                 data: data1,
                 name: messages.chart_msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
-
-            }]
+            }],
+            tooltip: {
+                shared: true,
+                xDateFormat: '%A, %b %e, %Y, %H:%M'
+            }
         });
     };
 

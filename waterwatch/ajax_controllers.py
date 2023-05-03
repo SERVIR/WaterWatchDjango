@@ -73,6 +73,11 @@ def timeseries(request,lang):
             return_obj['chart_6month']= candy.translated(lang, "chart_6month")
             return_obj['chart_1year']=candy.translated(lang, "chart_1year")
             return_obj['chart_ytd']=candy.translated(lang, "chart_ytd")
+            return_obj['chart_weekdays'] = candy.translated(lang, "chart_weekdays")
+
+            return_obj['chart_months'] = candy.translated(lang, "chart_months")
+
+            return_obj['chart_shortMonths'] = candy.translated(lang, "chart_shortMonths")
             return_obj["coordinates"] = coordinates
             return_obj["name"] = name
             return_obj["success"] = "success"
@@ -111,6 +116,11 @@ def forecast(request, lang):
         return_obj['chart_6month'] = candy.translated(lang, "chart_6month")
         return_obj['chart_1year'] = candy.translated(lang, "chart_1year")
         return_obj['chart_ytd'] = candy.translated(lang, "chart_ytd")
+        return_obj['chart_weekdays'] = candy.translated(lang, "chart_weekdays")
+
+        return_obj['chart_months'] = candy.translated(lang, "chart_months")
+
+        return_obj['chart_shortMonths'] = candy.translated(lang, "chart_shortMonths")
         return_obj["coordinates"] = coordinates
         return_obj["name"] = name
         return_obj["success"] = "success"

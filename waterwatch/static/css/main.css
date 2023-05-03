@@ -184,7 +184,7 @@ html {
 #menulayers {
     position: relative;
     width: inherit;
-    height: calc(100% - 350px);
+    height: calc(100% - 100px);
 
     /*padding-top: 30px;*/
 }
@@ -261,9 +261,8 @@ html {
 }
 
 .ol-overviewmap .ol-overviewmap-map {
-    height: 200px;
-    width: 330px;
-    margin: 10px;
+    height: 217px;
+    width: 347px;
 }
 
 #help_modal_id {
