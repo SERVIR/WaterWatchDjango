@@ -1171,7 +1171,8 @@ var LIBRARY_OBJECT = (function () {
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%d %b %Y}'
+                    format: '{value:%d %b %Y}',
+                    rotation: 45,
                 },
                 title: {
                     text: 'Date'
