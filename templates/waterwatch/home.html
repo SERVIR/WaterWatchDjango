@@ -165,7 +165,7 @@
                         <input type="text" name="current-lat" id="current-lat" hidden>
                         <input type="text" name="current-lon" id="current-lon" hidden>
 
-                        <br>
+
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active p-2" id="home-tab" data-bs-toggle="tab"
@@ -194,14 +194,14 @@
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="historic_tab" role="tabpanel"
-                                 aria-labelledby="historic_tab" tabindex="0">
+                                 aria-labelledby="historic_tab" tabindex="0" style="height: 100%">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="chart-wrapper">
-                                            <div class="chart-inner" style="width:100%;height:75%;">
+                                        <div class="chart-wrapper" style="height: 50vh;">
+                                            <div class="chart-inner" style="width:100%;height:100%;">
                                                 <div align="center"><img id="view-file-loading" class="hidden"
                                                                          src="{% static 'images/loader.gif' %}"/></div>
-                                                <div id="plotter" name="plotter" style="height:50%;width:100%">
+                                                <div id="plotter" name="plotter" style="height:100%;width:100%">
                                                 </div>
                                             </div>
                                         </div>
@@ -212,13 +212,13 @@
                                  tabindex="0">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="chart-wrapper">
-                                            <div class="chart-inner" style="width:100%;height:75%;">
+                                        <div class="chart-wrapper" style="height: 50vh;">
+                                            <div class="chart-inner" style="width:100%;height:100%;">
                                                 <div align="center"><img id="f-view-file-loading"
                                                                          class="f-view-file hidden"
                                                                          src="/static/images/loader.gif"/></div>
                                                 <div id="forecast-plotter" name="forecast-plotter"
-                                                     style="height:50%;width:100%">
+                                                     style="height:100%;width:100%">
                                                 </div>
                                             </div>
                                         </div>
@@ -319,7 +319,7 @@
                         {#                        </div>#}
                         {#                    </div>#}
 
-                        <br>
+
                         <table id="meta-table" class="table table-responsive table-condensed table-hover">
                         </table>
                         <div id="info" class="hidden info"></div>
@@ -333,7 +333,7 @@
                         </div>
 
                         {#                    <span>Note: The zoom level needs to be 13 or greater to retrieve data.</span>#}
-                        <br>
+{#                        <br>#}
                         <button type="button" name="reset" id="reset" class="btn btn-primary hidden"
                                 onclick="window.location.reload();"> {{ all_reset }}
                         </button>

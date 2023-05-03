@@ -1015,8 +1015,8 @@ var LIBRARY_OBJECT = (function () {
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%d %b %Y}'
-                    // rotation: 90,
+                    format: '{value:%d %b %Y}',
+                     rotation: 45,
                     // align: 'left'
                 },
                 title: {

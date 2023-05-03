@@ -255,13 +255,14 @@ html {
     /*margin: auto;*/
     /*width: 50%;*/
     /*overflow-y: scroll;*/
-    height: 200px;
+    height: 283px;
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
+    left:-1px;
 }
 
 .ol-overviewmap .ol-overviewmap-map {
-    height: 217px;
+    height: 280px;
     width: 347px;
 }
 
