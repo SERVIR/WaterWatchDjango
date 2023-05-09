@@ -12,14 +12,17 @@ def set_locale(locale_):
     locale.setlocale(category=locale.LC_ALL, locale=locale_)
 
 
-def date_customerprofile(language, dt):
-    if language == 'English':
-        set_locale('en_US')
-        date_ = dt.strftime("%B %d, %Y")
-    else:
-        set_locale('fr_FR')
-        date_ = dt.strftime("%B %d, %Y")
-    return date_
+def date_customerprofile(dte):
+    dt = datetime.datetime.strptime(dte, "%B %d, %Y")
+    arr_dates=[]
+    set_locale('fr_FR')
+    date_ = dt.strftime("%B %d, %Y")
+    arr_dates.append(date_)
+    set_locale('en_US')
+    date_ = dt.strftime("%B %d, %Y")
+    arr_dates.append(date_)
+
+    return arr_dates
 
 
 
@@ -31,11 +34,13 @@ def getLastUpdatedDate(request):
     if request.method == 'POST':
         info = request.POST
         lang = info.get('lang')
-        print(lang)
     with open(data['DATE_FILE']) as f:
         contents = f.read()
-        return_obj["contents"] = date_customerprofile(lang,datetime.datetime.strptime(contents, "%B %d, %Y"))
-        print(return_obj['contents'])
+        dtes = date_customerprofile(contents)
+        if 'English' in lang:
+            return_obj["contents"] = dtes[1]
+        else:
+            return_obj["contents"] = dtes[0]
     return JsonResponse(return_obj)
 
 
