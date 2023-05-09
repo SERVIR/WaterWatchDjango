@@ -1,4 +1,5 @@
 import datetime
+import locale
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -6,12 +7,33 @@ from django.views.decorators.csrf import csrf_exempt
 from .utilities import *
 from . import candy
 
+
+def set_locale(locale_):
+    locale.setlocale(category=locale.LC_ALL, locale=locale_)
+
+
+def date_customerprofile(language, dt):
+    if language == 'English':
+        set_locale('en_US')
+        date_ = dt.strftime("%B %d, %Y")
+    else:
+        set_locale('fr_FR')
+        date_ = dt.strftime("%B %d, %Y")
+    return date_
+
+
+
+
+
 @csrf_exempt
 def getLastUpdatedDate(request):
     return_obj = {}
+    if request.method == 'POST':
+        info = request.POST
+        lang = info.get('lang')
     with open(data['DATE_FILE']) as f:
         contents = f.read()
-        return_obj["contents"] = contents
+        return_obj["contents"] = date_customerprofile(lang,datetime.strptime(contents, "%B %d, %Y"))
     return JsonResponse(return_obj)
 
 
