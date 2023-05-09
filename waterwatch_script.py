@@ -5,13 +5,14 @@
 # Outputs: New images added to the Earth Engine collection
 # Debugging: Please find the logs on the server for any errors encountered while running the script
 import json
+import locale
 import time
 import urllib.request
 from datetime import datetime, timedelta, date
 from pathlib import Path
 
 import ee
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 f = open(str(BASE_DIR) + '/data.json', )
 data = json.load(f)
 # Initialize the Earth Engine module
@@ -21,6 +22,20 @@ try:
 except Exception as e:
     print(e)
     ee.Initialize()
+
+def set_locale(locale_):
+    locale.setlocale(category=locale.LC_ALL, locale=locale_)
+
+
+def date_customerprofile(language):
+    now_ = datetime.today()
+    if language == 'English':
+        set_locale('en_US.utf8')
+        date_ = now_.strftime("%B %d, %Y")
+    else:
+        set_locale('fr_FR.utf8')
+        date_ = now_.strftime("%B %d, %Y")
+    return date_
 
 
 def landsatQaMask(img):
@@ -360,7 +375,7 @@ for i in range(wqImages):
                 task.start()
             # writing processed date to the file
             f = open(data["DATE_FILE"], 'w+')
-            f.write(date.today().strftime("%B %d, %Y"))
+            f.write(date_customerprofile('French'))
             f.close()
         except Exception as e:
             print(e)

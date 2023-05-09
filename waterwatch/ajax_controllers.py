@@ -14,6 +14,7 @@ def getLastUpdatedDate(request):
         return_obj["contents"] = contents
     return JsonResponse(return_obj)
 
+
 @csrf_exempt
 def getPondsUrl(request):
     print("from ponds url")
@@ -22,7 +23,7 @@ def getPondsUrl(request):
     if request.method == 'POST':
 
         try:
-            return_obj["url"]= initLayers()
+            return_obj["url"] = initLayers()
             # print(return_obj)
             return_obj["success"] = "success"
 
@@ -40,7 +41,7 @@ def getPondsList(request):
     if request.method == 'POST':
 
         try:
-            names, centers,classes = pondsList()
+            names, centers, classes = pondsList()
             return_obj["centers"] = centers
             return_obj["names"] = names
             return_obj["classes"] = classes
@@ -53,7 +54,7 @@ def getPondsList(request):
 
 
 @csrf_exempt
-def timeseries(request,lang):
+def timeseries(request, lang):
     return_obj = {}
 
     if request.method == 'POST':
@@ -66,7 +67,7 @@ def timeseries(request,lang):
             return_obj["values"] = ts_vals
             return_obj["msg"] = candy.translated(lang, "all_percent")
             return_obj["chart_msg"] = candy.translated(lang, "all_coverage")
-            return_obj['chart_viewFullscreen'] = candy.translated(lang,"chart_viewFullscreen")
+            return_obj['chart_viewFullscreen'] = candy.translated(lang, "chart_viewFullscreen")
             return_obj['chart_printChart'] = candy.translated(lang, "chart_printChart")
             return_obj['chart_downloadPNG'] = candy.translated(lang, "chart_downloadPNG")
             return_obj['chart_downloadJPEG'] = candy.translated(lang, "chart_downloadJPEG")
@@ -76,11 +77,11 @@ def timeseries(request,lang):
             return_obj['chart_downloadXLS'] = candy.translated(lang, "chart_downloadXLS")
             return_obj['chart_viewData'] = candy.translated(lang, "chart_viewData")
             return_obj['chart_all'] = candy.translated(lang, "chart_all")
-            return_obj['chart_1month'] =candy.translated(lang, "chart_1month")
-            return_obj['chart_3month']= candy.translated(lang, "chart_3month")
-            return_obj['chart_6month']= candy.translated(lang, "chart_6month")
-            return_obj['chart_1year']=candy.translated(lang, "chart_1year")
-            return_obj['chart_ytd']=candy.translated(lang, "chart_ytd")
+            return_obj['chart_1month'] = candy.translated(lang, "chart_1month")
+            return_obj['chart_3month'] = candy.translated(lang, "chart_3month")
+            return_obj['chart_6month'] = candy.translated(lang, "chart_6month")
+            return_obj['chart_1year'] = candy.translated(lang, "chart_1year")
+            return_obj['chart_ytd'] = candy.translated(lang, "chart_ytd")
             return_obj['chart_weekdays'] = candy.translated(lang, "chart_weekdays")
 
             return_obj['chart_months'] = candy.translated(lang, "chart_months")
@@ -165,7 +166,7 @@ def mndwi(request):
 
 
 @csrf_exempt
-def details(request,lang):
+def details(request, lang):
     return_obj = {}
 
     if request.method == 'POST':
@@ -209,13 +210,13 @@ def details(request,lang):
 
 
 @csrf_exempt
-def coucheVillages(request,lang):
+def coucheVillages(request, lang):
     return_obj = {}
     if request.method == 'POST':
         try:
             village = checkVillage()
             return_obj["village"] = village
-            return_obj['msg']= candy.translated(lang, "all_Villages")
+            return_obj['msg'] = candy.translated(lang, "all_Villages")
             return_obj['with'] = candy.translated(lang, "all_with")
             return_obj['inhabitants'] = candy.translated(lang, "all_inhabitants")
             return_obj["success"] = "success"

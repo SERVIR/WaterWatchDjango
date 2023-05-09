@@ -77,7 +77,7 @@ def translation_dictionary(lang):
         'chart_weekdays': ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
         'chart_months': ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
         'chart_shortMonths': ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sept', 'Oct', 'Nov', 'Dec'],
-
+        'all_banner': '''Earth Engine Asset pour les étangs est mis à jour le ''',
         }
     if lang == 'en': return {
         'all_Search':'''Search for ponds''',
@@ -135,6 +135,7 @@ def translation_dictionary(lang):
         'chart_weekdays': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         'chart_months': ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
         'chart_shortMonths': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov','Dec'],
+        'all_banner': '''Earth Engine Asset for the ponds is updated on ''',
         }
 
 
