@@ -213,7 +213,7 @@ html {
 }
 
 #map {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 100px);
     width: 100%;
     /*position: relative;*/
 }
@@ -379,7 +379,7 @@ input:checked + .slider:before {
 }
 
 #wrapper{
-    height: calc(100% - 70px);
+    height: calc(100% - 100px);
 }
 #info{
     color: black;
