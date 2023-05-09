@@ -7,6 +7,14 @@ from .utilities import *
 from . import candy
 
 @csrf_exempt
+def getLastUpdatedDate(request):
+    return_obj = {}
+    with open(data['DATE_FILE']) as f:
+        contents = f.read()
+        return_obj["contents"] = contents
+    return JsonResponse(return_obj)
+
+@csrf_exempt
 def getPondsUrl(request):
     print("from ponds url")
     return_obj = {}

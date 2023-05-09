@@ -51,7 +51,9 @@ var LIBRARY_OBJECT = (function () {
     /************************************************************************
      *                    PRIVATE FUNCTION IMPLEMENTATIONS
      *************************************************************************/
-
+     ajax_update_database("get-lastupdated-date", {}).done(function (data) {
+             document.getElementById("updated_date").innerHTML = data["contents"];
+     });
     document.getElementById("myInput").onkeyup = function () {
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById("myInput");

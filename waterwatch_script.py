@@ -4,16 +4,19 @@
 # Inputs: Google Service Account, Secret key json, Path to the Earth Engine collection
 # Outputs: New images added to the Earth Engine collection
 # Debugging: Please find the logs on the server for any errors encountered while running the script
-
+import json
 import time
 import urllib.request
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from pathlib import Path
 
 import ee
-
+BASE_DIR = Path(__file__).resolve().parent.parent
+f = open(str(BASE_DIR) + '/data.json', )
+data = json.load(f)
 # Initialize the Earth Engine module
 try:
-    credentials = ee.ServiceAccountCredentials('your_service_account', 'your_secret_key.json')
+    credentials = ee.ServiceAccountCredentials(data['EE_SERVICE_ACCOUNT'], data['EE_SECRET_KEY'])
     ee.Initialize(credentials)
 except Exception as e:
     print(e)
@@ -328,6 +331,8 @@ wqicList = processedCollection.toList(wqImages)
 
 print(f"Attemping to export {wqImages} images...")
 
+
+
 # loop through the imagery to export
 for i in range(wqImages):
     if i < 0:
@@ -353,6 +358,10 @@ for i in range(wqImages):
                     print("No connection: sleeping")
                     time.sleep(1)
                 task.start()
+            # writing processed date to the file
+            f = open(data["DATE_FILE"], 'w+')
+            f.write(date.today().strftime("%B %d, %Y"))
+            f.close()
         except Exception as e:
             print(e)
             continue

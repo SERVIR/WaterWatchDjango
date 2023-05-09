@@ -27,6 +27,7 @@ urlpatterns = [
                   path('get-ponds-list/', ajax_controllers.getPondsList, name="get-ponds-list"),
                   path('timeseries/<lang>/', ajax_controllers.timeseries, name="timeseries"),
                   path('forecast/<lang>/', ajax_controllers.forecast, name="forecast"),
+                  path('get-lastupdated-date/', ajax_controllers.getLastUpdatedDate, name="get-lastupdated-date"),
                   path('mndwi/', ajax_controllers.mndwi, name="mndwi"),
                   path('api/getPonds/', api.api_get_ponds, name="getPonds"),
                   path('api/getTimeseries/', api.api_get_timeseries, name="getTimeseries"),
