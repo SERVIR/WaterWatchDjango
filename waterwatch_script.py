@@ -30,10 +30,10 @@ def set_locale(locale_):
 def date_customerprofile(language):
     now_ = datetime.today()
     if language == 'English':
-        set_locale('en_US.utf8')
+        set_locale('en_US')
         date_ = now_.strftime("%B %d, %Y")
     else:
-        set_locale('fr_FR.utf8')
+        set_locale('fr_FR')
         date_ = now_.strftime("%B %d, %Y")
     return date_
 
