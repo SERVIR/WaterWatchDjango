@@ -51,6 +51,7 @@ var LIBRARY_OBJECT = (function () {
     /************************************************************************
      *                    PRIVATE FUNCTION IMPLEMENTATIONS
      *************************************************************************/
+    console.log($('#languageMenu :selected').text())    ;
      ajax_update_database("get-lastupdated-date", {'lang':$('#languageMenu :selected').text()}).done(function (data) {
              document.getElementById("updated_date").innerHTML = data["contents"];
      });

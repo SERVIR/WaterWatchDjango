@@ -31,9 +31,11 @@ def getLastUpdatedDate(request):
     if request.method == 'POST':
         info = request.POST
         lang = info.get('lang')
+        print(lang)
     with open(data['DATE_FILE']) as f:
         contents = f.read()
-        return_obj["contents"] = date_customerprofile(lang,datetime.strptime(contents, "%B %d, %Y"))
+        return_obj["contents"] = date_customerprofile(lang,datetime.datetime.strptime(contents, "%B %d, %Y"))
+        print(return_obj['contents'])
     return JsonResponse(return_obj)
 
 
