@@ -360,7 +360,7 @@ for i in range(wqImages):
                 task.start()
             # writing processed date to the file
             f = open(data["DATE_FILE"], 'w+')
-            f.write(datetime.today())
+            f.write(datetime.strftime(datetime.today(), "%B %d, %Y"))
             f.close()
         except Exception as e:
             print(e)
