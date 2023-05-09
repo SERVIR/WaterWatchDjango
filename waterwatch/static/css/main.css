@@ -184,7 +184,7 @@ html {
 #menulayers {
     position: relative;
     width: inherit;
-    height: calc(100% - 100px);
+    height: calc(100% - 20vh);
 
     /*padding-top: 30px;*/
 }
