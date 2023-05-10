@@ -27,13 +27,14 @@
     padding: 10px;
     background-color: #2c3e50;color: white">
     <div class="float-left position-relative d-flex">
-            <a type="button" class="pr-2 pt-1 text-decoration-none" target="_blank" href="https://servirglobal.net/">
+            <a type="button" class="pr-2 pt-2 text-decoration-none" target="_blank" href="https://servirglobal.net/">
         <img src="/static/images/SERVIR_flat_white.png" height="30" width="150">
     </a>
     <img id="icon_img" src="{% static "/images/logo_2.png" %}">
-        <div class="h-80 pb-2">
-    <p>WENDOU<br>
+        <div class="h-80 pb-2 pl-2">
+    <p id="full_title">WENDOU<br>
         Water ENvironment Dashboard for Observation in support of Users in Ferlo, Senegal</p>
+               <p id="half_title">WENDOU</p>
             </div>
         </div>
 <div class="float-right pt-1" style="z-index: 10;
@@ -43,11 +44,11 @@ right: 15px;
         {{languageMenu|safe}}
 
     <a type="button" class="text-decoration-none text-white" data-bs-toggle="modal" style="right: 350px;"
-       data-bs-target="#help-modal"> <i class="fa fa-info-circle" style="font-size:24px"></i></a>
+       data-bs-target="#help-modal"> <img src="{% static "/images/logos/info.png" %}" width="30"/></a>
 </div>
 
 </div>
-<div class="text-center text-black" style="background: #f8ff85">{{ all_banner }}<span id="updated_date"></span></div>
+<div class="pl-4 text-black" style="background: #7b98bc">{{ all_banner }}<span id="updated_date" class="font-weight-bolder"></span></div>
 <div id="wrapper">
    {% block help_modal %}
         {% endblock help_modal %}

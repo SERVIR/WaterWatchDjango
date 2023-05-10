@@ -184,7 +184,7 @@ html {
 #menulayers {
     position: relative;
     width: inherit;
-    height: calc(100% - 20vh);
+    height: calc(100% - 100px);
 
     /*padding-top: 30px;*/
 }
@@ -234,7 +234,7 @@ html {
 
 
 #icon_img {
-    width: 40px;
+    width: 45px;
 }
 
 #wrapper {
@@ -415,8 +415,8 @@ input:checked + .slider:before {
 .seperator {
   height: 80px;
   width: 1px;
-  background: black;
-  margin: 0 auto;
+  background: #e3e6f0;
+  /*margin: 0 auto;*/
   top: 0;
   bottom: 0;
   /*position: absolute;*/
@@ -425,4 +425,20 @@ input:checked + .slider:before {
 #languageMenu{
     border-radius: 7px;
     height: 40px;
+    margin-right: 15px;
+}
+#half_title{
+    display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    #full_title {
+        display: none;
+    }
+    #half_title{
+       display: block;
+    /*padding-left: 10px;*/
+    padding-top: 6px;
+    font-size: x-large;
+    }
 }
