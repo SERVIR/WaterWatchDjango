@@ -287,6 +287,9 @@ S2_CLOUD_PROBA_COLL = ee.ImageCollection("COPERNICUS/S2_CLOUD_PROBABILITY")
 
 # define the Landat and Sentinel2 surface reflectance products
 LC8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+LC8C2 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+
+
 S2 = ee.ImageCollection('COPERNICUS/S2_SR')
 
 # dictionary containing the threshold for different water indices
@@ -319,49 +322,91 @@ geometry = ee.Geometry.Polygon([[[-15.866, 14.193],
                                  [-15.866, 16.490],
                                  [-15.866, 14.193]]])
 
-# preprocess and merge the landsat8 and sentinel2 data for a spatial/temporal domain
+# preprocess and merge the landsat8 collection 1 and sentinel2 data for a spatial/temporal domain
 mergedCollection = mergeCollections(LC8, S2, geometry, iniDate, endDate).sort('system:time_start', False)
 
-# apply the multi-threshod water mapping process
+# preprocess and merge the landsat8 collection 2 and sentinel2 data for a spatial/temporal domain
+mergedCollectionC2 = mergeCollections(LC8C2, S2, geometry, iniDate, endDate).sort('system:time_start', False)
+
+# apply the multi-threshold water mapping process for collection 1
 processedCollection = mergedCollection.map(watermapping)
 
-# get some info for exports
+# apply the multi-threshold water mapping process for collection 2
+processedCollectionC2 = mergedCollectionC2.map(watermapping)
+
+# get some info for exports collection1
 wqImages = processedCollection.size().getInfo()
 wqicList = processedCollection.toList(wqImages)
 
-print(f"Attemping to export {wqImages} images...")
+# get some info for exports collection 2
+wqImagesC2 = processedCollectionC2.size().getInfo()
+wqicListC2 = processedCollectionC2.toList(wqImages)
 
-
-
-# loop through the imagery to export
-for i in range(wqImages):
-    if i < 0:
-        print("Skipping: " + str(i))
-    else:
-        try:
-            print("In export loop: " + str(i))
-            thisImg = ee.Image(wqicList.get(i))
-            name = thisImg.get('system:index').getInfo()
-            outScale = 30 if "LC08" in name else 10
-            print(f"Image name:{name}")
-            task = ee.batch.Export.image.toAsset(image=thisImg, description='ewf_ponds',
-                                                 assetId='projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds/' + name,
-                                                 scale=outScale,
-                                                 maxPixels=1.0E13, region=thisImg.geometry())
-            while not is_connected:
-                print("No connection: sleeping")
-                time.sleep(1)
+if wqImages >= wqImagesC2:
+    print(f"Attemping to export {wqImages} images from Collection 1...")
+    # loop through the imagery to export
+    for i in range(wqImages):
+        if i < 0:
+            print("Skipping: " + str(i))
+        else:
             try:
-                task.start()
-            except:
-                while not is_connected():
+                print("In export loop: " + str(i))
+                thisImg = ee.Image(wqicList.get(i))
+                name = thisImg.get('system:index').getInfo()
+                outScale = 30 if "LC08" in name else 10
+                print(f"Image name:{name}")
+                task = ee.batch.Export.image.toAsset(image=thisImg, description='ewf_ponds',
+                                                     assetId='projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds/' + name,
+                                                     scale=outScale,
+                                                     maxPixels=1.0E13, region=thisImg.geometry())
+                while not is_connected:
                     print("No connection: sleeping")
                     time.sleep(1)
-                task.start()
-            # writing processed date to the file
-            f = open(data["DATE_FILE"], 'w+')
-            f.write(datetime.strftime(datetime.today(), "%B %d, %Y"))
-            f.close()
-        except Exception as e:
-            print(e)
-            continue
+                try:
+                    task.start()
+                except:
+                    while not is_connected():
+                        print("No connection: sleeping")
+                        time.sleep(1)
+                    task.start()
+                # writing processed date to the file
+                f = open(data["DATE_FILE"], 'w+')
+                f.write(datetime.strftime(datetime.today(), "%B %d, %Y"))
+                f.close()
+            except Exception as e:
+                print(e)
+                continue
+else:
+    print(f"Attemping to export {wqImagesC2} images from Collection 2...")
+    # loop through the imagery to export
+    for i in range(wqImagesC2):
+        if i < 0:
+            print("Skipping: " + str(i))
+        else:
+            try:
+                print("In export loop: " + str(i))
+                thisImg = ee.Image(wqicListC2.get(i))
+                name = thisImg.get('system:index').getInfo()
+                outScale = 30 if "LC08" in name else 10
+                print(f"Image name:{name}")
+                task = ee.batch.Export.image.toAsset(image=thisImg, description='ewf_ponds',
+                                                     assetId='projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds/' + name,
+                                                     scale=outScale,
+                                                     maxPixels=1.0E13, region=thisImg.geometry())
+                while not is_connected:
+                    print("No connection: sleeping")
+                    time.sleep(1)
+                try:
+                    task.start()
+                except:
+                    while not is_connected():
+                        print("No connection: sleeping")
+                        time.sleep(1)
+                    task.start()
+                # writing processed date to the file
+                f = open(data["DATE_FILE"], 'w+')
+                f.write(datetime.strftime(datetime.today(), "%B %d, %Y"))
+                f.close()
+            except Exception as e:
+                print(e)
+                continue
