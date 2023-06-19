@@ -1067,7 +1067,7 @@ var LIBRARY_OBJECT = (function () {
                 data: waterArr,
                 name: messages.chart_msg,
                 tooltip: {
-                    pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f}</b> '
+                    pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
             },
                 // {
