@@ -9,7 +9,8 @@
 /*****************************************************************************
  *                      LIBRARY WRAPPER
  *****************************************************************************/
-console.log("heee")
+var debug_var;
+var debug_map;
 var LIBRARY_OBJECT = (function () {
     // Wrap the library in a package function
     "use strict"; // And enable strict mode for this library
@@ -18,6 +19,7 @@ var LIBRARY_OBJECT = (function () {
      *                      MODULE LEVEL / GLOBAL VARIABLES
      *************************************************************************/
     var base_map2,
+
         current_layer,
         layers,
         map,
@@ -49,7 +51,10 @@ var LIBRARY_OBJECT = (function () {
     /************************************************************************
      *                    PRIVATE FUNCTION IMPLEMENTATIONS
      *************************************************************************/
-
+    console.log($('#languageMenu :selected').text())    ;
+     ajax_update_database("get-lastupdated-date", {'lang':$('#languageMenu :selected').text()}).done(function (data) {
+             document.getElementById("updated_date").innerHTML = data["contents"];
+     });
     document.getElementById("myInput").onkeyup = function () {
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById("myInput");
@@ -66,6 +71,16 @@ var LIBRARY_OBJECT = (function () {
             }
         }
 
+    };
+
+    var btns = document.getElementsByClassName("tab-pane");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            // var current = document.getElementsByClassName("active");
+            // current[0].className = current[0].className.replace(" active", "");
+            // this.className += " active";
+            this.toggleClass("active");
+        });
     }
 
     ajax_update_database("get-ponds-list", {}).done(function (data) {
@@ -74,34 +89,6 @@ var LIBRARY_OBJECT = (function () {
             var obj = [];
             var centers = data['centers'];
             var names = data['names'];
-            // var pondsList = data['ponds'];
-            // for (j = 0; j < pondsList.length; j++) {
-            //     if (pondsList[j]['geometry']['coordinates']) {
-            //         var nn = pondsList[j]['geometry']['coordinates'][0];
-            //      //   console.log(nn)
-            //
-            //         var name = pondsList[j]['properties']['Nom'];
-            //
-            //         if (name.length < 2) name = 'Unnamed pond';
-            //         var k;
-            //         var xx = 0, yy = 0;
-            //         for (k = 0; k < nn.length; k++) {
-            //
-            //             xx = xx + nn[k][0];
-            //             yy = yy + nn[k][1];
-            //
-            //         }
-            //         var center = [ xx / nn.length,yy / nn.length];
-            //
-            //
-            //
-            //         if (center[0] && center[1] && !names.includes(name)) {
-            //
-            //             centers.push(center);
-            //             names.push(name);
-            //         }
-            //     }
-            // }
             var i;
             var myNodelist = document.getElementsByTagName("LI");
             var i;
@@ -110,6 +97,7 @@ var LIBRARY_OBJECT = (function () {
                 var a = document.createElement('a');
                 a.id = centers[i];
                 a.innerHTML = names[i];
+
 
                 a.onclick = function () {
 
@@ -122,34 +110,12 @@ var LIBRARY_OBJECT = (function () {
                         center: ol.proj.transform([parseFloat(this.id.split(',')[0]), parseFloat(this.id.split(',')[1])], 'EPSG:4326', 'EPSG:3857'),
                         zoom: 16
                     });
-                }
+                };
                 li.appendChild(a);
 
                 document.getElementById("myUL").appendChild(li);
 
             }
-
-
-            /*for(i=0;i<names.length;i++) {
-                var newbox = document.createElement('input');
-                newbox.type = "radio";
-                newbox.name = "radiogroup";
-                newbox.value = centers[i];
-                newbox.onclick = function () {
-                    if (this.checked) {
-                        console.log([parseFloat(this.value.split(',')[0]), parseFloat(this.value.split(',')[1])]);
-
-                        map.getView().setCenter(ol.proj.transform([parseFloat(this.value.split(',')[0]), parseFloat(this.value.split(',')[1])], 'EPSG:4326', 'EPSG:3857'));
-                        map.getView().setZoom(16);
-                    }
-                }
-                var lbl = document.createElement('label');
-                lbl.innerHTML = names[i];
-                document.getElementById('cboxes').appendChild(newbox);
-                document.getElementById('cboxes').appendChild(lbl);
-                document.getElementById('cboxes').appendChild(document.createElement('br'));
-            }*/
-            // autocomplete(document.getElementById("myInput"), names);
         }
     });
 
@@ -169,20 +135,23 @@ var LIBRARY_OBJECT = (function () {
             html: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/">ArcGIS</a>'
         });
 
-        var base_map = new ol.layer.Tile({
-            crossOrigin: 'anonymous',
-            source: new ol.source.XYZ({
-                attributions: [attribution],
-                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/' +
-                    'World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-            })
-        });
+        // var base_map = new ol.layer.Tile({
+        //     crossOrigin: 'anonymous',
+        //     source: new ol.source.XYZ({
+        //         attributions: [attribution],
+        //         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/' +
+        //             'World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+        //     })
+        // });
 
         base_map2 = new ol.layer.Tile({
             source: new ol.source.BingMaps({
                 key: '5TC0yID7CYaqv3nVQLKe~xWVt4aXWMJq2Ed72cO4xsA~ApdeyQwHyH_btMjQS1NJ7OHKY8BK-W-EMQMrIavoQUMYXeZIQOUURnKGBOC7UCt4',
                 imagerySet: 'AerialWithLabels' // Options 'Aerial', 'AerialWithLabels', 'Road'
             })
+        });
+        var base_map = new ol.layer.Tile({
+            source: new ol.source.OSM(),
         });
 
         var region_layer = new ol.layer.Tile({
@@ -378,38 +347,54 @@ var LIBRARY_OBJECT = (function () {
 
         var ponds_layer = new ol.layer.Tile({});
 
-        console.log(localStorage['ponds_url'])
-        if (localStorage['ponds_url']) {
-            var ponds_url = JSON.parse(localStorage['ponds_url']);
+        // console.log(localStorage['ponds_url'])
+        //         if (localStorage['ponds_url']) {
+        //             var ponds_url = JSON.parse(localStorage['ponds_url']);
 
-            if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
+        // if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
 
+// var sample_arr=[]
+        ajax_update_database("get-ponds-url", {}).done(function (data) {
+            if ("success" in data) {
+                // localStorage.setItem('ponds_url', JSON.stringify({
+                //     'url': data['url'],
+                //     'time_created': new Date().toString()
+                // }));
+                ponds_layer.setSource(new ol.source.XYZ({
+                    url: data['url']
+                }));
+                // sample_arr=data['sample_arr']
+                // console.log(data['sample_arr']);
 
-                ajax_update_database("get-ponds-url", {}).done(function (data) {
-                    if ("success" in data) {
-                        localStorage.setItem('ponds_url', JSON.stringify({
-                            'url': data['url'],
-                            'time_created': new Date().toString()
-                        }));
-                        ponds_layer.setSource(new ol.source.XYZ({
-                            url: data['url']
-                        }));
-                    }
-                });
-            } else {
-                ajax_update_database("get-ponds-url", {}).done(function (data) {
-                    if ("success" in data) {
-                        localStorage.setItem('ponds_url', JSON.stringify({
-                            'url': data['url'],
-                            'time_created': new Date().toString()
-                        }));
-                        ponds_layer.setSource(new ol.source.XYZ({
-                            url: data['url']
-                        }));
-                    }
-                });
             }
-        }
+        });
+
+        // } else {
+        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
+        //         if ("success" in data) {
+        //             localStorage.setItem('ponds_url', JSON.stringify({
+        //                 'url': data['url'],
+        //                 'time_created': new Date().toString()
+        //             }));
+        //             ponds_layer.setSource(new ol.source.XYZ({
+        //                 url: data['url']
+        //             }));
+        //         }
+        //     });
+        // }
+        // } else{
+        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
+        //             if ("success" in data) {
+        //                 localStorage.setItem('ponds_url', JSON.stringify({
+        //                     'url': data['url'],
+        //                     'time_created': new Date().toString()
+        //                 }));
+        //                 ponds_layer.setSource(new ol.source.XYZ({
+        //                     url: data['url']
+        //                 }));
+        //             }
+        //         });
+        // }
 
         select_feature_source = new ol.source.Vector();
         select_feature_layer = new ol.layer.Vector({
@@ -425,7 +410,6 @@ var LIBRARY_OBJECT = (function () {
         water_source = new ol.source.XYZ();
         water_layer = new ol.layer.Tile({
             source: water_source
-            // url:""
         });
 
         true_source = new ol.source.XYZ();
@@ -442,9 +426,28 @@ var LIBRARY_OBJECT = (function () {
             name: 'mndwi_layer'
         });
 
+        var sourceFeatures = new ol.source.Vector();
+        var layerFeatures = new ol.layer.Vector({source: sourceFeatures});
+
+
         //  layers = [base_map,base_map2,ponds_layer,true_layer,water_layer,boundary_layer,select_feature_layer];
-        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer];
+        layers = [base_map, base_map2, ponds_layer, true_layer, water_layer, select_feature_layer, region_layer, commune_layer, arrondissement_layer, village_layer, departement_layer, Axe_de_transhumance, couloirs_sud, up_praps, up_pafae, up_prodam, up_padaer, up_pasa, up_pdesoc, up_avsf, up_papel, mndwi_layer, layerFeatures];
+        var overviewMapControl = new ol.control.OverviewMap({
+            // see in overviewmap-custom.html to see the custom CSS used
+            className: 'ol-overviewmap ol-custom-overviewmap',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                }), ponds_layer
+            ],
+            collapseLabel: '\u00BB',
+            label: '\u00AB',
+            collapsed: false,
+            collapsible: false,
+            showToggle: false,
+        });
         map = new ol.Map({
+            controls: ol.control.defaults().extend([overviewMapControl]),
             target: 'map',
             layers: layers,
             view: new ol.View({
@@ -452,6 +455,110 @@ var LIBRARY_OBJECT = (function () {
                 zoom: 10
             })
         });
+        debug_map = map;
+
+        var style0 = [
+            new ol.style.Style({
+                image: new ol.style.Icon(({
+                    scale: 0.2,
+                    rotateWithView: false,
+                    anchor: [0.5, 1],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    opacity: 1,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+
+                    src: 'static/js/red.svg'
+                })),
+                zIndex: 5,
+
+            })
+        ];
+        var style1 = [
+            new ol.style.Style({
+                image: new ol.style.Icon(({
+                    scale: 0.2,
+                    rotateWithView: false,
+                    anchor: [0.5, 1],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    opacity: 1,
+                    src: 'static/js/orange.svg'
+                })),
+                zIndex: 5
+            })
+        ];
+        var style2 = [
+            new ol.style.Style({
+                image: new ol.style.Icon(({
+                    scale: 0.2,
+                    rotateWithView: false,
+                    anchor: [0.5, 1],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    opacity: 1,
+                    src: 'static/js/green.svg'
+                })),
+                zIndex: 5
+            })
+        ];
+        function bufferit(pointFeature) {
+            var poitnExtent = pointFeature.getExtent();
+            // console.log(poitnExtent);
+            var bufferedExtent = new ol.extent.buffer(poitnExtent, 10000);
+            // console.log(bufferedExtent);
+            var bufferPolygon = new ol.geom.Polygon(
+                [
+                    [[bufferedExtent[0], bufferedExtent[1]],
+                        [bufferedExtent[0], bufferedExtent[3]],
+                        [bufferedExtent[2], bufferedExtent[3]],
+                        [bufferedExtent[2], bufferedExtent[1]],
+                        [bufferedExtent[0], bufferedExtent[1]]]
+                ]
+            );
+             // console.log("bufferPolygon", bufferPolygon);
+            return bufferPolygon;
+        }
+
+
+        ajax_update_database("get-ponds-list", {}).done(function (data) {
+            if ("success" in data) {
+                var j;
+                var obj = [];
+                var centers = data['centers'];
+                var names = data['names'];
+                var classes = data['classes'];
+                // console.log(centers);
+                for (i = 0; i < centers.length; i++) {
+                    var feature = new ol.Feature({
+                        name: names[i],
+                        type: 'click',
+                        geometry: new ol.geom.Point(ol.proj.transform([parseFloat(centers[i][0]), parseFloat(centers[i][1])], 'EPSG:4326', 'EPSG:3857'))
+                    });
+                    // console.log(feature);
+                    // console.log(new ol.geom.Point(ol.proj.transform([parseFloat(centers[i][0]), parseFloat(centers[i][1])], 'EPSG:4326', 'EPSG:3857')));
+                    if (classes[i] === 0) {
+                        feature.setStyle(style0);
+
+                    } else if (classes[i] === 1) {
+                        feature.setStyle(style1);
+
+                    } else {
+                        feature.setStyle(style2);
+                    }
+                    try {
+                        sourceFeatures.addFeature(feature);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            }
+        });
+        console.log(sourceFeatures);
+        var cc = document.getElementsByClassName('ol-overviewmap ol-unselectable ol-control ol-uncollapsible');
+        document.getElementById('overview_map').appendChild(cc[0]);
+
+
         var params1 = layers[13].getSource().getParams();
         params1.cql_filter = "Projet = 'PRAPS'";
         layers[13].getSource().updateParams(params1);
@@ -496,204 +603,294 @@ var LIBRARY_OBJECT = (function () {
         map.getLayers().item(1).setVisible(false);
 
         init_events = function () {
-            (function () {
-                var target, observer, config;
-                // select the target node
-                target = $('#mutationObj')[0];
+            // (function () {
+            //     var target, observer, config;
+            //     // select the target node
+            //     target = $('#mutationObj')[0];
+            //
+            //     observer = new MutationObserver(function () {
+            //         window.setTimeout(function () {
+            //             map.updateSize();
+            //         }, 350);
+            //     });
+            //     $(window).on('resize', function () {
+            //         map.updateSize();
+            //     });
+            //
+            //     config = {attributes: true};
+            //
+            //     observer.observe(target, config);
+            // }());
+        };
+        document.getElementById('popup').style.display = 'none';
 
-                observer = new MutationObserver(function () {
-                    window.setTimeout(function () {
-                        map.updateSize();
-                    }, 350);
-                });
-                $(window).on('resize', function () {
-                    map.updateSize();
-                });
-
-                config = {attributes: true};
-
-                observer.observe(target, config);
-            }());
-        }
 
         //Map on zoom function. To keep track of the zoom level. Data can only be viewed can only be added at a certain zoom level.
         map.on("moveend", function () {
             var zoom = map.getView().getZoom();
-            var zoomInfo = '<p style="color:black;">Current Zoom level = ' + zoom.toFixed(3) + '.</p>';
-            document.getElementById('zoomlevel').innerHTML = zoomInfo;
+            var zoomInfo = '<span style="color:black;">(zoom.toFixed(3))</span>';
+            document.getElementById('zoomlevel').innerHTML = zoom.toFixed(3);
             if (zoom > 14) {
                 base_map2.setVisible(true);
+                ponds_layer.setVisible(true);
+                layerFeatures.setVisible(false);
+                select_feature_layer.setVisible(true);
+
             } else {
                 base_map2.setVisible(false);
+                ponds_layer.setVisible(false);
+                layerFeatures.setVisible(true);
+                select_feature_layer.setVisible(false);
+
             }
-            // Object.keys(layersDict).forEach(function(key){
-            //     var source =  layersDict[key].getSource();
-            // });
+            // console.log(map.getView().getZoom() );
+            // if (map.getView().getZoom() > 15){
+            //     console.log(map.getLayers().item(22));
+            //     map.getLayers().item(22).setVisible(false);
+            //        map.getLayers().item(3).setVisible(true);
+            //     }
+            //     else{
+            //         map.getLayers().item(22).setVisible(true);
+            //            map.getLayers().item(3).setVisible(false);
+            //     }
+
+        });
+        var hasFeature = false;
+        var names = [], centers = [];
+        ajax_update_database("get-ponds-list", {}).done(function (data) {
+                if ("success" in data) {
+                    var j;
+                    var obj = [];
+                    centers = data['centers'];
+                    names = data['names'];
+                }
+            }
+        );
+
+        let selected = null;
+        map.on('pointermove', function (e) {
+
+            document.getElementById('popup').style.display = 'none';
+
+
+            map.forEachFeatureAtPixel(e.pixel, function (f) {
+                selected = f;
+                if (selected) {
+                    document.getElementById('popup').style.display = 'block';
+                    if (selected.get('name') !== undefined) {
+
+                        const container = document.getElementById('popup');
+                        container.innerHTML = selected.get('name');
+
+                        const popupOverlay = new ol.Overlay({
+                            element: container,
+                            positioning: 'bottom-center',
+                            autoPan: {
+                                animation: {
+                                    duration: 250,
+                                },
+                            },
+                        });
+                        popupOverlay.setPosition(e.coordinate);
+                        map.addOverlay(popupOverlay);
+                    }
+                } else {
+                    document.getElementById('popup').style.display = 'none';
+                }
+            });
+
+
         });
 
 
         map.on("singleclick", function (evt) {
+            // const coord2=new ol.geom.Point(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+            // const b_poly= bufferit(coord2);
+            //  const extent = b_poly.getExtent();
+            //  const boxFeatures = sourceFeatures.getFeaturesInExtent(new ol.geom.Polygon(ol.proj.transform(extent , 'EPSG:4326','EPSG:3857'))); //.filter((feature) => feature.getGeometry().intersectsExtent(extent));
+            //  console.log(boxFeatures);
+                var f = map.forEachFeatureAtPixel(
+                evt.pixel,
+                function (ft, layer) {
+                    return ft;
+                }
+            );
 
-            var zoom = map.getView().getZoom();
             $chartModal.modal('show');
-            if (zoom < 14) {
-
-                $('.info').html('<b>The zoom level has to be 14 or greater. Please check and try again.</b>');
-                $('#info').removeClass('hidden');
-                return false;
-            } else {
-                $('.info').html('');
-                $('#info').addClass('hidden');
-            }
 
             var clickCoord = evt.coordinate;
-            var proj_coords = ol.proj.transform(clickCoord, 'EPSG:3857', 'EPSG:4326');
-            $("#current-lat").val(proj_coords[1]);
-            $("#current-lon").val(proj_coords[0]);
-            var $loading = $('#view-file-loading');
-            var $loadingF = $('#f-view-file-loading');
-            $loading.removeClass('hidden');
-            $loadingF.removeClass('hidden');
-            $("#plotter").addClass('hidden');
-            $("#forecast-plotter").addClass('hidden');
-            //$tsplotModal.modal('show');
+            var proj_coords = [];
+            if (f && f.get('type') === 'click') {
+                debug_var = f;
+                // console.log('inside if');
+                var geometry = f.getGeometry();
+                var coord = geometry.getCoordinates();
 
-            var myGeoJSON1 = [];
-            var myGeoJSON2 = [];
-            var mareSelect, buffered;
-            var $elements;
-            var xhr = ajax_update_database('timeseries', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
-            xhr.done(function (data) {
-                if ("success" in data) {
-                    $('.info').html('');
-                    map.getLayers().item(3).getSource().setUrl("");
-                    map.getLayers().item(4).getSource().setUrl("");
-                    var polygon = new ol.geom.Polygon(data.coordinates);
-                    polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
-                    var feature = new ol.Feature(polygon);
+                proj_coords = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+                console.log(proj_coords);
 
-                    mareSelect = turf.polygon(data.coordinates);
+            }
+            else {
+                // console.log("didn't find one, buffering");
+                var x = evt.pixel[0];
+                var y = evt.pixel[1];
+               var extent = ol.extent.boundingExtent([
+                    map.getCoordinateFromPixel([x - 5, y - 5]),
+                    map.getCoordinateFromPixel([x + 5, y - 5]),
+                    map.getCoordinateFromPixel([x + 5, y + 5]),
+                    map.getCoordinateFromPixel([x - 5, y + 5])
+                ]);
+                var bufferedExtent = new ol.extent.buffer(extent, 2000);
+                var boxFeatures = sourceFeatures.getFeaturesInExtent(bufferedExtent);
+                var debug_features = boxFeatures;
+                if (debug_features.length > 0) {
+                    console.log(debug_features[0]);
+                    proj_coords = (ol.proj.transform(debug_features[0].getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326'));
+                } else {
+                    // console.log("clicked too far");
+                }
+            }
+                $("#current-lat").val(proj_coords[1]);
+                $("#current-lon").val(proj_coords[0]);
+                var $loading = $('#view-file-loading');
+                // var $loadingF = $('#f-view-file-loading');
+                $loading.removeClass('hidden');
+                // $loadingF.removeClass('hidden');
+                $("#plotter").addClass('hidden');
+                $("#forecast-plotter").addClass('hidden');
+                //$tsplotModal.modal('show');
 
-                    buffered = turf.buffer(mareSelect, 10, {units: 'kilometers'});
-                    var villagehr = ajax_update_database('coucheVillages');
-                    villagehr.done(function (data2) {
-                        for (var iter = 0; iter < data2.village.length; iter++) {
-                            var buff1 = turf.feature(data2.village[iter].geometry, data2.village[iter].properties);
-                            if (turf.booleanWithin(buff1, buffered)) {
-                                var ptsWithin = 'Village :' + data2.village[iter].properties['Toponymie'] + '// Population ' + data2.village[iter].properties['EffectifPo'];
-                                myGeoJSON1.push(buff1);
-                                myGeoJSON2.push(ptsWithin);
-                                var x = document.createElement("p");
-                                var x1 = document.createElement("b");
-                                var t = document.createTextNode(data2.village[iter].properties['Toponymie']);
-                                var t1 = document.createTextNode(" avec  " + data2.village[iter].properties['EffectifPo'] + " habitants");
-                                x1.appendChild(t);
-                                x.appendChild(x1);
-                                x.appendChild(t1);
-                                var newElement = $('<div>', {text: data2.village[iter].properties['Toponymie'] + '  avec  ' + data2.village[iter].properties['EffectifPo'] + ' habitants'});
-                                if ($elements) {
-                                    $elements = $($elements).add(x);
-                                } else {
-                                    $elements = $().add(x);
+                var myGeoJSON1 = [];
+                var myGeoJSON2 = [];
+                var mareSelect, buffered;
+                var $elements;
+                $("#plotter").empty();
+                $('.info').html('');
+                $loading.show();
+                $("#forecast-plotter").empty();
+                // $loadingF.show();
+                var xhr = ajax_update_database($("#Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                xhr.done(function (data) {
+                    if ("success" in data) {
+                        $('.info').html('');
+                        map.getLayers().item(3).getSource().setUrl("");
+                        map.getLayers().item(4).getSource().setUrl("");
+                        var polygon = new ol.geom.Polygon(data.coordinates);
+                        polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
+                        var feature = new ol.Feature(polygon);
+
+                        mareSelect = turf.polygon(data.coordinates);
+
+                        buffered = turf.buffer(mareSelect, 10, {units: 'kilometers'});
+                        var villagehr = ajax_update_database($("#couches_Url").attr("data-url"));
+                        villagehr.done(function (data2) {
+                            for (var iter = 0; iter < data2.village.length; iter++) {
+                                var buff1 = turf.feature(data2.village[iter].geometry, data2.village[iter].properties);
+                                if (turf.booleanWithin(buff1, buffered)) {
+                                    var ptsWithin = 'Village :' + data2.village[iter].properties['Toponymie'] + '// Population ' + data2.village[iter].properties['EffectifPo'];
+                                    myGeoJSON1.push(buff1);
+                                    myGeoJSON2.push(ptsWithin);
+                                    var x = document.createElement("p");
+                                    var x1 = document.createElement("b");
+                                    var t = document.createTextNode(data2.village[iter].properties['Toponymie']);
+                                    var t1 = document.createTextNode(' '+data2.with+' ' + data2.village[iter].properties['EffectifPo'] + ' '+data2.inhabitants);
+                                    x1.appendChild(t);
+                                    x.appendChild(x1);
+                                    x.appendChild(t1);
+                                    var newElement = $('<div>', {text: data2.village[iter].properties['Toponymie'] + ' '+data2.with+' '  + data2.village[iter].properties['EffectifPo'] + ' '+data2.inhabitants});
+                                    if ($elements) {
+                                        $elements = $($elements).add(x);
+                                    } else {
+                                        $elements = $().add(x);
+                                    }
                                 }
                             }
-                        }
-                        $("#meta-table-village").html('');
-                        var h = document.createElement("h2");
-                        var titre = document.createTextNode("Villages à 10 km de la mare de " + data.name);
-                        h.appendChild(titre);
-                        $("#meta-table-village").append(h);
-                        $("#meta-table-village").append($elements);
-                        $("#reset").removeClass('hidden');
+                            $("#meta-table-village").html('');
+                            var h = document.createElement("h5");
+                            var b = document.createElement("br");
+                            var titre = document.createTextNode(data2.msg + data.name);
+                            h.appendChild(titre);
+                            $("#meta-table-village").append(b);
+                            $("#meta-table-village").append(h);
+                            $("#meta-table-village").append($elements);
+                            $("#reset").removeClass('hidden');
+                            $("#reset").removeClass('hidden');
 
-                    });
-                    var buffOut1 = turf.featureCollection(myGeoJSON1);
+                        });
+                        var buffOut1 = turf.featureCollection(myGeoJSON1);
 
-                    map.getLayers().item(5).getSource().clear();
-                    select_feature_source.addFeature(feature);
-                    console.log(proj_coords)
-                    console.log(data.name)
-                    console.log(data.values)
+                        map.getLayers().item(5).getSource().clear();
+                        select_feature_source.addFeature(feature);
+                        // console.log(data.values);
+                        // console.log(data.name);
+                        generate_chart(data.values, proj_coords[1], proj_coords[0], data.name,data);
 
-                    generate_chart(data.values, proj_coords[1], proj_coords[0], data.name);
+                        $loading.hide();
+                    } else {
+                        $('.info').html(data.error + '</b>');
+                        $('#info').removeClass('hidden');
+                        $loading.hide();
 
-                    $loading.addClass('hidden');
-                    $("#plotter").removeClass('hidden');
+                    }
 
-                } else {
-                    $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
-                    $('#info').removeClass('hidden');
-                    $loading.addClass('hidden');
-
-                }
-            });
+                });
 
 
-            var yhr = ajax_update_database('forecast', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
-            yhr.done(function (data) {
-                if ("success" in data) {
-                    $('.info').html('');
-                    map.getLayers().item(3).getSource().setUrl("");
-                    var polygon = new ol.geom.Polygon(data.coordinates);
-                    polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
-                    var feature = new ol.Feature(polygon);
+                // var yhr = ajax_update_database($("#forecast_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                // yhr.done(function (data) {
+                //     if ("success" in data) {
+                //         $('.info').html('');
+                //         map.getLayers().item(3).getSource().setUrl("");
+                //         var polygon = new ol.geom.Polygon(data.coordinates);
+                //         polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
+                //         var feature = new ol.Feature(polygon);
+                //
+                //         map.getLayers().item(5).getSource().clear();
+                //         select_feature_source.addFeature(feature);
+                //
+                //         generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data);
+                //
+                //         $loadingF.hide();
+                //         $("#forecast-plotter").removeClass('hidden');
+                //
+                //     } else {
+                //         $('.info').html(data.error + '</b>');
+                //         $('#info').removeClass('hidden');
+                //         $loadingF.hide();
+                //
+                //     }
+                // });
+                var zhr = ajax_update_database($("#details_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                zhr.done(function (data) {
+                    if ("success" in data) {
+                        $('.info').html('');
+                        map.getLayers().item(3).getSource().setUrl("");
+                        var polygon = new ol.geom.Polygon(data.coordinates);
+                        polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
+                        var feature = new ol.Feature(polygon);
 
-                    map.getLayers().item(5).getSource().clear();
-                    select_feature_source.addFeature(feature);
+                        map.getLayers().item(5).getSource().clear();
+                        select_feature_source.addFeature(feature);
+                        generate_details(proj_coords[1], proj_coords[0], data);
 
-                    generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name);
+                        // $loadingF.hide();
+                        //                  $("#details-plotter").removeClass('hidden');
 
-                    $loadingF.addClass('hidden');
-                    $("#forecast-plotter").removeClass('hidden');
+                    } else {
+                        $('.info').html( data.error + '</b>');
+                        $('#info').removeClass('hidden');
+                        // $loadingF.addClass('hidden');
+                    }
+                });
 
-                } else {
-                    $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
-                    $('#info').removeClass('hidden');
-                    $loadingF.addClass('hidden');
-
-                }
-            });
-            var zhr = ajax_update_database('details', {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
-            zhr.done(function (data) {
-                if ("success" in data) {
-                    $('.info').html('');
-                    map.getLayers().item(3).getSource().setUrl("");
-                    var polygon = new ol.geom.Polygon(data.coordinates);
-                    polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
-                    var feature = new ol.Feature(polygon);
-
-                    map.getLayers().item(5).getSource().clear();
-                    select_feature_source.addFeature(feature);
-                    generate_details(proj_coords[1], proj_coords[0], data.namePond, data.sup_Pond, data.coordinates, data.nameRegion, data.nameCommune, data.nameArrondissement);
-
-                    $loadingF.addClass('hidden');
-                    //                  $("#details-plotter").removeClass('hidden');
-
-                } else {
-                    $('.info').html('<b>Erreur lors du traitement de la demande. Assurez-vous de cliquer sur une fonctionnalité.' + data.error + '</b>');
-                    $('#info').removeClass('hidden');
-                    $loadingF.addClass('hidden');
-                }
-            });
         });
-        //       map.on('pointermove', function(evt) {
-        //           if (evt.dragging) {
-        //               return;
-        //           }
-        //           var pixel = map.getEventPixel(evt.originalEvent);
-        //           var hit = map.forEachLayerAtPixel(pixel, function(layer) {
-        //               if (layer == layers[2]){
-        //                   current_layer = layer;
-        //                   return true;}
-        //           });
-        //           map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-        // });
     };
 
-    generate_chart = function (data, lat, lon, name) {
-        var timeArr = []
-        var waterArr = []
-        var errArr = []
+    generate_chart = function (data, lat, lon, name,messages) {
+        $("#plotter").empty();
+        var timeArr = [];
+        var waterArr = [];
+        var errArr = [];
         var timestamp, water, stddev, minerr, maxerr;
         for (var i = 0; i < data.length; i++) {
             if (data[i][1].water != null) {
@@ -709,15 +906,67 @@ var LIBRARY_OBJECT = (function () {
                     maxerr = 1
                 }
                 timeArr.push(timestamp)
-                waterArr.push([timestamp, water])
+                waterArr.push([timestamp, parseFloat(water)*100])
                 errArr.push([timestamp, minerr, maxerr])
             }
         }
+    Highcharts.setOptions({
+    lang: {
+        weekdays:messages.chart_weekdays,
+        months:messages.chart_months,
+        shortMonths:messages.chart_shortMonths,
+    } });
+        console.log(waterArr)
         Highcharts.stockChart('plotter', {
             chart: {
                 type: 'line',
                 zoomType: 'x'
             },
+                rangeSelector: {
+                    enabled: true,
+                    allButtonsEnabled: true,
+                    selected: 1,
+                    buttons: [{
+                        type: 'month',
+                        count: 1,
+                        text: '1m',
+                        title: messages.chart_1month
+                    }, {
+                        type: 'month',
+                        count: 3,
+                        text: '3m',
+                        title: messages.chart_3month
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m',
+                        title:messages.chart_6month
+                    }, {
+                        type: 'ytd',
+                        text: 'YTD',
+                        title: messages.chart_ytd
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1y',
+                        title: messages.chart_1year
+                    }, {
+                        type: 'all',
+                        text: messages.chart_all,
+                        title: messages.chart_all
+                    }]
+                },
+            lang: {
+                viewFullscreen: messages.chart_viewFullscreen,
+                printChart: messages.chart_printChart,
+                downloadPNG: messages.chart_downloadPNG,
+                downloadJPEG: messages.chart_downloadJPEG,
+                downloadPDF: messages.chart_downloadPDF,
+                downloadSVG: messages.chart_downloadSVG,
+                downloadCSV: messages.chart_downloadCSV,
+                downloadXLS: messages.chart_downloadXLS,
+                viewData: messages.chart_viewData,
+        },
             plotOptions: {
                 series: {
                     marker: {
@@ -748,10 +997,11 @@ var LIBRARY_OBJECT = (function () {
                                         $("#reset").removeClass('hidden');
                                         $("#layers_checkbox").removeClass('hidden');
                                     } else {
-                                        $('.info').html('<b>Error processing the request. Please be sure to click on a feature.' + data.error + '</b>');
+                                        $('.info').html( data.error + '</b>');
                                         $('#info').removeClass('hidden');
                                         $("#layers_checkbox").addClass('hidden');
                                     }
+
                                 });
 
                             }
@@ -760,17 +1010,20 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: 'Percent coverage of water at ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
+                text: messages.msg +' ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
                 // style: {
                 //     fontSize: '13px',
                 //     fontWeight: 'bold'
                 // }
             },
+            data: {
+
+            },
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%d %b %Y}'
-                    // rotation: 90,
+                    format: '{value:%d %b %Y}',
+                     rotation: 45,
                     // align: 'left'
                 },
                 title: {
@@ -785,29 +1038,47 @@ var LIBRARY_OBJECT = (function () {
                 min: 0,
             },
             exporting: {
-                enabled: true
+                enabled: true,
+                csv: {
+                    columnHeaderFormatter: function (item, key) {
+                        if (item.isXAxis) {
+                            return 'Date';
+                        } else {
+                            return 'Water Coverage'
+                        }
+                    },
+                }
             },
+             navigator: {
+        series: {
+            includeInCSVExport: false
+        }
+    },
             series: [{
                 data: waterArr,
-                name: 'Water coverage',
+                name: messages.chart_msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
             },
-                {
-                    name: 'Water error',
-                    type: 'errorbar',
-                    data: errArr,
-                    tooltip: {
-                        pointFormat: '(Coverage range: {point.low:.4f}-{point.high:.4f} %)<br/>'
-                    },
-                }],
+                // {
+                //     name: 'Water error',
+                //     type: 'errorbar',
+                //     data: errArr,
+                //     tooltip: {
+                //         pointFormat: '(Coverage range: {point.low:.4f}-{point.high:.4f} %)<br/>'
+                //     },
+                // }
+                ],
             tooltip: {
                 shared: true,
+                xDateFormat: '%A, %b %e, %Y, %H:%M'
             }
         });
+
+        $("#plotter").removeClass('hidden');
     };
-    generate_forecast = function (data, lat, lon, name) {
+    generate_forecast = function (data, lat, lon, name,messages) {
 
         var data1 = []
         for (var i = 0; i < data.length; i++) {
@@ -816,11 +1087,62 @@ var LIBRARY_OBJECT = (function () {
                 data1.push([data[i][0], data[i][1].water]);
             }
         }
+           Highcharts.setOptions({
+    lang: {
+        weekdays:messages.chart_weekdays,
+        months:messages.chart_months,
+        shortMonths:messages.chart_shortMonths,
+    } });
         Highcharts.stockChart('forecast-plotter', {
             chart: {
                 type: 'line',
                 zoomType: 'x'
             },
+            rangeSelector: {
+                    enabled: true,
+                    allButtonsEnabled: true,
+                    selected: 1,
+                    buttons: [{
+                        type: 'month',
+                        count: 1,
+                        text: '1m',
+                        title: messages.chart_1month
+                    }, {
+                        type: 'month',
+                        count: 3,
+                        text: '3m',
+                        title: messages.chart_3month
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m',
+                        title:messages.chart_6month
+                    }, {
+                        type: 'ytd',
+                        text: 'YTD',
+                        title: messages.chart_ytd
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1y',
+                        title: messages.chart_1year
+                    }, {
+                        type: 'all',
+                        text: messages.chart_all,
+                        title: messages.chart_all
+                    }]
+                },
+            lang: {
+                viewFullscreen: messages.chart_viewFullscreen,
+                printChart: messages.chart_printChart,
+                downloadPNG: messages.chart_downloadPNG,
+                downloadJPEG: messages.chart_downloadJPEG,
+                downloadPDF: messages.chart_downloadPDF,
+                downloadSVG: messages.chart_downloadSVG,
+                downloadCSV: messages.chart_downloadCSV,
+                downloadXLS: messages.chart_downloadXLS,
+                viewData: messages.chart_viewData,
+        },
             plotOptions: {
                 series: {
                     marker: {
@@ -864,18 +1186,13 @@ var LIBRARY_OBJECT = (function () {
                 }
             },
             title: {
-                text: 'Percent coverage of water at ' + (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
-                // style: {
-                //     fontSize: '13px',
-                //     fontWeight: 'bold'
-                // }
+                text: messages.msg +' '+ (name) + ' (' + (lon.toFixed(3)) + ',' + (lat.toFixed(3)) + ')'
             },
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%d %b %Y}'
-                    // rotation: 90,
-                    // align: 'left'
+                    format: '{value:%d %b %Y}',
+                    rotation: 45,
                 },
                 title: {
                     text: 'Date'
@@ -892,20 +1209,29 @@ var LIBRARY_OBJECT = (function () {
                 enabled: true
             },
             series: [{
-
                 data: data1,
-                name: 'Forecast percent coverage of water',
+                name: messages.chart_msg,
                 tooltip: {
                     pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
                 }
-
-            }]
+            }],
+            tooltip: {
+                shared: true,
+                xDateFormat: '%A, %b %e, %Y, %H:%M'
+            }
         });
     };
 
-    generate_details = function (lat, lon, namePond, sup_Pond, coordinates, nameRegion, nameCommune, nameArrondissement) {
+      generate_details = function (lat, lon, data) {
         $("#meta-table-details").html('');
-        $("#meta-table-details").append('<tbody><tr><th>Latitude</th><td>' + (lat.toFixed(6)) + '</td></tr><tr><th>Longitude</th><td>' + (lon.toFixed(6)) + '</td></tr><tr><th>Nom Mare</th><td>' + namePond + '</td></tr><tr><th>Superficie</th><td>' + sup_Pond + '</td></tr><tr><th>Nom région</th><td>' + nameRegion + '</td></tr><tr><th>Nom arrondissement</th><td>' + nameArrondissement + '</td></tr><tr><th>Nom commune</th><td>' + nameCommune + '</td></tr></tbody>');
+        $("#meta-table-details").append('<tbody>' +
+            '<tr><th>Latitude</th><td>' + (lat.toFixed(6)) + '</td></tr>' +
+            '<tr><th>Longitude</th><td>' + (lon.toFixed(6)) + '</td></tr>' +
+            '<tr><th>'+data.namePond_label+'</th><td>' + data.namePond + '</td></tr>' +
+            '<tr><th>'+data.sup_Pond_label+'</th><td>' + data.sup_Pond + '</td></tr>' +
+            '<tr><th>'+data.nameRegion_label+'</th><td>' + data.nameRegion + '</td></tr>' +
+            '<tr><th>'+data.nameArrondissement_label+'</th><td>' +  data.nameArrondissement + '</td></tr>' +
+            '<tr><th>'+data.nameCommune_label+'</th><td>' + data.nameCommune + '</td></tr></tbody>');
         $("#reset").removeClass('hidden');
 
     };
@@ -952,7 +1278,56 @@ var LIBRARY_OBJECT = (function () {
                 map.getLayers().item(3).setVisible(false);
             }
         });
+        document.getElementById("search_ponds_list").style.maxHeight = (window.innerHeight - 200) + "px";
 
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+
+                if (this.id === "first_list") {
+                    document.getElementById("first_list").classList.toggle("display_list");
+                    document.getElementById("second_list").classList.toggle("display_list");
+
+                    var content = document.getElementById("second_list").nextElementSibling;
+                    var content1 = document.getElementById("first_list").nextElementSibling;
+
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+                    if (content1.style.maxHeight) {
+                        content1.style.maxHeight = null;
+                    } else {
+                        content1.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+
+                } else {
+                    document.getElementById("first_list").classList.toggle("display_list");
+
+                    document.getElementById("second_list").classList.toggle("display_list");
+
+                    var content2 = document.getElementById("second_list").nextElementSibling;
+                    var content3 = document.getElementById("first_list").nextElementSibling;
+
+                    if (content2.style.maxHeight) {
+                        content2.style.maxHeight = null;
+                    } else {
+                        content2.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+                    if (content3.style.maxHeight) {
+                        content3.style.maxHeight = null;
+                    } else {
+                        content3.style.maxHeight = window.innerHeight - 200 + "px";
+                    }
+
+                }
+
+
+            });
+        }
         $('#select_mndwi_layer').change(function () {
             // this will contain a reference to the checkbox
             if (this.checked) {
@@ -1094,6 +1469,7 @@ var LIBRARY_OBJECT = (function () {
                 map.getLayers().item(20).setVisible(false);
             }
         });
+
     });
 
     return public_interface;
