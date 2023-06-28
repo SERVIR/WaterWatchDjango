@@ -740,9 +740,9 @@ var LIBRARY_OBJECT = (function () {
                 $("#current-lat").val(proj_coords[1]);
                 $("#current-lon").val(proj_coords[0]);
                 var $loading = $('#view-file-loading');
-                var $loadingF = $('#f-view-file-loading');
+                // var $loadingF = $('#f-view-file-loading');
                 $loading.removeClass('hidden');
-                $loadingF.removeClass('hidden');
+                // $loadingF.removeClass('hidden');
                 $("#plotter").addClass('hidden');
                 $("#forecast-plotter").addClass('hidden');
                 //$tsplotModal.modal('show');
@@ -755,7 +755,7 @@ var LIBRARY_OBJECT = (function () {
                 $('.info').html('');
                 $loading.show();
                 $("#forecast-plotter").empty();
-                $loadingF.show();
+                // $loadingF.show();
                 var xhr = ajax_update_database($("#Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
                 xhr.done(function (data) {
                     if ("success" in data) {
@@ -823,30 +823,30 @@ var LIBRARY_OBJECT = (function () {
                 });
 
 
-                var yhr = ajax_update_database($("#forecast_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
-                yhr.done(function (data) {
-                    if ("success" in data) {
-                        $('.info').html('');
-                        map.getLayers().item(3).getSource().setUrl("");
-                        var polygon = new ol.geom.Polygon(data.coordinates);
-                        polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
-                        var feature = new ol.Feature(polygon);
-
-                        map.getLayers().item(5).getSource().clear();
-                        select_feature_source.addFeature(feature);
-
-                        generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data);
-
-                        $loadingF.hide();
-                        $("#forecast-plotter").removeClass('hidden');
-
-                    } else {
-                        $('.info').html(data.error + '</b>');
-                        $('#info').removeClass('hidden');
-                        $loadingF.hide();
-
-                    }
-                });
+                // var yhr = ajax_update_database($("#forecast_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
+                // yhr.done(function (data) {
+                //     if ("success" in data) {
+                //         $('.info').html('');
+                //         map.getLayers().item(3).getSource().setUrl("");
+                //         var polygon = new ol.geom.Polygon(data.coordinates);
+                //         polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
+                //         var feature = new ol.Feature(polygon);
+                //
+                //         map.getLayers().item(5).getSource().clear();
+                //         select_feature_source.addFeature(feature);
+                //
+                //         generate_forecast(data.values, proj_coords[1], proj_coords[0], data.name,data);
+                //
+                //         $loadingF.hide();
+                //         $("#forecast-plotter").removeClass('hidden');
+                //
+                //     } else {
+                //         $('.info').html(data.error + '</b>');
+                //         $('#info').removeClass('hidden');
+                //         $loadingF.hide();
+                //
+                //     }
+                // });
                 var zhr = ajax_update_database($("#details_Url").attr("data-url"), {'lat': proj_coords[1], 'lon': proj_coords[0]}, 'name');
                 zhr.done(function (data) {
                     if ("success" in data) {
@@ -860,13 +860,13 @@ var LIBRARY_OBJECT = (function () {
                         select_feature_source.addFeature(feature);
                         generate_details(proj_coords[1], proj_coords[0], data);
 
-                        $loadingF.hide();
+                        // $loadingF.hide();
                         //                  $("#details-plotter").removeClass('hidden');
 
                     } else {
                         $('.info').html( data.error + '</b>');
                         $('#info').removeClass('hidden');
-                        $loadingF.addClass('hidden');
+                        // $loadingF.addClass('hidden');
                     }
                 });
 
@@ -893,16 +893,32 @@ var LIBRARY_OBJECT = (function () {
                     maxerr = 1
                 }
                 timeArr.push(timestamp)
-                waterArr.push([timestamp, water])
+                waterArr.push([timestamp, parseFloat(water)*100])
                 errArr.push([timestamp, minerr, maxerr])
             }
         }
+        (function(H) {
+  H.wrap(H.Chart.prototype, 'getDataRows', function(proceed, multiLevelHeaders) {
+
+    var rows = proceed.call(this, multiLevelHeaders);
+
+    rows = rows.map(row => {
+      if (row.x) {
+        row[0] = Highcharts.dateFormat('%d %b %Y', row.x);
+      }
+      return row;
+    });
+
+    return rows;
+  });
+}(Highcharts));
     Highcharts.setOptions({
     lang: {
         weekdays:messages.chart_weekdays,
         months:messages.chart_months,
         shortMonths:messages.chart_shortMonths,
     } });
+        console.log(waterArr)
         Highcharts.stockChart('plotter', {
             chart: {
                 type: 'line',
@@ -1002,6 +1018,9 @@ var LIBRARY_OBJECT = (function () {
                 //     fontWeight: 'bold'
                 // }
             },
+            data: {
+
+            },
             xAxis: {
                 type: 'datetime',
                 labels: {
@@ -1017,12 +1036,20 @@ var LIBRARY_OBJECT = (function () {
                 title: {
                     text: '%'
                 },
-                max: 1,
-                min: 0,
+          /*      max: 1,
+                min: 0,*/
             },
             exporting: {
-                enabled: true
+                enabled: true,
+                csv: {
+
+                }
             },
+             navigator: {
+        series: {
+            includeInCSVExport: false
+        }
+    },
             series: [{
                 data: waterArr,
                 name: messages.chart_msg,
@@ -1044,7 +1071,6 @@ var LIBRARY_OBJECT = (function () {
                 xDateFormat: '%A, %b %e, %Y, %H:%M'
             }
         });
-
 
         $("#plotter").removeClass('hidden');
     };
@@ -1182,7 +1208,7 @@ var LIBRARY_OBJECT = (function () {
                 data: data1,
                 name: messages.chart_msg,
                 tooltip: {
-                    pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:.4f} %</b> '
+                    pointFormat: '<span style="font-weight: bold;">{series.name}</span>: <b>{point.y:4f}</b> '
                 }
             }],
             tooltip: {
