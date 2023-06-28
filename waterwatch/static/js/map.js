@@ -347,54 +347,41 @@ var LIBRARY_OBJECT = (function () {
 
         var ponds_layer = new ol.layer.Tile({});
 
-        // console.log(localStorage['ponds_url'])
-        //         if (localStorage['ponds_url']) {
-        //             var ponds_url = JSON.parse(localStorage['ponds_url']);
+        if (localStorage['ponds_url']) {
+            var ponds_url = JSON.parse(localStorage['ponds_url']);
 
-        // if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
+            if (new Date(ponds_url.time_created) < new Date().setDate(new Date().getDate() - 1)) {
 
-// var sample_arr=[]
-        ajax_update_database("get-ponds-url", {}).done(function (data) {
-            if ("success" in data) {
-                // localStorage.setItem('ponds_url', JSON.stringify({
-                //     'url': data['url'],
-                //     'time_created': new Date().toString()
-                // }));
+
+                ajax_update_database("get-ponds-url", {}).done(function (data) {
+                    if ("success" in data) {
+                        localStorage.setItem('ponds_url', JSON.stringify({
+                            'url': data['url'],
+                            'time_created': new Date().toString()
+                        }));
+                        ponds_layer.setSource(new ol.source.XYZ({
+                            url: data['url']
+                        }));
+                    }
+                });
+            } else {
                 ponds_layer.setSource(new ol.source.XYZ({
-                    url: data['url']
+                    url: JSON.parse(localStorage['ponds_url']).url
                 }));
-                // sample_arr=data['sample_arr']
-                // console.log(data['sample_arr']);
-
             }
-        });
-
-        // } else {
-        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
-        //         if ("success" in data) {
-        //             localStorage.setItem('ponds_url', JSON.stringify({
-        //                 'url': data['url'],
-        //                 'time_created': new Date().toString()
-        //             }));
-        //             ponds_layer.setSource(new ol.source.XYZ({
-        //                 url: data['url']
-        //             }));
-        //         }
-        //     });
-        // }
-        // } else{
-        //     ajax_update_database("get-ponds-url", {}).done(function (data) {
-        //             if ("success" in data) {
-        //                 localStorage.setItem('ponds_url', JSON.stringify({
-        //                     'url': data['url'],
-        //                     'time_created': new Date().toString()
-        //                 }));
-        //                 ponds_layer.setSource(new ol.source.XYZ({
-        //                     url: data['url']
-        //                 }));
-        //             }
-        //         });
-        // }
+        } else{
+            ajax_update_database("get-ponds-url", {}).done(function (data) {
+                if ("success" in data) {
+                    localStorage.setItem('ponds_url', JSON.stringify({
+                        'url': data['url'],
+                        'time_created': new Date().toString()
+                    }));
+                    ponds_layer.setSource(new ol.source.XYZ({
+                        url: data['url']
+                    }));
+                }
+            });
+        }
 
         select_feature_source = new ol.source.Vector();
         select_feature_layer = new ol.layer.Vector({
