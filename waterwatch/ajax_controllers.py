@@ -52,11 +52,14 @@ def getPondsUrl(request):
     if request.method == 'POST':
 
         try:
-            return_obj["url"] = initLayers()
+            with open(data['JSON_PATH'], 'r') as openfile:
+                json_object = json.load(openfile)
+            return_obj["url"] = json_object["url"]
             # print(return_obj)
             return_obj["success"] = "success"
 
         except Exception as e:
+            print(e)
             return_obj["error"] = candy.translated(request, "all_Error")
     return JsonResponse(return_obj)
 

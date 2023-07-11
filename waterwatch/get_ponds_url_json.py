@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
+
 import ee
+
 from ee import EEException
 BASE_DIR = Path(__file__).resolve().parent.parent
 f = open(str(BASE_DIR) + '/data.json', )
