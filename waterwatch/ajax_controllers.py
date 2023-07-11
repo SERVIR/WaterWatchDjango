@@ -52,7 +52,7 @@ def getPondsUrl(request):
     if request.method == 'POST':
 
         try:
-            with open(data['JSON_PATH'], 'r') as openfile:
+            with open(data['URL_PATH'], 'r') as openfile:
                 json_object = json.load(openfile)
             return_obj["url"] = json_object["url"]
             # print(return_obj)
@@ -73,12 +73,14 @@ def getPondsList(request):
     if request.method == 'POST':
 
         try:
-            names, centers, classes = pondsList()
-            return_obj["centers"] = centers
-            return_obj["names"] = names
-            return_obj["classes"] = classes
+            with open(data['LIST_PATH'], 'r') as openfile:
+                json_object = json.load(openfile)
+            # names, centers, classes = pondsList()
+                return_obj["centers"] = json_object["centers"]
+                return_obj["names"] = json_object["names"]
+                return_obj["classes"] = json_object["classes"]
 
-            return_obj["success"] = "success"
+                return_obj["success"] = "success"
 
         except Exception as e:
             return_obj["error"] = candy.translated(request, "all_Error")

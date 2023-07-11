@@ -14,10 +14,8 @@ try:
 
 except EEException:
     ee.Initialize()
-
 visParams = {'min': 0, 'max': 3, 'palette': 'red,#FF9300,green,gray'}
 waterCollection = ee.ImageCollection("projects/servir-wa/services/ephemeral_water_ferlo/processed_ponds")
-
 def addArea(feature):
     return feature.set('area', feature.area());
 def pondClassifier(shape):
@@ -41,21 +39,38 @@ def pondClassifier(shape):
     return ee.Feature(shape).set({'pondCls': cls})
 ponds = ee.FeatureCollection('projects/servir-wa/services/ephemeral_water_ferlo/ferlo_ponds') \
     .map(addArea).filter(ee.Filter.gt("area", 10000))
-ponds_cls = ee.FeatureCollection(ponds.map(pondClassifier))
+def pondsList():
 
-# Pimage = ee.Image().paint(ponds,"pondCls").blend(
-#     ee.Image().paint(ponds,"pondCls",1.5)
-# )
-Pimage = ponds_cls.reduceToImage(
-    properties=['pondCls'],
-    reducer=ee.Reducer.first()
-)
+    xx =  ee.FeatureCollection(ponds.map(pondClassifier)).getInfo()
+    names = []
+    centers = []
+    classes=[]
+    return_obj = {}
+    for feature in xx['features']:
+        if feature['properties']['Nom']:
+            name = feature['properties']['Nom']
+            pclass= feature['properties']['pondCls']
+            if len(feature['geometry']['coordinates'][0][0]) > 2:
+                # print(len(feature['geometry']['coordinates'][0][0]))
+                points = feature['geometry']['coordinates'][0][0]
+            else:
+                # print(len(feature['geometry']['coordinates'][0][0]))
+                points = feature['geometry']['coordinates'][0]
+            x = [p[0] for p in points if p[0] and p[1]]
+            y = [p[1] for p in points if p[0] and p[1]]
+            centroid = [sum(x) / len(points), sum(y) / len(points)]
+            if name not in names:
+                names.append(str(name))
+                centers.append(centroid)
+                classes.append(pclass)
+    names, centers, classes = (list(t) for t in zip(*sorted(zip(names, centers, classes), reverse=False)))
 
-def initLayers():
-    pondsImgID = Pimage.getMapId(visParams)
-    return pondsImgID['tile_fetcher'].url_format
+    return names, centers, classes
+return_obj={}
+names, centers, classes = pondsList()
+return_obj["centers"] = centers
+return_obj["names"] = names
+return_obj["classes"] = classes
 
-
-ponds_url = {'url':initLayers()}
-with open(data['URL_PATH'], "w") as outfile:
-    json.dump(ponds_url, outfile)
+with open(data['LIST_PATH'], "w") as outfile:
+    json.dump(return_obj, outfile)
