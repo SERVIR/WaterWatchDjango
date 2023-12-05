@@ -86,6 +86,10 @@ This tool lets you select a water body and see the data processed by the Earth E
           "CSRF\_TRUSTED\_ORIGINS": \["http://localhost:8000","http://127.0.0.1:8000"\],
           "EE_SECRET_KEY" : "your\_json\_key",
           "EE_SERVICE_ACCOUNT" : "your\_service\_acccount",
+          "EE_SECRET_KEY": "file_that_has_json_key",
+          "DATE_FILE": "file_to_get_last_updated_date",
+           "URL_PATH": "path_to_file_that_has_url",
+           "LIST_PATH": "file_for_centers_of_ponds"
         }
 
 SECRET_KEY is any random string of characters
